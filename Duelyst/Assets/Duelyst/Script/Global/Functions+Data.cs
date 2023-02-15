@@ -14,6 +14,11 @@ public static partial class Functions
     public const string NAME_GAMEMANAGER = "GameManager";
     public const string NAME_OBJCANVAS = "ObjectCanvas";
     public const string NAME_UICANVAS = "UICanvas";
+
+    public const string NAME_SELECTINGARROW = "SelectingArrow";
+
+    public const string NAME_HAND_CARDDETAIL = "CardDetail";
+    public const string NAME_HAND_CARD = "Card";
     #endregion
 
     #region Prefab name

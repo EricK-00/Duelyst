@@ -2,14 +2,27 @@ using UnityEngine;
 
 public class SelectingArrow : MonoBehaviour
 {
-    private const float Z_POS_MAX = -500;
+    public GameObject testGO;
 
     [SerializeField]
     private AnimationCurve curve;
 
+    private Canvas objCanvas;
+    private RectTransform objCanvasRect;
+
     private Vector3 mousePos;
-    private float t;
-    private float zPos;
+    private Vector2 pointPos;
+    private Vector2 lerpPointA, lerpPointB, pointInCurve;
+    private Vector2 diffVec;
+
+    private float lerpValue;
+    private float angleValue;
+
+    private void Awake()
+    {
+        objCanvas = Functions.GetRootGameObject(Functions.NAME_OBJCANVAS).GetComponent<Canvas>();
+        objCanvasRect = Functions.GetRootGameObject(Functions.NAME_OBJCANVAS).GetComponent<RectTransform>();
+    }
 
     void Update()
     {
@@ -17,15 +30,27 @@ public class SelectingArrow : MonoBehaviour
         for (int i = 0; i < childCount; i++)
         {
             {
-                mousePos = Input.mousePosition / transform.parent.GetComponent<Canvas>().scaleFactor;
-                mousePos = new Vector3(mousePos.x - Screen.width / 2, mousePos.y - Screen.height / 2, transform.parent.GetComponent<Canvas>().transform.position.z);
-                Debug.Log(mousePos);
-                Debug.Log(transform.parent.GetComponent<Canvas>().scaleFactor);
-                //mousePos.z = 90;
-                t = 1f / (childCount - 1) * i;
-                transform.GetChild(i).localPosition = Vector2.Lerp(transform.localPosition, mousePos, t) - (Vector2)transform.localPosition;
-                zPos = Z_POS_MAX * curve.Evaluate(t);
-                transform.GetChild(i).localPosition = new Vector3(transform.GetChild(i).localPosition.x, transform.GetChild(i).localPosition.y, zPos);
+                mousePos = Input.mousePosition / objCanvas.scaleFactor;
+                mousePos = new Vector3(
+                    mousePos.x - objCanvasRect.rect.width / 2, 
+                    mousePos.y - objCanvasRect.rect.height / 2, 
+                    mousePos.z);
+
+                pointPos = new Vector2((mousePos.x + transform.localPosition.x) / 2, 0);
+
+                testGO.transform.localPosition = pointPos;
+
+                lerpValue = 1f / (childCount - 1) * i;
+
+                lerpPointA = Vector2.Lerp(transform.localPosition, pointPos, lerpValue);
+                lerpPointB = Vector2.Lerp(pointPos, mousePos, lerpValue);
+                pointInCurve = Vector2.Lerp(lerpPointA, lerpPointB, lerpValue) - (Vector2)transform.localPosition;
+
+                transform.GetChild(i).localPosition = pointInCurve;
+                diffVec = mousePos - transform.localPosition;
+                angleValue = Mathf.Atan2(diffVec.y, diffVec.x) * Mathf.Rad2Deg;
+
+                transform.GetChild(i).rotation = Quaternion.Euler(0, 0, angleValue + 90);
             }
         }
     }
