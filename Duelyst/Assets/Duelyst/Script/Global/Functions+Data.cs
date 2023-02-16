@@ -21,15 +21,25 @@ public static partial class Functions
     public const string NAME_HAND_CARD = "Card";
     #endregion
 
+
+    #region Resource files location
+    public const string FILELOC_RESOURCES_PREFAB = "Prefabs/";
+    public const string FILELOC_RESOURCES_MATERIALS = "Materials/";
+    #endregion
+
     #region Prefab name
 
     #endregion
 
-    #region Resource files location
-    public const string FILELOC_RESOURCES_PREFAB = "Prefabs/";
-    #endregion
-
     #region Prefabs
 
+    #endregion
+
+    #region Materials name
+    public const string ASSETNAME_MATERIALS_OUTLINE = "Outline";
+    #endregion
+
+    #region Materials
+    public static readonly Material outline = Resources.Load($"{FILELOC_RESOURCES_MATERIALS}{ASSETNAME_MATERIALS_OUTLINE}") as Material;
     #endregion
 }

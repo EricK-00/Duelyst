@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
@@ -59,14 +60,21 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
     public void OnEndDrag(PointerEventData ped)
     {
         //레이캐스트로 타겟 가져오기
-        if (ped.pointerCurrentRaycast.gameObject != null)
+        GameObject raycastTarget = ped.pointerCurrentRaycast.gameObject;
+        if (raycastTarget != null)
         {
-            Debug.Log(ped.pointerCurrentRaycast.gameObject.tag);
-            if (ped.pointerCurrentRaycast.gameObject.tag == Functions.TAG_PLACE)
+            Debug.Log(raycastTarget.tag);
+            if (raycastTarget.tag == Functions.TAG_PLACE)
             {
-                GameObject go = transform.GetChild(0).GetChild(1).gameObject;
-                go.transform.parent = ped.pointerCurrentRaycast.gameObject.transform;
-                go.transform.localPosition = Vector3.zero;
+                GameObject playingCard = raycastTarget.transform.GetChild(0).gameObject;
+
+                playingCard.GetComponent<Image>().sprite = card.GetComponent<Image>().sprite;
+                playingCard.GetComponent<Animator>().runtimeAnimatorController = card.GetComponent<Animator>().runtimeAnimatorController;
+                playingCard.SetActive(true);
+
+                //GameObject go = card.gameObject;
+                //go.transform.parent = ped.pointerCurrentRaycast.gameObject.transform;
+                //go.transform.localPosition = Vector3.zero;
             }
         }
 
