@@ -22,6 +22,12 @@ public class GameManager : MonoBehaviour
 
     public void EndTurn()
     {
+        DrawCard();
+        ChangeTurn();
+    }
+
+    private void DrawCard()
+    {
         if (isPlayer1Turn)
         {
             Debug.Log("플레이어1 드로우");
@@ -30,13 +36,12 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("플레이어2 드로우");
         }
-
-        ChangeTurn();
     }
 
     private void ChangeTurn()
     {
         ++turnCount;
         isPlayer1Turn = !isPlayer1Turn;
+        //턴 변경 UI 띄우기
     }
 }

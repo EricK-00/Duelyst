@@ -8,17 +8,28 @@ public static partial class Functions
 {
     #region GameObject tag
     public const string TAG_PLACE = "Place";
+    public const string TAG_ENEMY = "Enemy";
     #endregion
 
     #region GameObject name
+    //Managers
     public const string NAME_GAMEMANAGER = "GameManager";
+    public const string NAME_UIMANAGER = "UIManager";
+
+    //GameObject in ObjectCanvas
     public const string NAME_OBJCANVAS = "ObjectCanvas";
-    public const string NAME_UICANVAS = "UICanvas";
 
     public const string NAME_SELECTINGARROW = "SelectingArrow";
 
     public const string NAME_HAND_CARDDETAIL = "CardDetail";
     public const string NAME_HAND_CARD = "Card";
+
+    //GameObject in UICanvas
+    public const string NAME_UICANVAS = "UICanvas";
+
+    public const string NAME_PLAYERCARDDETAIL = "PlayerCardDetail";
+    public const string NAME_ENEMYCARDDETAIL = "EnemyCardDetail";
+
     #endregion
 
 

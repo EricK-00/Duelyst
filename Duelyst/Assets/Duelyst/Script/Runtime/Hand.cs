@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IEndDragHandler, IBeginDragHandler
+public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private RectTransform selectingArrowRect;
     private RectTransform handRect;
@@ -13,7 +13,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
     private GameObject cardDetail;
     private GameObject card;
 
-    private bool draggingThis = false;
+    private bool isDragged = false;
 
     private void Awake()
     {
@@ -26,7 +26,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
 
     public void OnPointerEnter(PointerEventData ped)
     {
-        if (!draggingThis)
+        if (!isDragged)
         {
         //카드 상세보기 + idle로 전환
         cardDetail.SetActive(true);
@@ -36,7 +36,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
 
     public void OnPointerExit(PointerEventData ped)
     {
-        if (draggingThis)
+        if (isDragged)
         {
             //드래그 시작
             selectingArrowRect.gameObject.SetActive(true);
@@ -50,6 +50,11 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
 
         //카드 상세보기 삭제
         cardDetail.SetActive(false);
+    }
+
+    public void OnBeginDrag(PointerEventData ped)
+    {
+        isDragged = true;
     }
 
     public void OnDrag(PointerEventData ped)
@@ -66,26 +71,21 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
             Debug.Log(raycastTarget.tag);
             if (raycastTarget.tag == Functions.TAG_PLACE)
             {
+                //필드에 카드 생성
                 GameObject playingCard = raycastTarget.transform.GetChild(0).gameObject;
 
                 playingCard.GetComponent<Image>().sprite = card.GetComponent<Image>().sprite;
                 playingCard.GetComponent<Animator>().runtimeAnimatorController = card.GetComponent<Animator>().runtimeAnimatorController;
-                playingCard.SetActive(true);
+                playingCard.GetComponent<Animator>().SetBool("onField", true);
+                playingCard.transform.localScale = Vector3.one;
 
-                //GameObject go = card.gameObject;
-                //go.transform.parent = ped.pointerCurrentRaycast.gameObject.transform;
-                //go.transform.localPosition = Vector3.zero;
+                //패에 있는 카드 제거
             }
         }
 
         //드래그 종료 + breathing으로 전환
-        draggingThis = false;
+        isDragged = false;
         selectingArrowRect.gameObject.SetActive(false);
         card.GetComponent<Animator>()?.SetBool("isMouseOver", false);
-    }
-
-    public void OnBeginDrag(PointerEventData ped)
-    {
-        draggingThis = true;
     }
 }

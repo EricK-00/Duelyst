@@ -13,18 +13,6 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         image = GetComponent<Image>();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void OnPointerEnter(PointerEventData ped)
     {
         image.fillCenter = false;

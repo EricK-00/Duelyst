@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Move : MonoBehaviour
 {
+    //x
 
     float maxTime = 3f;
     float startMaxTime = 3f;
