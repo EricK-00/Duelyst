@@ -2,13 +2,14 @@ Shader "Unlit/OutlineShader"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
-        _OutlineColor ("OutlineColor", Color) = (1, 1, 1, 1)
-        _BlankColor ("BlankColor", Color) = (1, 1, 1, 1)
-        _Strength ("Strength", Range (1, 10)) = 0
+        _MainTex("Texture", 2D) = "white" {}
+        _OutlineColor("OutlineColor", Color) = (1, 1, 1, 1)
+        _BlankColor("BlankColor", Color) = (1, 1, 1, 1)
+        _Strength("Strength", Range(1, 10)) = 0
     }
     SubShader
     {
+        ZWrite Off
         Tags { "RenderType" = "Transparent" }
 
         Blend SrcAlpha OneMinusSrcAlpha
@@ -40,7 +41,7 @@ Shader "Unlit/OutlineShader"
             fixed4 _BlankColor;
             half _Strength;
 
-            v2f vert (appdata v)
+            v2f vert(appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
@@ -48,7 +49,7 @@ Shader "Unlit/OutlineShader"
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            fixed4 frag(v2f i) : SV_Target
             {
                 //fixed4 texColor = tex2D(_MainTex, i.uv);
 

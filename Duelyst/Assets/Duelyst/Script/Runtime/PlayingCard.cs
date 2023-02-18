@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class PlayingCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
+    private GameObject objCanvas;
     private RectTransform selectingArrowRect;
 
     private Material outline;
@@ -16,7 +17,9 @@ public class PlayingCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void Awake()
     {
-        selectingArrowRect = Functions.GetRootGameObject(Functions.NAME_OBJCANVAS).FindChildGameObject(Functions.NAME_SELECTINGARROW).GetComponent<RectTransform>();
+        objCanvas = Functions.GetRootGameObject(Functions.NAME_OBJCANVAS);
+        selectingArrowRect = objCanvas.FindChildGameObject(Functions.NAME_SELECTINGARROW).GetComponent<RectTransform>();
+
         outline = Functions.outline;
         image = GetComponent<Image>();
         animator = GetComponent<Animator>();
@@ -35,8 +38,17 @@ public class PlayingCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnBeginDrag(PointerEventData ped)
     {
         //드래그 시작
+        Ray ray = Camera.main.ScreenPointToRay(Camera.main.WorldToScreenPoint(transform.position));
+
+        float CanvasZPos = objCanvas.transform.position.z;
+        float distance = (CanvasZPos - ray.origin.z) / ray.direction.z;
+        Vector3 point = ray.origin + ray.direction * distance;
+        point.z = CanvasZPos;
+
+        selectingArrowRect.transform.position = point;
         selectingArrowRect.gameObject.SetActive(true);
-        selectingArrowRect.position =  Camera.main.ScreenToViewportPoint(transform.position);
+
+        Debug.Log($"{ray.origin} {ray.direction}");
     }
 
     public void OnDrag(PointerEventData ped)
@@ -62,6 +74,7 @@ public class PlayingCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 //
 
                 //이동
+                //null 체크
                 StartCoroutine(Move(raycastTarget.transform.GetChild(0).GetComponent<RectTransform>()));
             }
         }
@@ -79,21 +92,23 @@ public class PlayingCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
     }
 
-    public IEnumerator Move(RectTransform distRect)
+    public IEnumerator Move(RectTransform destRect)
     {
         Vector3 sourcePos = transform.position;
         float timer = 1f;
         const int FRAME = 60;
         float term = (float)1f / FRAME;
 
-        transform.SetParent(distRect.transform.parent.parent);
+        transform.SetParent(objCanvas.transform);
 
         while (timer >= 0)
         {
-            transform.position = Vector3.Lerp(sourcePos, distRect.position, 1 - timer);
+            transform.position = Vector3.Lerp(sourcePos, destRect.position, 1 - timer);
 
             yield return new WaitForSeconds(term);
             timer -= term;
         }
+
+        //
     }
 }
