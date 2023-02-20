@@ -49,7 +49,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void ShowPlayerCardDetail(Sprite cardSprite, RuntimeAnimatorController cardAnim)
+    public void ShowPlayerCardDetail(Animator cardAnim)
     {
         playerCardDetail.gameObject.SetActive(true);
 
@@ -57,8 +57,8 @@ public class UIManager : MonoBehaviour
         //
         //
 
-        playerCardDetailImage.sprite = cardSprite;
-        playerCardDetailAnim.runtimeAnimatorController = cardAnim;
+        if (cardAnim != null)
+        playerCardDetailAnim.runtimeAnimatorController = cardAnim.runtimeAnimatorController;
     }
 
     public void DisableCardDetails()

@@ -9,8 +9,13 @@ Shader "Unlit/OutlineShader"
     }
     SubShader
     {
+        Tags
+        {
+            "Queue" = "Transparent"
+            "RenderType" = "Transparent"
+        }
+
         ZWrite Off
-        Tags { "RenderType" = "Transparent" }
 
         Blend SrcAlpha OneMinusSrcAlpha
 

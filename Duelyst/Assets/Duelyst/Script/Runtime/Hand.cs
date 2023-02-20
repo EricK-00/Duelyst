@@ -1,6 +1,4 @@
-using Mono.Cecil;
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -10,32 +8,51 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     private RectTransform selectingArrowRect;
     private RectTransform handRect;
 
+    private GameObject objCanvas;
     private GameObject cardDetail;
     private GameObject card;
+    private Image cardImage;
+    private Sprite defaultCardSprite;
+    private Animator cardAnimator;
+
+    private TMP_Text costText;
 
     private bool isDragged = false;
+    public bool NoCard { get; private set; } = true;
 
     private void Awake()
     {
-        selectingArrowRect = Functions.GetRootGameObject(Functions.NAME_OBJCANVAS).FindChildGameObject(Functions.NAME_SELECTINGARROW).GetComponent<RectTransform>();
+        objCanvas = Functions.GetRootGameObject(Functions.NAME_OBJCANVAS);
+        selectingArrowRect = objCanvas.FindChildGameObject(Functions.NAME_SELECTINGARROW).GetComponent<RectTransform>();
         handRect = GetComponent<RectTransform>();
 
         cardDetail = gameObject.FindChildGameObject(Functions.NAME_HAND_CARDDETAIL);
-        card = gameObject.FindChildGameObject(Functions.NAME_HAND_CARD);
+        card = gameObject.FindChildGameObject(Functions.NAME_HAND_CARDSPRITE);
+        cardImage = GetComponent<Image>();
+        defaultCardSprite = cardImage.sprite;
+        cardAnimator = card.GetComponent<Animator>();
+
+        costText = gameObject.FindChildGameObject(Functions.NAME_HAND_COSTTEXT).GetComponent<TMP_Text>();
     }
 
     public void OnPointerEnter(PointerEventData ped)
     {
+        if (NoCard)
+            return;
+
         if (!isDragged)
         {
-        //카드 상세보기 + idle로 전환
-        cardDetail.SetActive(true);
-        card.GetComponent<Animator>()?.SetBool("isMouseOver", true);
+            //카드 상세보기 + idle로 전환
+            cardDetail.SetActive(true);
+            cardAnimator.SetBool("isMouseOver", true);
         }
     }
 
     public void OnPointerExit(PointerEventData ped)
     {
+        if (NoCard)
+            return;
+
         if (isDragged)
         {
             //드래그 시작
@@ -45,7 +62,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         else
         {
             //breathing으로 전환
-            card.GetComponent<Animator>()?.SetBool("isMouseOver", false);
+            cardAnimator.SetBool("isMouseOver", false);
         }
 
         //카드 상세보기 삭제
@@ -54,38 +71,75 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnBeginDrag(PointerEventData ped)
     {
+        if (NoCard)
+            return;
+
         isDragged = true;
     }
 
     public void OnDrag(PointerEventData ped)
     {
-
+        //OnBeginDrag()와 OnEndDrag()에 이벤트를 받기 위해 필요
+        /* Do nothing */
     }
 
     public void OnEndDrag(PointerEventData ped)
     {
-        //레이캐스트로 타겟 가져오기
+        if (NoCard)
+            return;
+
+        //드래그 종료
+        selectingArrowRect.gameObject.SetActive(false);
+        isDragged = false;
+
+        //breathing으로 전환
+        cardAnimator.SetBool("isMouseOver", false);
+
+        //현재 레이캐스트 결과 가져오기
         GameObject raycastTarget = ped.pointerCurrentRaycast.gameObject;
-        if (raycastTarget != null)
+        if (raycastTarget == null)
         {
-            Debug.Log(raycastTarget.tag);
-            if (raycastTarget.tag == Functions.TAG_PLACE)
-            {
-                //필드에 카드 생성
-                GameObject playingCard = raycastTarget.transform.GetChild(0).gameObject;
-
-                playingCard.GetComponent<Image>().sprite = card.GetComponent<Image>().sprite;
-                playingCard.GetComponent<Animator>().runtimeAnimatorController = card.GetComponent<Animator>().runtimeAnimatorController;
-                playingCard.GetComponent<Animator>().SetBool("onField", true);
-                playingCard.transform.localScale = Vector3.one;
-
-                //패에 있는 카드 제거
-            }
+            return;
         }
 
-        //드래그 종료 + breathing으로 전환
-        isDragged = false;
-        selectingArrowRect.gameObject.SetActive(false);
-        card.GetComponent<Animator>()?.SetBool("isMouseOver", false);
+        Debug.Log(raycastTarget.tag);
+        if (raycastTarget.tag == Functions.TAG_PLACE)
+        {
+            //필드에 카드 생성
+            PlacePlayingCard(raycastTarget.gameObject);
+            SetDefault();
+            GameManager.Instance.ReduceHandsCount();
+        }
+    }
+
+    private void PlacePlayingCard(GameObject place)
+    {
+        GameObject playingCard = Instantiate(Functions.playingCard, objCanvas.transform);
+        playingCard.transform.position = place.transform.position;
+
+        GameObject cardSprite = playingCard.FindChildGameObject(Functions.NAME_PLAYINGCARD_CARDSPRITE);
+
+        cardSprite.GetComponent<Image>().sprite = card.GetComponent<Image>().sprite;
+
+        cardSprite.GetComponent<Animator>().runtimeAnimatorController = card.GetComponent<Animator>().runtimeAnimatorController;
+        cardSprite.GetComponent<Animator>().SetBool("onField", true);
+
+        place.GetComponent<Place>().PlaceCard(playingCard);
+    }
+
+    private void SetDefault()
+    {
+        NoCard = true;
+        cardImage.sprite = defaultCardSprite;
+        cardAnimator.runtimeAnimatorController = null;
+        costText.text = string.Empty;
+    }
+
+    public void SetNewCard(GameObject cardGO, int cost)
+    {
+        NoCard = false;
+        cardImage.sprite = cardGO.GetComponent<Image>().sprite;
+        cardAnimator.runtimeAnimatorController = cardGO.GetComponent<Animator>().runtimeAnimatorController;
+        costText.text = cost.ToString();
     }
 }

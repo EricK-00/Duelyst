@@ -6,20 +6,6 @@ using UnityEngine.SceneManagement;
 
 public static partial class Functions
 {
-    //! 특정 게임오브젝트의 자식을 탐색해서 찾는 메서드
-    //private static GameObject GetChildGameObject(this GameObject parentGO, string childName)
-    //{
-    //    for (int i = 0; i < parentGO.transform.childCount; i++)
-    //    {
-    //        if (parentGO.transform.GetChild(i).name.Equals(childName))
-    //        {
-    //            return parentGO.transform.GetChild(i).gameObject;
-    //        }
-    //    }
-
-    //    return default;
-    //}
-
     //! 특정 게임오브젝트의 자식들을 탐색해서 찾는 메서드
     public static GameObject FindChildGameObject(this GameObject parentGO, string childName)
     {

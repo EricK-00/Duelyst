@@ -47,8 +47,6 @@ public class PlayingCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         selectingArrowRect.transform.position = point;
         selectingArrowRect.gameObject.SetActive(true);
-
-        Debug.Log($"{ray.origin} {ray.direction}");
     }
 
     public void OnDrag(PointerEventData ped)
@@ -58,7 +56,7 @@ public class PlayingCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnEndDrag(PointerEventData ped)
     {
-        //레이캐스트로 타겟 가져오기
+        //현재 레이캐스트 결과 가져오기
         GameObject raycastTarget = ped.pointerCurrentRaycast.gameObject;
         if (raycastTarget != null)
         {
@@ -74,8 +72,7 @@ public class PlayingCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 //
 
                 //이동
-                //null 체크
-                StartCoroutine(Move(raycastTarget.transform.GetChild(0).GetComponent<RectTransform>()));
+                StartCoroutine(Move(raycastTarget.transform.GetComponent<RectTransform>()));
             }
         }
 
@@ -88,7 +85,7 @@ public class PlayingCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (ped.button == PointerEventData.InputButton.Right)
         {
             //카드 상세보기
-            UIManager.Instance.ShowPlayerCardDetail(image.sprite, animator.runtimeAnimatorController);
+            UIManager.Instance.ShowPlayerCardDetail(animator);
         }
     }
 
@@ -98,8 +95,6 @@ public class PlayingCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         float timer = 1f;
         const int FRAME = 60;
         float term = (float)1f / FRAME;
-
-        transform.SetParent(objCanvas.transform);
 
         while (timer >= 0)
         {

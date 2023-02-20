@@ -5,11 +5,11 @@ using UnityEngine.EventSystems;
 
 public enum CardType
 {
-    Minion,
-    General
+    General,
+    Minion
 }
 
-public class Card : MonoBehaviour
+public class Card : ScriptableObject
 {
     public int Id { get; private set; }
 
@@ -22,4 +22,6 @@ public class Card : MonoBehaviour
 
     public int Power { get; private set; }
     public int Health { get; private set; }
+
+    public Animator Anim { get; private set; }
 }

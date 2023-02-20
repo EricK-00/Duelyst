@@ -7,6 +7,7 @@ using UnityEngineInternal;
 public static partial class Functions
 {
     #region GameObject tag
+    public const string TAG_UNTAGGED = "Untagged";
     public const string TAG_PLACE = "Place";
     public const string TAG_ENEMY = "Enemy";
     #endregion
@@ -22,7 +23,10 @@ public static partial class Functions
     public const string NAME_SELECTINGARROW = "SelectingArrow";
 
     public const string NAME_HAND_CARDDETAIL = "CardDetail";
-    public const string NAME_HAND_CARD = "Card";
+    public const string NAME_HAND_CARDSPRITE = "CardSprite";
+    public const string NAME_HAND_COSTTEXT = "CostText";
+
+    public const string NAME_PLAYINGCARD_CARDSPRITE = "CardSprite";
 
     //GameObject in UICanvas
     public const string NAME_UICANVAS = "UICanvas";
@@ -39,10 +43,11 @@ public static partial class Functions
     #endregion
 
     #region Prefab name
-
+    public const string ASSETNAME_PREFABS_PLAYINGCARD = "PlayingCard";
     #endregion
 
     #region Prefabs
+    public static readonly GameObject playingCard = Resources.Load($"{FILELOC_RESOURCES_PREFAB}{ASSETNAME_PREFABS_PLAYINGCARD}") as GameObject;
 
     #endregion
 

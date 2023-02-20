@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UISpriteAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 418644aaca9b75d4f824554349c9ca71, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 77fbb7e066ea03a498a4ec5b0ae23b27, type: 3}
+  - {fileID: 21300000, guid: 80b2d6f1d38e0eb439ca953fce339e7d, type: 3}
+  - {fileID: 21300000, guid: 215779023b2afd244b631cbbca022fec, type: 3}
+  - {fileID: 21300000, guid: cceb1074e3801f349b6a82862b9b960d, type: 3}
+  - {fileID: 21300000, guid: 40d2df84863a06645b02b5267d73beb7, type: 3}
+  - {fileID: 21300000, guid: bdf610658c5eb7b41abb2b08ea860c70, type: 3}
+  - {fileID: 21300000, guid: 242a7d362a9075e4383b74af9b809847, type: 3}
+  - {fileID: 21300000, guid: e1f56c28e42c688418f431d27ba9b9b0, type: 3}
+  - {fileID: 21300000, guid: 9fc2fd58930688648a922a120f93ecae, type: 3}
+  - {fileID: 21300000, guid: 11d321884110c3a49ab0dc1fe45a69fa, type: 3}
+  - {fileID: 21300000, guid: 97a913a88314d9346a9ff022764b2e01, type: 3}
+  - {fileID: 21300000, guid: 0d9739092b97d824aa1ba0eb196a7e35, type: 3}
+  - {fileID: 21300000, guid: d719cf19ad211dd40a4e15d87bacc83e, type: 3}
+  - {fileID: 21300000, guid: edca1479491c016498027d713e347c53, type: 3}
+  - {fileID: 21300000, guid: 84384589a4de78948928f5229aa78571, type: 3}
+  - {fileID: 21300000, guid: d3c3a22ae2e29244580fcd3b4dc8f4bb, type: 3}
+  - {fileID: 21300000, guid: c8ba202cfcca7da4f926e8b2ab7f3e76, type: 3}
+  - {fileID: 21300000, guid: 42443f6cc79449d4a8a282649b22886f, type: 3}
+  - {fileID: 21300000, guid: ec82bf0dcf137ef43b56baffa4cea631, type: 3}
+  - {fileID: 21300000, guid: cba16c5d9bd535142b92cae347c1ce0f, type: 3}
+  - {fileID: 21300000, guid: 5162107d7eda7034cbc8b042c2518771, type: 3}
+  - {fileID: 21300000, guid: cbd279cd513e83243bf1a1c06de3ec5e, type: 3}
+  - {fileID: 21300000, guid: 22defabe46395c746a99de66478934c7, type: 3}
+  - {fileID: 21300000, guid: a6ad550f9d217014881f18f1d4458ff8, type: 3}
+  - {fileID: 21300000, guid: b250b89fc32e2364c81b0420100f4193, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - general_portrait_image_hex_f5@2x
+  - icon_atk@2x
+  - glow
+  - icon_atk_bw@2x
+  - replace_outer_ring_shine@2x
+  - button_back
+  - button_end_turn_finished_glow@2x
+  - cloud_1
+  - icon_mana_inactive@2x
+  - near_pillars
+  - button_primary@2x
+  - troop
+  - cloud_0
+  - battlemap6_middleground@2x
+  - global_game_background
+  - button_primary_glow@2x
+  - icon_hp@2x
+  - icon_general
+  - icon_mana@2x
+  - replace_background@2x
+  - button_end_turn_finished@2x
+  - replace_outer_ring_smoke@2x
+  - cloud_2
+  - icon_hp_bw@2x
+  - brand_duelyst
+  m_RenderDataMap: {}
+  m_Tag: UISpriteAtlas
+  m_IsVariant: 0
