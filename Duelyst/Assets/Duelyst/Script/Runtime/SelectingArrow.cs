@@ -5,6 +5,7 @@ public class SelectingArrow : MonoBehaviour
     private const int MIN_ARROW_COUNT = 2;//2 이상
 
     public GameObject testGO;
+    public GameObject target;
 
     private Canvas objCanvas;
     private RectTransform objCanvasRect;
@@ -30,6 +31,7 @@ public class SelectingArrow : MonoBehaviour
             mousePos.x - objCanvasRect.rect.width / 2,
             mousePos.y - objCanvasRect.rect.height / 2,
             mousePos.z);
+
         pointPos = new Vector2((mousePos.x + transform.localPosition.x) / 2,
             100 + (mousePos.y + transform.localPosition.y) / 2);
 
@@ -58,10 +60,12 @@ public class SelectingArrow : MonoBehaviour
                 direcVec = mousePos - transform.localPosition;
                 angleValue = Mathf.Atan2(direcVec.y, direcVec.x) * Mathf.Rad2Deg;
 
-                arrow.transform.rotation = Quaternion.Euler(0, 0, angleValue + 90);
+                arrow.transform.rotation = Quaternion.Euler(0, 0, angleValue);
             }
         }
-        for (int i = arrowCount; i < transform.childCount - 1; i++)
+        target.transform.localPosition = (Vector2)mousePos - (Vector2)transform.localPosition;
+        target.SetActive(true);
+        for (int i = arrowCount; i < transform.childCount - 2; i++)
         {
             transform.GetChild(i).gameObject.SetActive(false);
         }

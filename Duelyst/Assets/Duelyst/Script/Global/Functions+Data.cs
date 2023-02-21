@@ -25,6 +25,7 @@ public static partial class Functions
     public const string NAME_HAND_CARDDETAIL = "CardDetail";
     public const string NAME_HAND_CARDSPRITE = "CardSprite";
     public const string NAME_HAND_COSTTEXT = "CostText";
+    public const string NAME_HAND_DRAWANIM = "DrawAnim";
 
     public const string NAME_PLAYINGCARD_CARDSPRITE = "CardSprite";
 
@@ -43,11 +44,15 @@ public static partial class Functions
     #endregion
 
     #region Prefab name
+    public const string ASSETNAME_PREFABS_ROW = "Row";
+    public const string ASSETNAME_PREFABS_PLACE = "Place";
     public const string ASSETNAME_PREFABS_PLAYINGCARD = "PlayingCard";
     #endregion
 
     #region Prefabs
-    public static readonly GameObject playingCard = Resources.Load($"{FILELOC_RESOURCES_PREFAB}{ASSETNAME_PREFABS_PLAYINGCARD}") as GameObject;
+    public static readonly GameObject ROW = Resources.Load($"{FILELOC_RESOURCES_PREFAB}{ASSETNAME_PREFABS_ROW}") as GameObject;
+    public static readonly GameObject PLACE = Resources.Load($"{FILELOC_RESOURCES_PREFAB}{ASSETNAME_PREFABS_PLACE}") as GameObject;
+    public static readonly GameObject PLAYINGCARD = Resources.Load($"{FILELOC_RESOURCES_PREFAB}{ASSETNAME_PREFABS_PLAYINGCARD}") as GameObject;
 
     #endregion
 
@@ -56,6 +61,6 @@ public static partial class Functions
     #endregion
 
     #region Materials
-    public static readonly Material outline = Resources.Load($"{FILELOC_RESOURCES_MATERIALS}{ASSETNAME_MATERIALS_OUTLINE}") as Material;
+    public static readonly Material OUTLINE = Resources.Load($"{FILELOC_RESOURCES_MATERIALS}{ASSETNAME_MATERIALS_OUTLINE}") as Material;
     #endregion
 }

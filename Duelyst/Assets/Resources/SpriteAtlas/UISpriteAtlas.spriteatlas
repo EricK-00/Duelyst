@@ -55,8 +55,13 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 215779023b2afd244b631cbbca022fec, type: 3}
   - {fileID: 21300000, guid: cceb1074e3801f349b6a82862b9b960d, type: 3}
   - {fileID: 21300000, guid: 40d2df84863a06645b02b5267d73beb7, type: 3}
+  - {fileID: 21300000, guid: ad6277a4875c95c4a9a3fa4ae32b4f0e, type: 3}
+  - {fileID: 21300000, guid: 62998325fe2e7a64ab7190b131c45088, type: 3}
   - {fileID: 21300000, guid: bdf610658c5eb7b41abb2b08ea860c70, type: 3}
   - {fileID: 21300000, guid: 242a7d362a9075e4383b74af9b809847, type: 3}
+  - {fileID: 21300000, guid: 9ac8ca66d91c09c40ac5172fe61a2def, type: 3}
+  - {fileID: 21300000, guid: 609382f6f3367fe429e65d53d11bdf19, type: 3}
+  - {fileID: 21300000, guid: 9156c6f76cbe1c547bcf1c2d58371003, type: 3}
   - {fileID: 21300000, guid: e1f56c28e42c688418f431d27ba9b9b0, type: 3}
   - {fileID: 21300000, guid: 9fc2fd58930688648a922a120f93ecae, type: 3}
   - {fileID: 21300000, guid: 11d321884110c3a49ab0dc1fe45a69fa, type: 3}
@@ -65,13 +70,33 @@ SpriteAtlas:
   - {fileID: 21300000, guid: d719cf19ad211dd40a4e15d87bacc83e, type: 3}
   - {fileID: 21300000, guid: edca1479491c016498027d713e347c53, type: 3}
   - {fileID: 21300000, guid: 84384589a4de78948928f5229aa78571, type: 3}
+  - {fileID: 21300000, guid: 38b505c972fdeaa4382d18872543d674, type: 3}
+  - {fileID: 21300000, guid: fba16c0a84d47c446bdd559fa0e04fb1, type: 3}
   - {fileID: 21300000, guid: d3c3a22ae2e29244580fcd3b4dc8f4bb, type: 3}
   - {fileID: 21300000, guid: c8ba202cfcca7da4f926e8b2ab7f3e76, type: 3}
   - {fileID: 21300000, guid: 42443f6cc79449d4a8a282649b22886f, type: 3}
+  - {fileID: 21300000, guid: f4221fccf7e5cda43979398a5c165f47, type: 3}
+  - {fileID: -990846258, guid: 4402850dd78cf8546bf40a213bb5375f, type: 3}
+  - {fileID: 475074559, guid: 4402850dd78cf8546bf40a213bb5375f, type: 3}
+  - {fileID: -1944884419, guid: 4402850dd78cf8546bf40a213bb5375f, type: 3}
+  - {fileID: 478267417, guid: 4402850dd78cf8546bf40a213bb5375f, type: 3}
+  - {fileID: 1369947132, guid: 4402850dd78cf8546bf40a213bb5375f, type: 3}
+  - {fileID: 365566961, guid: 4402850dd78cf8546bf40a213bb5375f, type: 3}
+  - {fileID: -1776182594, guid: 4402850dd78cf8546bf40a213bb5375f, type: 3}
+  - {fileID: -315300055, guid: 4402850dd78cf8546bf40a213bb5375f, type: 3}
+  - {fileID: 2015096426, guid: 4402850dd78cf8546bf40a213bb5375f, type: 3}
+  - {fileID: 1413218052, guid: 4402850dd78cf8546bf40a213bb5375f, type: 3}
+  - {fileID: 1796551851, guid: 4402850dd78cf8546bf40a213bb5375f, type: 3}
+  - {fileID: 1166963115, guid: 4402850dd78cf8546bf40a213bb5375f, type: 3}
+  - {fileID: 1257207836, guid: 4402850dd78cf8546bf40a213bb5375f, type: 3}
+  - {fileID: 1268043229, guid: 4402850dd78cf8546bf40a213bb5375f, type: 3}
   - {fileID: 21300000, guid: ec82bf0dcf137ef43b56baffa4cea631, type: 3}
   - {fileID: 21300000, guid: cba16c5d9bd535142b92cae347c1ce0f, type: 3}
   - {fileID: 21300000, guid: 5162107d7eda7034cbc8b042c2518771, type: 3}
+  - {fileID: 21300000, guid: 08dec1bdb006d9e43b02b5d1086b4d43, type: 3}
   - {fileID: 21300000, guid: cbd279cd513e83243bf1a1c06de3ec5e, type: 3}
+  - {fileID: 21300000, guid: e6f8eb6ed3f901b4dba26e93a7bc33ec, type: 3}
+  - {fileID: 21300000, guid: 658c327eea61a7f47ae295602f343780, type: 3}
   - {fileID: 21300000, guid: 22defabe46395c746a99de66478934c7, type: 3}
   - {fileID: 21300000, guid: a6ad550f9d217014881f18f1d4458ff8, type: 3}
   - {fileID: 21300000, guid: b250b89fc32e2364c81b0420100f4193, type: 3}
@@ -81,8 +106,13 @@ SpriteAtlas:
   - glow
   - icon_atk_bw@2x
   - replace_outer_ring_shine@2x
+  - button_end_turn_mine
+  - tile_path_attack
   - button_back
   - button_end_turn_finished_glow@2x
+  - tile_target
+  - symbol_main_menu_diamond@2x
+  - button_end_turn_mine_glow
   - cloud_1
   - icon_mana_inactive@2x
   - near_pillars
@@ -91,13 +121,33 @@ SpriteAtlas:
   - cloud_0
   - battlemap6_middleground@2x
   - global_game_background
+  - tile_mana_idle
+  - tile_mana_depleted
   - button_primary_glow@2x
   - icon_hp@2x
   - icon_general
+  - symbol_main_menu_diamond
+  - fx_carddraw_10
+  - fx_carddraw_11
+  - fx_carddraw_12
+  - fx_carddraw_13
+  - fx_carddraw_1
+  - fx_carddraw_0
+  - fx_carddraw_3
+  - fx_carddraw_2
+  - fx_carddraw_5
+  - fx_carddraw_4
+  - fx_carddraw_7
+  - fx_carddraw_6
+  - fx_carddraw_9
+  - fx_carddraw_8
   - icon_mana@2x
   - replace_background@2x
   - button_end_turn_finished@2x
+  - symbol_main_menu_center
   - replace_outer_ring_smoke@2x
+  - rift_level_ring
+  - provoke
   - cloud_2
   - icon_hp_bw@2x
   - brand_duelyst

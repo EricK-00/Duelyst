@@ -5,7 +5,7 @@ Shader "Unlit/OutlineShader"
         _MainTex("Texture", 2D) = "white" {}
         _OutlineColor("OutlineColor", Color) = (1, 1, 1, 1)
         _BlankColor("BlankColor", Color) = (1, 1, 1, 1)
-        _Strength("Strength", Range(1, 10)) = 0
+        _Strength("Strength", Range(1, 10)) = 1
     }
     SubShader
     {
