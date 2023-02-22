@@ -60,12 +60,14 @@ SpriteAtlas:
   - {fileID: 21300000, guid: bdf610658c5eb7b41abb2b08ea860c70, type: 3}
   - {fileID: 21300000, guid: 242a7d362a9075e4383b74af9b809847, type: 3}
   - {fileID: 21300000, guid: 9ac8ca66d91c09c40ac5172fe61a2def, type: 3}
+  - {fileID: 21300000, guid: 6fd245a6ab83df8448cd1d1a024e9ae9, type: 3}
   - {fileID: 21300000, guid: 609382f6f3367fe429e65d53d11bdf19, type: 3}
   - {fileID: 21300000, guid: 9156c6f76cbe1c547bcf1c2d58371003, type: 3}
   - {fileID: 21300000, guid: e1f56c28e42c688418f431d27ba9b9b0, type: 3}
   - {fileID: 21300000, guid: 9fc2fd58930688648a922a120f93ecae, type: 3}
   - {fileID: 21300000, guid: 11d321884110c3a49ab0dc1fe45a69fa, type: 3}
   - {fileID: 21300000, guid: 97a913a88314d9346a9ff022764b2e01, type: 3}
+  - {fileID: 21300000, guid: 557085a8d520fd04fb7605067d49912c, type: 3}
   - {fileID: 21300000, guid: 0d9739092b97d824aa1ba0eb196a7e35, type: 3}
   - {fileID: 21300000, guid: d719cf19ad211dd40a4e15d87bacc83e, type: 3}
   - {fileID: 21300000, guid: edca1479491c016498027d713e347c53, type: 3}
@@ -111,12 +113,14 @@ SpriteAtlas:
   - button_back
   - button_end_turn_finished_glow@2x
   - tile_target
+  - notification_enemy_turn
   - symbol_main_menu_diamond@2x
   - button_end_turn_mine_glow
   - cloud_1
   - icon_mana_inactive@2x
   - near_pillars
   - button_primary@2x
+  - notification_your_turn
   - troop
   - cloud_0
   - battlemap6_middleground@2x

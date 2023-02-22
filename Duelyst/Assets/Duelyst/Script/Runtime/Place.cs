@@ -33,7 +33,10 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
     private Material cardDefaultMat;
     private Material outline;
 
-    public PlacedObj PlacedObject { get; private set; } = PlacedObj.BLANK;
+    public PlacedObj PlacedObject = PlacedObj.BLANK; //{ get; private set; } = PlacedObj.BLANK;
+
+    private readonly Color movablePlaceColor = new Color(1, 1, 1, 0.1f); //white
+    private readonly Color attackablePlaceColor = new Color(1, 1, 0, 0.3f);//yellow
 
     private void Awake()
     {
@@ -90,43 +93,62 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
 
     public void OnEndDrag(PointerEventData ped)
     {
-        if (cardGO == null)
+        if (PlacedObject == PlacedObj.BLANK)
             return;
 
         //드래그 종료
         selectingArrowRect.gameObject.SetActive(false);
 
-        HideAttackRange();
-        HideMoveRange();
-
         //현재 레이캐스트 결과 가져오기
         GameObject raycastTarget = ped.pointerCurrentRaycast.gameObject;
         if (raycastTarget == null)
         {
+            HideAttackRange();
+            HideMoveRange();
+
             return;
         }
 
         if (raycastTarget.tag == Functions.TAG_PLACE)
         {
-            if (raycastTarget.GetComponent<Place>().PlacedObject == PlacedObj.ENEMY)
+            Color placeColor = raycastTarget.GetComponent<Image>().color;
+            if (raycastTarget.GetComponent<Place>().PlacedObject == PlacedObj.ENEMY && placeColor == attackablePlaceColor)
             {
-
+                Debug.Log("Battle");
             }
-            else if (raycastTarget.GetComponent<Place>().PlacedObject == PlacedObj.BLANK)
+            else if (raycastTarget.GetComponent<Place>().PlacedObject == PlacedObj.BLANK && placeColor == movablePlaceColor)
             {
+                if (GameManager.Instance.TaskBlock)
+                    return;
+
+                PlayingCard card = cardGO.GetComponent<PlayingCard>();
+                Place newPlace = raycastTarget.GetComponent<Place>();
+
                 //카드 등록 장소 변경
-                GameObject card = cardGO;
+                newPlace.RegisterCard(card.gameObject);
                 UnregisterCard();
-                raycastTarget.GetComponent<Place>().RegisterCard(card);
 
                 //이동
-                StartCoroutine(card.GetComponent<PlayingCard>().Move(raycastTarget));
+                StartCoroutine(GameManager.Instance.PlayTask(card.Move(raycastTarget, newPlace.GetRow())));
             }
         }
+
+        HideAttackRange();
+        HideMoveRange();
+    }
+
+    public int GetRow()
+    {
+        return rowIndex;
     }
 
     public void OnPointerClick(PointerEventData ped)
     {
+        if (PlacedObject == PlacedObj.BLANK)
+        {
+            return;
+        }
+
         if (ped.button == PointerEventData.InputButton.Right)
         {
             //카드 상세보기
@@ -195,7 +217,7 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
 
     public void ShowAttackRange()
     {
-        Color color = new Color(1, 1, 0, 0.3f);//yellow
+        Color color = attackablePlaceColor;
 
         foreach (var place in aroundPlaces)
         {
@@ -208,40 +230,44 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
     {
         foreach (var place in aroundPlaces)
         {
-            place.InactivePlace();
+            if (place.PlacedObject == PlacedObj.ENEMY)
+                place.InactivePlace();
         }
     }
 
     public void ShowMoveRange()
     {
+        ShowOneDistanceRange();
         foreach (var place in oneDistancePlaces)
         {
-            place.ShowOneDistanceRange();
+            if (place.PlacedObject != PlacedObj.ENEMY)
+                place.ShowOneDistanceRange();
         }
     }
 
     public void HideMoveRange()
     {
+        HideOneDistanceRange();
         foreach (var place in oneDistancePlaces)
         {
-            place.HideOneDistanceRange();
+            if (place.PlacedObject != PlacedObj.ENEMY)
+                place.HideOneDistanceRange();
         }
     }
 
     public void ShowOneDistanceRange()
     {
-        Color color = new Color(1, 1, 1, 0.1f);//white
+        Color color = movablePlaceColor;
 
-        ActivePlace(color);
         foreach (var place in oneDistancePlaces)
         {
-            place.ActivePlace(color);
+            if (place.PlacedObject == PlacedObj.BLANK)
+                place.ActivePlace(color);
         }
     }
 
     public void HideOneDistanceRange()
     {
-        InactivePlace();
         foreach (var place in oneDistancePlaces)
         {
             place.InactivePlace();

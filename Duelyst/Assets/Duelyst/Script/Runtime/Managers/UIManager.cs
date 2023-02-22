@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -13,12 +13,15 @@ public class UIManager : MonoBehaviour
             if (instance == null)
             {
                 instance = Functions.GetRootGameObject(Functions.NAME_UIMANAGER).GetComponent<UIManager>();
+                instance.Initialize();
             }
             return instance;
         }
     }
 
     private GameObject uiCanvas;
+
+    private Hands hands;
 
     private GameObject playerCardDetail;
     private Image playerCardDetailImage;
@@ -28,9 +31,23 @@ public class UIManager : MonoBehaviour
     private Image enemyCardDetailImage;
     private Animator enemyCardDetailAnim;
 
+    private Animator yourTurnUI;
+    private Animator enemyTurnUI;
+
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = Functions.GetRootGameObject(Functions.NAME_UIMANAGER).GetComponent<UIManager>();
+            instance.Initialize();
+        }
+    }
+
+    private void Initialize()
+    {
         uiCanvas = Functions.GetRootGameObject(Functions.NAME_UICANVAS);
+
+        hands = uiCanvas.FindChildGameObject(Functions.NAME_HANDS).GetComponent<Hands>();
 
         playerCardDetail = uiCanvas.FindChildGameObject(Functions.NAME_PLAYERCARDDETAIL);
         playerCardDetailImage = playerCardDetail.transform.GetChild(0).GetComponent<Image>();
@@ -39,6 +56,9 @@ public class UIManager : MonoBehaviour
         enemyCardDetail = uiCanvas.FindChildGameObject(Functions.NAME_ENEMYCARDDETAIL);
         enemyCardDetailImage = enemyCardDetail.transform.GetChild(0).GetComponent<Image>();
         enemyCardDetailAnim = enemyCardDetail.transform.GetChild(0).GetComponent<Animator>();
+
+        yourTurnUI = uiCanvas.FindChildGameObject(Functions.NAME_YOURTURN).GetComponent<Animator>();
+        enemyTurnUI = uiCanvas.FindChildGameObject(Functions.NAME_ENEMYTURN).GetComponent<Animator>();
     }
 
     private void Update()
@@ -65,5 +85,17 @@ public class UIManager : MonoBehaviour
     {
         playerCardDetail.gameObject.SetActive(false);
         enemyCardDetail.gameObject.SetActive(false);
+    }
+
+    public void ShowTurnStartUI(PlayerType player)
+    {
+        Animator turnStartUI = player == PlayerType.YOU ? yourTurnUI : enemyTurnUI;
+        turnStartUI.Play("TurnStartUI_Start");
+    }
+
+    //id 사용
+    public void AddCard(GameObject card, int cost)
+    {
+        hands.AddCard(card, cost);
     }
 }

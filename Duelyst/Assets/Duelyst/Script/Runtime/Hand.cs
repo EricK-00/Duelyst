@@ -111,14 +111,14 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         if (raycastTarget.CompareTag(Functions.TAG_PLACE) && raycastTarget.GetComponent<Place>().PlacedObject == PlacedObj.BLANK)
         {
             //필드에 카드 생성
-            PlacePlayingCard(raycastTarget.gameObject);
+            PlacePlayingCard(raycastTarget.GetComponent<Place>());
             SetDefault();
         }
     }
 
-    private void PlacePlayingCard(GameObject place)
+    private void PlacePlayingCard(Place place)
     {
-        GameObject playingCard = Instantiate(Functions.PLAYINGCARD, objCanvas.transform);
+        GameObject playingCard = Instantiate(Functions.PLAYINGCARD, GameManager.Instance.Layers[place.GetRow()]);
         playingCard.transform.position = place.transform.position;
 
         GameObject cardSprite = playingCard.FindChildGameObject(Functions.NAME_PLAYINGCARD_CARDSPRITE);
@@ -147,6 +147,6 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         cardAnimator.runtimeAnimatorController = cardGO.GetComponent<Animator>().runtimeAnimatorController;
         costText.text = cost.ToString();
 
-        drawAnimator.Play("Hand_Draw");
+        drawAnimator.Play("HandDraw_Start");
     }
 }

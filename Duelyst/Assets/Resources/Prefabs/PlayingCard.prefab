@@ -157,7 +157,7 @@ PrefabInstance:
     - target: {fileID: 6066630772475055402, guid: 09b8a40748096bf4089bc2668faaa156, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 2100000, guid: 7035455d8152fcb4295f200be4c3b09a, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 6066630772475055403, guid: 09b8a40748096bf4089bc2668faaa156, type: 3}
       propertyPath: m_Controller
       value: 
@@ -180,10 +180,18 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1927459071631018803, guid: 705ecbf0c81cf094aa64a6fd58c4853f, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 2f205fa1cbbfb314199383bb768855b1, type: 2}
     - target: {fileID: 1927459072352024878, guid: 705ecbf0c81cf094aa64a6fd58c4853f, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1927459072352024878, guid: 705ecbf0c81cf094aa64a6fd58c4853f, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 2f205fa1cbbfb314199383bb768855b1, type: 2}
     - target: {fileID: 1927459072524545494, guid: 705ecbf0c81cf094aa64a6fd58c4853f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

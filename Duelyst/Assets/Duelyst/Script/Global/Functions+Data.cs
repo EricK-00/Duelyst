@@ -9,7 +9,6 @@ public static partial class Functions
     #region GameObject tag
     public const string TAG_UNTAGGED = "Untagged";
     public const string TAG_PLACE = "Place";
-    public const string TAG_ENEMY = "Enemy";
     #endregion
 
     #region GameObject name
@@ -20,6 +19,12 @@ public static partial class Functions
     //GameObject in ObjectCanvas
     public const string NAME_OBJCANVAS = "ObjectCanvas";
 
+    public const string NAME_LAYER = "Layer";//Layer + number
+    public const string NAME_PLAYINGCARD_CARDSPRITE = "CardSprite";
+
+    //GameObject in UICanvas
+    public const string NAME_UICANVAS = "UICanvas";
+
     public const string NAME_SELECTINGARROW = "SelectingArrow";
 
     public const string NAME_HAND_CARDDETAIL = "CardDetail";
@@ -27,13 +32,13 @@ public static partial class Functions
     public const string NAME_HAND_COSTTEXT = "CostText";
     public const string NAME_HAND_DRAWANIM = "DrawAnim";
 
-    public const string NAME_PLAYINGCARD_CARDSPRITE = "CardSprite";
-
-    //GameObject in UICanvas
-    public const string NAME_UICANVAS = "UICanvas";
+    public const string NAME_HANDS = "ActionBar";
 
     public const string NAME_PLAYERCARDDETAIL = "PlayerCardDetail";
     public const string NAME_ENEMYCARDDETAIL = "EnemyCardDetail";
+
+    public const string NAME_YOURTURN = "YourTurnUI";
+    public const string NAME_ENEMYTURN = "EnemyTurnUI";
 
     #endregion
 

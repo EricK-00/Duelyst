@@ -1,7 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.ExceptionServices;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public enum PlayerType
+{
+    YOU,
+    OPPONENT
+}
 
 public class GameManager : MonoBehaviour
 {
@@ -13,36 +19,81 @@ public class GameManager : MonoBehaviour
             if (instance == null)
             {
                 instance = Functions.GetRootGameObject(Functions.NAME_GAMEMANAGER).GetComponent<GameManager>();
+                instance.Initialize();
             }
                 return instance;
         }
     }
 
-    public Hands hands;
+    private GameObject objCanvas;
+
+    //
     public GameObject card;
 
     public const int MAX_HANDS = 6;
+    public const int MAX_LAYER_COUNT = 5;
     public int HandsCount { get; private set; }
     public int DeckCount { get; private set; }
 
-    private bool isPlayer1Turn = true;
     private int turnCount = 1;
+    public PlayerType CurrentTurnPlayer { get; private set; } = PlayerType.YOU;
+    public PlayerType FirstPlayer { get; private set; } = PlayerType.YOU;
 
-    private bool inputBlock = false;
+    public bool TaskBlock { get; private set; } = false;
+
+    public Transform[] Layers { get; private set; } = new Transform[MAX_LAYER_COUNT];
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = Functions.GetRootGameObject(Functions.NAME_GAMEMANAGER).GetComponent<GameManager>();
+            instance.Initialize();
+        }
+    }
+
+    private void Initialize()
+    {
+        objCanvas = Functions.GetRootGameObject(Functions.NAME_OBJCANVAS);
+
+        for (int i = 0; i < Layers.Length; i++)
+        {
+            Layers[i] = objCanvas.FindChildGameObject($"{Functions.NAME_LAYER}{i}").transform;
+        }
+    }
+
+    private void InitializeGame()
+    {
+        //선 플레이어 결정
+        int coin = Random.Range(0, 1 + 1);
+        FirstPlayer = coin == 0 ? PlayerType.YOU : PlayerType.OPPONENT;
+        CurrentTurnPlayer = FirstPlayer;
+    }
 
     public void EndTurn()
     {
-        DrawCard();
-        DrawCard();
-        ChangeTurn();
+        if (TaskBlock)
+            return;
+
+        StartCoroutine(PlayTask(DrawCard(), DrawCard(), ChangeTurn()));
     }
 
-    public void DrawCard()
+    public IEnumerator PlayTask(params IEnumerator[] coroutines)
     {
-        if (isPlayer1Turn)
-        {
-            Debug.Log("플레이어1 드로우");
+        TaskBlock = true;
 
+        foreach (var task in coroutines)
+        {
+            yield return StartCoroutine(task);
+        }
+
+        TaskBlock = false;
+    }
+
+    public IEnumerator DrawCard()
+    {
+        if (CurrentTurnPlayer == PlayerType.YOU)
+        {
             if (DeckCount <= 0)
             {
                 //게임 패배
@@ -50,15 +101,17 @@ public class GameManager : MonoBehaviour
 
             if (HandsCount < MAX_HANDS)
             {
-                hands.AddCard(card, 3);
+                UIManager.Instance.AddCard(card, 3);
                 ++HandsCount;
                 --DeckCount;
             }
         }
         else
         {
-            Debug.Log("플레이어2 드로우");
+
         }
+
+        yield return new WaitForSeconds(0.5f);
     }
 
     public void ReduceHandsCount()
@@ -66,10 +119,18 @@ public class GameManager : MonoBehaviour
         --HandsCount;
     }
 
-    private void ChangeTurn()
+    private IEnumerator ChangeTurn()
     {
         ++turnCount;
-        //isPlayer1Turn = !isPlayer1Turn;
-        //턴 변경 UI 띄우기
+        CurrentTurnPlayer = CurrentTurnPlayer == PlayerType.YOU ? PlayerType.OPPONENT : PlayerType.YOU;
+
+        UIManager.Instance.ShowTurnStartUI(CurrentTurnPlayer);
+
+        yield return new WaitForSeconds(1f);
+    }
+
+    private IEnumerator StartFirstTurn()
+    {
+        yield return new WaitForEndOfFrame();
     }
 }

@@ -6,9 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Duelyst/Scenes/MainScreen.unity
+    path: Assets/Duelyst/Scenes/MainScene.unity
     guid: eb4bd1adb8421f946b7f77bc450d6010
   - enabled: 1
     path: Assets/Duelyst/Scenes/InGameScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Duelyst/Scenes/InGameDev.unity
+    guid: 160df7098ff9b2c43bb788af25361f6f
   m_configObjects: {}

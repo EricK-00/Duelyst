@@ -7,8 +7,8 @@ public class SelectingArrow : MonoBehaviour
     public GameObject testGO;
     public GameObject target;
 
-    private Canvas objCanvas;
-    private RectTransform objCanvasRect;
+    private Canvas uiCanvas;
+    private RectTransform uiCanvasRect;
 
     private Vector3 mousePos;
     private Vector2 pointPos;
@@ -20,16 +20,16 @@ public class SelectingArrow : MonoBehaviour
 
     private void Awake()
     {
-        objCanvas = Functions.GetRootGameObject(Functions.NAME_OBJCANVAS).GetComponent<Canvas>();
-        objCanvasRect = Functions.GetRootGameObject(Functions.NAME_OBJCANVAS).GetComponent<RectTransform>();
+        uiCanvas = Functions.GetRootGameObject(Functions.NAME_UICANVAS).GetComponent<Canvas>();
+        uiCanvasRect = uiCanvas.GetComponent<RectTransform>();
     }
 
     void Update()
     {
-        mousePos = Input.mousePosition / objCanvas.scaleFactor;
+        mousePos = Input.mousePosition / uiCanvas.scaleFactor;
         mousePos = new Vector3(
-            mousePos.x - objCanvasRect.rect.width / 2,
-            mousePos.y - objCanvasRect.rect.height / 2,
+            mousePos.x - uiCanvasRect.rect.width / 2,
+            mousePos.y - uiCanvasRect.rect.height / 2,
             mousePos.z);
 
         pointPos = new Vector2((mousePos.x + transform.localPosition.x) / 2,

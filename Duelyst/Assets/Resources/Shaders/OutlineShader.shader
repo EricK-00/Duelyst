@@ -16,7 +16,7 @@ Shader "Unlit/OutlineShader"
         }
 
         ZWrite Off
-
+        ZTest Always
         Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
