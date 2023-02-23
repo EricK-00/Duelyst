@@ -25,20 +25,20 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     private void Awake()
     {
-        objCanvas = Functions.GetRootGameObject(Functions.NAME_OBJCANVAS);
-        uiCanvas = Functions.GetRootGameObject(Functions.NAME_UICANVAS);
-        selectingArrowRect = uiCanvas.FindChildGameObject(Functions.NAME_SELECTINGARROW).GetComponent<RectTransform>();
+        objCanvas = Functions.GetRootGO(Functions.NAME_OBJCANVAS);
+        uiCanvas = Functions.GetRootGO(Functions.NAME_UICANVAS);
+        selectingArrowRect = uiCanvas.FindChildGO(Functions.NAME_SELECTINGARROW).GetComponent<RectTransform>();
         handRect = GetComponent<RectTransform>();
 
-        cardDetail = gameObject.FindChildGameObject(Functions.NAME_HAND_CARDDETAIL);
-        card = gameObject.FindChildGameObject(Functions.NAME_HAND_CARDSPRITE);
+        cardDetail = gameObject.FindChildGO(Functions.NAME_HAND_CARDDETAIL);
+        card = gameObject.FindChildGO(Functions.NAME_HAND_CARDSPRITE);
         cardImage = GetComponent<Image>();
         defaultCardSprite = cardImage.sprite;
         cardAnimator = card.GetComponent<Animator>();
 
-        drawAnimator = gameObject.FindChildGameObject(Functions.NAME_HAND_DRAWANIM).GetComponent<Animator>();
+        drawAnimator = gameObject.FindChildGO(Functions.NAME_HAND_DRAWANIM).GetComponent<Animator>();
 
-        costText = gameObject.FindChildGameObject(Functions.NAME_HAND_COSTTEXT).GetComponent<TMP_Text>();
+        costText = gameObject.FindChildGO(Functions.NAME_HAND_COSTTEXT).GetComponent<TMP_Text>();
     }
 
     public void OnPointerEnter(PointerEventData ped)
@@ -77,7 +77,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnBeginDrag(PointerEventData ped)
     {
-        if (NoCard)
+        if (NoCard || GameManager.Instance.CurrentTurnPlayer == PlayerType.OPPONENT)
             return;
 
         isDragged = true;
@@ -85,13 +85,13 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnDrag(PointerEventData ped)
     {
-        //OnBeginDrag()와 OnEndDrag()에 이벤트를 받기 위해 필요
+        //OnBeginDrag()와 OnEndDrag()에 이벤트 데이터를 받기 위해 필요
         /* Do nothing */
     }
 
     public void OnEndDrag(PointerEventData ped)
     {
-        if (NoCard)
+        if (NoCard || GameManager.Instance.CurrentTurnPlayer == PlayerType.OPPONENT)
             return;
 
         //드래그 종료
@@ -108,7 +108,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             return;
         }
 
-        if (raycastTarget.CompareTag(Functions.TAG_PLACE) && raycastTarget.GetComponent<Place>().PlacedObject == PlacedObj.BLANK)
+        if (raycastTarget.CompareTag(Functions.TAG_PLACE) && raycastTarget.GetComponent<Place>().PlacedObject == PlacedObjType.BLANK)
         {
             //필드에 카드 생성
             PlacePlayingCard(raycastTarget.GetComponent<Place>());
@@ -121,7 +121,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         GameObject playingCard = Instantiate(Functions.PLAYINGCARD, GameManager.Instance.Layers[place.GetRow()]);
         playingCard.transform.position = place.transform.position;
 
-        GameObject cardSprite = playingCard.FindChildGameObject(Functions.NAME_PLAYINGCARD_CARDSPRITE);
+        GameObject cardSprite = playingCard.FindChildGO(Functions.NAME_PLAYINGCARD_CARDSPRITE);
 
         cardSprite.GetComponent<Image>().sprite = cardImage.sprite;
         cardSprite.GetComponent<Animator>().runtimeAnimatorController = cardAnimator.runtimeAnimatorController;

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public enum PlacedObj
+public enum PlacedObjType
 {
     BLANK = 0,
     ALLY,
@@ -33,7 +33,7 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
     private Material cardDefaultMat;
     private Material outline;
 
-    public PlacedObj PlacedObject = PlacedObj.BLANK; //{ get; private set; } = PlacedObj.BLANK;
+    public PlacedObjType PlacedObject = PlacedObjType.BLANK; //{ get; private set; } = PlacedObj.BLANK;
 
     private readonly Color movablePlaceColor = new Color(1, 1, 1, 0.1f); //white
     private readonly Color attackablePlaceColor = new Color(1, 1, 0, 0.3f);//yellow
@@ -42,8 +42,8 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
     {
         placeImage = GetComponent<Image>();
         placeDefaultColor = placeImage.color;
-        uiCanvas = Functions.GetRootGameObject(Functions.NAME_UICANVAS);
-        selectingArrowRect = uiCanvas.FindChildGameObject(Functions.NAME_SELECTINGARROW).GetComponent<RectTransform>();
+        uiCanvas = Functions.GetRootGO(Functions.NAME_UICANVAS);
+        selectingArrowRect = uiCanvas.FindChildGO(Functions.NAME_SELECTINGARROW).GetComponent<RectTransform>();
 
         outline = Functions.OUTLINE;
     }
@@ -51,8 +51,11 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
     public void OnPointerEnter(PointerEventData ped)
     {
         placeImage.fillCenter = false;
-        if (PlacedObject == PlacedObj.BLANK)
+        if (PlacedObject == PlacedObjType.BLANK)
             return;
+
+        //카드 상세보기
+        UIManager.Instance.ShowPlayerCardDetail(cardAnimator);
 
         cardImage.material = outline;
     }
@@ -60,15 +63,18 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
     public void OnPointerExit(PointerEventData ped)
     {
         placeImage.fillCenter = true;
-        if (PlacedObject == PlacedObj.BLANK)
+        if (PlacedObject == PlacedObjType.BLANK)
             return;
+
+        //카드 상세보기 종료
+        UIManager.Instance.DisableCardDetails();
 
         cardImage.material = cardDefaultMat;
     }
 
     public void OnBeginDrag(PointerEventData ped)
     {
-        if (PlacedObject == PlacedObj.BLANK)
+        if (PlacedObject == PlacedObjType.BLANK)
             return;
 
         //드래그 시작
@@ -93,7 +99,7 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
 
     public void OnEndDrag(PointerEventData ped)
     {
-        if (PlacedObject == PlacedObj.BLANK)
+        if (PlacedObject == PlacedObjType.BLANK)
             return;
 
         //드래그 종료
@@ -112,14 +118,21 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
         if (raycastTarget.tag == Functions.TAG_PLACE)
         {
             Color placeColor = raycastTarget.GetComponent<Image>().color;
-            if (raycastTarget.GetComponent<Place>().PlacedObject == PlacedObj.ENEMY && placeColor == attackablePlaceColor)
+            if (raycastTarget.GetComponent<Place>().PlacedObject == PlacedObjType.ENEMY && placeColor == attackablePlaceColor)
             {
+                //배틀
+                //
                 Debug.Log("Battle");
             }
-            else if (raycastTarget.GetComponent<Place>().PlacedObject == PlacedObj.BLANK && placeColor == movablePlaceColor)
+            else if (raycastTarget.GetComponent<Place>().PlacedObject == PlacedObjType.BLANK && placeColor == movablePlaceColor)
             {
                 if (GameManager.Instance.TaskBlock)
+                {
+                    HideAttackRange();
+                    HideMoveRange();
+
                     return;
+                }
 
                 PlayingCard card = cardGO.GetComponent<PlayingCard>();
                 Place newPlace = raycastTarget.GetComponent<Place>();
@@ -144,33 +157,30 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
 
     public void OnPointerClick(PointerEventData ped)
     {
-        if (PlacedObject == PlacedObj.BLANK)
+        if (PlacedObject == PlacedObjType.BLANK)
         {
             return;
         }
 
         if (ped.button == PointerEventData.InputButton.Right)
         {
-            //카드 상세보기
-            UIManager.Instance.ShowPlayerCardDetail(cardAnimator);
+
         }
     }
 
-    public void RegisterCard(GameObject card)
+    public virtual void RegisterCard(GameObject card)
     {
-        if (PlacedObject == PlacedObj.ENEMY)
-        {
+        if (PlacedObject == PlacedObjType.ENEMY)
             return;
-        }
 
         cardGO = card;
 
-        GameObject cardSpriteGO = card.FindChildGameObject(Functions.NAME_PLAYINGCARD_CARDSPRITE);
+        GameObject cardSpriteGO = card.FindChildGO(Functions.NAME_PLAYINGCARD_CARDSPRITE);
         cardImage = cardSpriteGO.GetComponent<Image>();
         cardAnimator = cardSpriteGO.GetComponent<Animator>();
         cardDefaultMat = cardImage.material;
 
-        PlacedObject = PlacedObj.ALLY;
+        PlacedObject = PlacedObjType.ALLY;
     }
 
     private void UnregisterCard()
@@ -179,7 +189,7 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
         cardImage = null;
         cardAnimator = null;
 
-        PlacedObject = PlacedObj.BLANK;
+        PlacedObject = PlacedObjType.BLANK;
     }
 
     public void InitializeIndex(int placeRow, int placeCol)
@@ -221,7 +231,7 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
 
         foreach (var place in aroundPlaces)
         {
-            if (place.PlacedObject == PlacedObj.ENEMY)
+            if (place.PlacedObject == PlacedObjType.ENEMY)
                 place.ActivePlace(color);
         }
     }
@@ -230,7 +240,7 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
     {
         foreach (var place in aroundPlaces)
         {
-            if (place.PlacedObject == PlacedObj.ENEMY)
+            if (place.PlacedObject == PlacedObjType.ENEMY)
                 place.InactivePlace();
         }
     }
@@ -240,7 +250,7 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
         ShowOneDistanceRange();
         foreach (var place in oneDistancePlaces)
         {
-            if (place.PlacedObject != PlacedObj.ENEMY)
+            if (place.PlacedObject != PlacedObjType.ENEMY)
                 place.ShowOneDistanceRange();
         }
     }
@@ -250,7 +260,7 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
         HideOneDistanceRange();
         foreach (var place in oneDistancePlaces)
         {
-            if (place.PlacedObject != PlacedObj.ENEMY)
+            if (place.PlacedObject != PlacedObjType.ENEMY)
                 place.HideOneDistanceRange();
         }
     }
@@ -261,7 +271,7 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
 
         foreach (var place in oneDistancePlaces)
         {
-            if (place.PlacedObject == PlacedObj.BLANK)
+            if (place.PlacedObject == PlacedObjType.BLANK)
                 place.ActivePlace(color);
         }
     }

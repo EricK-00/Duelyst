@@ -8,13 +8,13 @@ using UnityEngine;
 
 public static partial class Functions
 {
-    public static void SetTextMeshPro(GameObject go, string newText)
+    public static void SetTMPText(this TMP_Text tmp, string newText)
     {
-        TMP_Text tmpText = go.GetComponent<TMP_Text>();
-        if (tmpText == null)
-            return;
+        tmp.text = newText;
+    }
 
-        tmpText.text = newText;
-
-    }       //SetTextMeshPro()
+    public static void SetTMPText<T>(this TMP_Text tmp, T newText) where T : unmanaged
+    {
+        tmp.text = newText.ToString();
+    }
 }

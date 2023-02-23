@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public static partial class Functions
 {
     //! 특정 게임오브젝트의 자식들을 탐색해서 찾는 메서드
-    public static GameObject FindChildGameObject(this GameObject parentGO, string childName)
+    public static GameObject FindChildGO(this GameObject parentGO, string childName)
     {
         GameObject searchTarget;
 
@@ -20,7 +17,7 @@ public static partial class Functions
             }
             else
             {
-                GameObject go = FindChildGameObject(searchTarget, childName);
+                GameObject go = FindChildGO(searchTarget, childName);
                 if (go != null)
                     return go;
             }
@@ -30,7 +27,7 @@ public static partial class Functions
     }
 
     //! 루트 게임오브젝트를 탐색해서 찾는 메서드
-    public static GameObject GetRootGameObject(string goName)
+    public static GameObject GetRootGO(string goName)
     {
         Scene activeScene = GetActiveScene();
         GameObject[] rootGOs = activeScene.GetRootGameObjects();
@@ -49,14 +46,5 @@ public static partial class Functions
     public static Scene GetActiveScene()
     {
         return SceneManager.GetActiveScene();
-    }
-
-    public static void LookAtVector2(this Transform transform, Transform targetTransform, Vector2 forwardDirection)
-    {
-        Vector2 directionVector = (targetTransform.position - transform.position).normalized;
-        bool isLeft = Vector2.Dot(directionVector, Vector2.right) >= 0;
-        float angle = Vector2.Angle(forwardDirection, directionVector);
-
-        transform.rotation = isLeft ? Quaternion.Euler(0, 0, -angle) : Quaternion.Euler(0, 0, angle);
     }
 }

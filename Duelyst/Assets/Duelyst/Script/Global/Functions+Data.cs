@@ -6,6 +6,10 @@ using UnityEngineInternal;
 
 public static partial class Functions
 {
+    #region UI text
+    public const string TEXT_OPPONENT = "OPPONENT";
+    #endregion
+
     #region GameObject tag
     public const string TAG_UNTAGGED = "Untagged";
     public const string TAG_PLACE = "Place";
@@ -16,6 +20,9 @@ public static partial class Functions
     public const string NAME_GAMEMANAGER = "GameManager";
     public const string NAME_UIMANAGER = "UIManager";
 
+    //GameObject in BgCanvas
+    public const string NAME_MANATILE_MANABALL = "ManaBall";
+
     //GameObject in ObjectCanvas
     public const string NAME_OBJCANVAS = "ObjectCanvas";
 
@@ -24,6 +31,24 @@ public static partial class Functions
 
     //GameObject in UICanvas
     public const string NAME_UICANVAS = "UICanvas";
+
+    public const string NAME_LPLAYERUI = "LeftPlayerUI";
+    public const string NAME_RPLAYERUI = "RightPlayerUI";
+    public const string NAME_PLAYERUI_NAME = "NameText";
+    public const string NAME_PLAYERUI_HP = "HealthText";
+
+    public const string NAME_PLAYERUI_MYMANAUI = "MyMana";
+    public const string NAME_PLAYERUI_OPPONENTMANAUI = "OpponentMana";
+    public const string NAME_PLAYERUI_OPPONENTHANDSUI = "OpponentHands";
+    public const string NAME_PLAYERUI_OPPONENTDECKUI = "OpponentDeck";
+
+    public const string NAME_PLAYERUI_MANAIMAGES = "ManaImages";
+    public const string NAME_PLAYERUI_MANATEXT = "CurrentManaText";
+    public const string NAME_PLAYERUI_HANDSTEXT = "CurrentHandsText";
+    public const string NAME_PLAYERUI_DECKTEXT = "CurrentDeckText";
+
+    public const string NAME_MYDECKUI = "MyDeckUI";
+    public const string NAME_MYDECKTEXT = "CurrentDeckText";
 
     public const string NAME_SELECTINGARROW = "SelectingArrow";
 
