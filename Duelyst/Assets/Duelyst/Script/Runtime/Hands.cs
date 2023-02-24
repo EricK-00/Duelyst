@@ -14,13 +14,13 @@ public class Hands : MonoBehaviour
         }
     }
 
-    public void AddCard(GameObject card, int cost)
+    public void AddCard(Card card)
     {
         for (int i = 0; i < hands.Length; i++)
         {
             if (hands[i].NoCard)
             {
-                hands[i].SetNewCard(card, cost);
+                hands[i].SetNewCard(card);
                 break;
             }
         }

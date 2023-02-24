@@ -20,6 +20,8 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     private TMP_Text costText;
 
+    private Card cardData;
+
     private bool isDragged = false;
     public bool NoCard { get; private set; } = true;
 
@@ -110,6 +112,10 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
         if (raycastTarget.CompareTag(Functions.TAG_PLACE) && raycastTarget.GetComponent<Place>().PlacedObject == PlacedObjType.BLANK)
         {
+            //코스트 지불
+            if (!GameManager.Instance.TryPlaceCard(cardData.Cost))
+                return;
+
             //필드에 카드 생성
             PlacePlayingCard(raycastTarget.GetComponent<Place>());
             SetDefault();
@@ -118,18 +124,19 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     private void PlacePlayingCard(Place place)
     {
-        GameObject playingCard = Instantiate(Functions.PLAYINGCARD, GameManager.Instance.Layers[place.GetRow()]);
-        playingCard.transform.position = place.transform.position;
+        GameObject playingCardInst = Instantiate(Functions.PLAYINGCARD, objCanvas.transform);
+        playingCardInst.transform.position = place.transform.position;
 
-        GameObject cardSprite = playingCard.FindChildGO(Functions.NAME_PLAYINGCARD_CARDSPRITE);
+        PlayingCard playingCard = playingCardInst.GetComponent<PlayingCard>();
+        playingCard.SetUp(cardData, place.GetRow());
 
-        cardSprite.GetComponent<Image>().sprite = cardImage.sprite;
-        cardSprite.GetComponent<Animator>().runtimeAnimatorController = cardAnimator.runtimeAnimatorController;
-        cardSprite.GetComponent<Animator>().SetBool("onField", true);
+        //GameObject cardSprite = playingCard.FindChildGO(Functions.NAME_PLAYINGCARD_CARDSPRITE);
 
-        place.GetComponent<Place>().RegisterCard(playingCard);
+        //cardSprite.GetComponent<Image>().sprite = cardImage.sprite;
+        //cardSprite.GetComponent<Animator>().runtimeAnimatorController = cardAnimator.runtimeAnimatorController;
+        //cardSprite.GetComponent<Animator>().SetBool("onField", true);
 
-        GameManager.Instance.ReduceHandsCount();
+        place.GetComponent<Place>().RegisterCard(playingCardInst);
     }
 
     private void SetDefault()
@@ -140,12 +147,14 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         costText.text = string.Empty;
     }
 
-    public void SetNewCard(GameObject cardGO, int cost)
+    public void SetNewCard(Card card)
     {
         NoCard = false;
-        cardImage.sprite = cardGO.GetComponent<Image>().sprite;
-        cardAnimator.runtimeAnimatorController = cardGO.GetComponent<Animator>().runtimeAnimatorController;
-        costText.text = cost.ToString();
+
+        cardData = card;
+        //cardImage.sprite = card.GetComponent<Image>().sprite;
+        cardAnimator.runtimeAnimatorController = cardData.Anim;
+        costText.SetTMPText(cardData.Cost);
 
         drawAnimator.Play("HandDraw_Start");
     }

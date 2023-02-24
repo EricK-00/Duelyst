@@ -10,6 +10,9 @@ public static partial class Functions
     public const string TEXT_OPPONENT = "OPPONENT";
     #endregion
 
+    #region AnimationState name
+    #endregion
+
     #region GameObject tag
     public const string TAG_UNTAGGED = "Untagged";
     public const string TAG_PLACE = "Place";

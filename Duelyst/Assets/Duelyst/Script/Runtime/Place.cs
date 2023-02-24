@@ -26,7 +26,7 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
     private GameObject uiCanvas;
     private RectTransform selectingArrowRect;
 
-    private GameObject cardGO;
+    private PlayingCard playingCard;
     private Image cardImage;
     private Animator cardAnimator;
 
@@ -107,7 +107,7 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
 
         //현재 레이캐스트 결과 가져오기
         GameObject raycastTarget = ped.pointerCurrentRaycast.gameObject;
-        if (raycastTarget == null)
+        if (raycastTarget == null || GameManager.Instance.TaskBlock)
         {
             HideAttackRange();
             HideMoveRange();
@@ -121,28 +121,19 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
             if (raycastTarget.GetComponent<Place>().PlacedObject == PlacedObjType.ENEMY && placeColor == attackablePlaceColor)
             {
                 //배틀
-                //
-                Debug.Log("Battle");
+                StartCoroutine(GameManager.Instance.PlayTask(playingCard.Battle(raycastTarget.GetComponent<Place>().playingCard)));
             }
             else if (raycastTarget.GetComponent<Place>().PlacedObject == PlacedObjType.BLANK && placeColor == movablePlaceColor)
             {
-                if (GameManager.Instance.TaskBlock)
-                {
-                    HideAttackRange();
-                    HideMoveRange();
-
-                    return;
-                }
-
-                PlayingCard card = cardGO.GetComponent<PlayingCard>();
+                PlayingCard cardTemp = playingCard.GetComponent<PlayingCard>();
                 Place newPlace = raycastTarget.GetComponent<Place>();
 
                 //카드 등록 장소 변경
-                newPlace.RegisterCard(card.gameObject);
+                newPlace.RegisterCard(cardTemp.gameObject);
                 UnregisterCard();
 
                 //이동
-                StartCoroutine(GameManager.Instance.PlayTask(card.Move(raycastTarget, newPlace.GetRow())));
+                StartCoroutine(GameManager.Instance.PlayTask(cardTemp.Move(raycastTarget, newPlace.GetRow())));
             }
         }
 
@@ -170,10 +161,10 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
 
     public virtual void RegisterCard(GameObject card)
     {
-        if (PlacedObject == PlacedObjType.ENEMY)
+        if (PlacedObject != PlacedObjType.BLANK)
             return;
 
-        cardGO = card;
+        playingCard = card.GetComponent<PlayingCard>();
 
         GameObject cardSpriteGO = card.FindChildGO(Functions.NAME_PLAYINGCARD_CARDSPRITE);
         cardImage = cardSpriteGO.GetComponent<Image>();
@@ -181,11 +172,13 @@ public class Place : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, I
         cardDefaultMat = cardImage.material;
 
         PlacedObject = PlacedObjType.ALLY;
+
+        //card.GetComponent<PlayingCard>().SetLayer(rowIndex);
     }
 
     private void UnregisterCard()
     {
-        cardGO = null;
+        playingCard = null;
         cardImage = null;
         cardAnimator = null;
 

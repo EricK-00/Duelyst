@@ -59,7 +59,7 @@ public class UIManager : MonoBehaviour
     private TMP_Text opponentDeckText;
 
 
-    private void Awake()
+    private void Start()
     {
         if (instance == null)
         {
@@ -155,10 +155,9 @@ public class UIManager : MonoBehaviour
         turnStartUI.Play("TurnStartUI_Start");
     }
 
-    //id 사용
-    public void AddCard(GameObject card, int cost)
+    public void AddCard(Card card)
     {
-        hands.AddCard(card, cost);
+        hands.AddCard(card);
     }
 
     public void UpdateHPText(PlayerType player)

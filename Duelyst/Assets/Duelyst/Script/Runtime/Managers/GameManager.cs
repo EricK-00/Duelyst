@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     private GameObject objCanvas;
 
     //---
-    public GameObject card;
+    public Card card;
     //---
 
     public const int MAX_HP = 25;
@@ -40,8 +40,7 @@ public class GameManager : MonoBehaviour
     private int _myHP;
     public int MyHP { get { return _myHP; } private set { SetHP(PlayerType.YOU, value); } }
     private int _opponentHP;
-    public int OpponentHP { get { return _opponentHP; } private set { SetHP(PlayerType.YOU, value); } }
-
+    public int OpponentHP { get { return _opponentHP; } private set { SetHP(PlayerType.OPPONENT, value); } }
 
     private int _myHandsCount;
     public int MyHandsCount { get { return _myHandsCount; } private set { SetHandsCount(PlayerType.YOU, value); } }
@@ -69,7 +68,7 @@ public class GameManager : MonoBehaviour
 
     public Transform[] Layers { get; private set; } = new Transform[MAX_LAYER_COUNT];
 
-    private void Awake()
+    private void Start()
     {
         if (instance == null)
         {
@@ -100,7 +99,11 @@ public class GameManager : MonoBehaviour
         //초기값 설정
         turnCount = 1;
         TaskBlock = false;
-        MyMana = OpponentMana = 2;
+
+        MyHP = 25;
+        OpponentHP = 25;
+        //
+        MyMana = OpponentMana = 8;
         MyDeckCount = 40;
         OpponentDeckCount = 40;
         MyHandsCount = 0;
@@ -143,7 +146,7 @@ public class GameManager : MonoBehaviour
 
             if (MyHandsCount < MAX_HANDS)
             {
-                UIManager.Instance.AddCard(card, 3);
+                UIManager.Instance.AddCard(card);
                 ++MyHandsCount;
                 --MyDeckCount;
 
@@ -161,9 +164,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ReduceHandsCount()
+    public bool TryPlaceCard(int cost)
     {
+        if (MyMana < cost)
+            return false;
+
+        myAdditionMana -= cost;
+        MyMana -= cost;
         --MyHandsCount;
+
+        return true;
     }
 
     private IEnumerator ChangeTurn()
@@ -172,12 +182,14 @@ public class GameManager : MonoBehaviour
 
         if (CurrentTurnPlayer == PlayerType.OPPONENT)
         {
-            OpponentMana -= opponentAdditionMana;
+            if (opponentAdditionMana > 0)
+                OpponentMana -= opponentAdditionMana;
             opponentAdditionMana = 0;
         }
         else
         {
-            MyMana -= myAdditionMana;
+            if (myAdditionMana > 0)
+                MyMana -= myAdditionMana;
             myAdditionMana = 0;
         }
 
