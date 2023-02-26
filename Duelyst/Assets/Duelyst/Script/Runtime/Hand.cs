@@ -2,14 +2,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using EnumTypes;
 
 public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    private RectTransform selectingArrowRect;
     private RectTransform handRect;
 
     private GameObject objCanvas;
-    private GameObject uiCanvas;
     private GameObject cardDetail;
     private GameObject card;
     private Image cardImage;
@@ -27,10 +26,9 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     private void Awake()
     {
-        objCanvas = Functions.GetRootGO(Functions.NAME_OBJCANVAS);
-        uiCanvas = Functions.GetRootGO(Functions.NAME_UICANVAS);
-        selectingArrowRect = uiCanvas.FindChildGO(Functions.NAME_SELECTINGARROW).GetComponent<RectTransform>();
         handRect = GetComponent<RectTransform>();
+
+        objCanvas = Functions.GetRootGO(Functions.NAME_OBJCANVAS);
 
         cardDetail = gameObject.FindChildGO(Functions.NAME_HAND_CARDDETAIL);
         card = gameObject.FindChildGO(Functions.NAME_HAND_CARDSPRITE);
@@ -64,8 +62,8 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         if (isDragged)
         {
             //드래그 시작
-            selectingArrowRect.gameObject.SetActive(true);
-            selectingArrowRect.position = handRect.position;
+            UIManager.Instance.ShowSelectingArrow(handRect);
+            Field.ShowPlaceableTiles();
         }
         else
         {
@@ -97,7 +95,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             return;
 
         //드래그 종료
-        selectingArrowRect.gameObject.SetActive(false);
+        UIManager.Instance.HideSelectingArrow();
         isDragged = false;
 
         //breathing으로 전환
@@ -107,36 +105,41 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         GameObject raycastTarget = ped.pointerCurrentRaycast.gameObject;
         if (raycastTarget == null)
         {
+            Field.HidePlaceableTiles();
             return;
         }
 
-        if (raycastTarget.CompareTag(Functions.TAG_PLACE) && raycastTarget.GetComponent<Place>().PlacedObject == PlacedObjType.BLANK)
+        Tile targetTile;
+        if (raycastTarget.TryGetComponent<Tile>(out targetTile) && targetTile.IsPlaceable)
         {
             //코스트 지불
             if (!GameManager.Instance.TryPlaceCard(cardData.Cost))
+            {
+                Field.HidePlaceableTiles();
                 return;
+            }
 
             //필드에 카드 생성
-            PlacePlayingCard(raycastTarget.GetComponent<Place>());
+            PlacePlayingCard(targetTile);
             SetDefault();
         }
+
+        Field.HidePlaceableTiles();
     }
 
-    private void PlacePlayingCard(Place place)
+    private void PlacePlayingCard(Tile tile)
     {
-        GameObject playingCardInst = Instantiate(Functions.PLAYINGCARD, objCanvas.transform);
-        playingCardInst.transform.position = place.transform.position;
+        //GameObject playingCardInst = Instantiate(Functions.PLAYINGCARD, objCanvas.transform);
+        //playingCardInst.transform.position = tile.transform.position;
 
-        PlayingCard playingCard = playingCardInst.GetComponent<PlayingCard>();
-        playingCard.SetUp(cardData, place.GetRow());
+        //PlayingCard playingCard = playingCardInst.GetComponent<PlayingCard>();
 
-        //GameObject cardSprite = playingCard.FindChildGO(Functions.NAME_PLAYINGCARD_CARDSPRITE);
+        //playingCard.SetUp(cardData, tile.GetRow(), false);
 
-        //cardSprite.GetComponent<Image>().sprite = cardImage.sprite;
-        //cardSprite.GetComponent<Animator>().runtimeAnimatorController = cardAnimator.runtimeAnimatorController;
-        //cardSprite.GetComponent<Animator>().SetBool("onField", true);
+        //tile.RegisterCard(playingCardInst);
 
-        place.GetComponent<Place>().RegisterCard(playingCardInst);
+        PlayingCardPoolingManager.Instance.Active(tile, cardData, false);
+        tile.OnPlaceEffect();
     }
 
     private void SetDefault()
@@ -152,7 +155,6 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         NoCard = false;
 
         cardData = card;
-        //cardImage.sprite = card.GetComponent<Image>().sprite;
         cardAnimator.runtimeAnimatorController = cardData.Anim;
         costText.SetTMPText(cardData.Cost);
 

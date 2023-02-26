@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 6330265149516873643}
   - component: {fileID: 6330265149516873641}
   m_Layer: 5
-  m_Name: Place
-  m_TagString: Place
+  m_Name: Tile
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -89,5 +89,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 402689ef08670394fad650b71d728fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aroundPlaces: []
-  oneDistancePlaces: []
+  aroundTiles: []
+  oneDistanceTiles: []
+  PlacedObject: 0

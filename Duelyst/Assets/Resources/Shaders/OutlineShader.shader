@@ -15,6 +15,7 @@ Shader "Unlit/OutlineShader"
             "RenderType" = "Transparent"
         }
 
+        Cull Off
         ZWrite Off
         ZTest Always
         Blend SrcAlpha OneMinusSrcAlpha

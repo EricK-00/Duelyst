@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873652, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Name
-      value: Place (8)
+      value: Tile
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873653, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Pivot.x
@@ -176,7 +176,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873652, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Name
-      value: Place (6)
+      value: Tile
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873653, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Pivot.x
@@ -294,7 +294,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873652, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Name
-      value: Place
+      value: Tile
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873653, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Pivot.x
@@ -412,7 +412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873652, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Name
-      value: Place (5)
+      value: Tile
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873653, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Pivot.x
@@ -530,7 +530,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873652, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Name
-      value: Place (7)
+      value: Tile
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873653, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Pivot.x
@@ -648,7 +648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873652, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Name
-      value: Place (1)
+      value: Tile
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873653, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Pivot.x
@@ -766,7 +766,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873652, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Name
-      value: Place (3)
+      value: Tile
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873653, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Pivot.x
@@ -884,7 +884,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873652, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Name
-      value: Place (4)
+      value: Tile
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873653, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Pivot.x
@@ -1002,7 +1002,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873652, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Name
-      value: Place (2)
+      value: Tile
       objectReference: {fileID: 0}
     - target: {fileID: 6330265149516873653, guid: a7ff80bb8caa0c443b84b854b999bf3e, type: 3}
       propertyPath: m_Pivot.x

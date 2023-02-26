@@ -1,14 +1,7 @@
 using System.Collections;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-
-public enum PlayerType
-{
-    YOU,
-    OPPONENT
-}
+using EnumTypes;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -32,28 +25,31 @@ public class GameManager : MonoBehaviour
     public Card card;
     //---
 
+    public UnityEvent turnEndEvent = new UnityEvent();
+
     public const int MAX_HP = 25;
     public const int MAX_HANDS = 6;
+    public const int MAX_DECK = 40;
     public const int MAX_LAYER_COUNT = 5;
     public const int MAX_MANA = 9;
 
     private int _myHP;
-    public int MyHP { get { return _myHP; } private set { SetHP(PlayerType.YOU, value); } }
+    public int MyHP { get { return _myHP; } private set { SetHP(PlayerType.ME, value); } }
     private int _opponentHP;
     public int OpponentHP { get { return _opponentHP; } private set { SetHP(PlayerType.OPPONENT, value); } }
 
     private int _myHandsCount;
-    public int MyHandsCount { get { return _myHandsCount; } private set { SetHandsCount(PlayerType.YOU, value); } }
+    public int MyHandsCount { get { return _myHandsCount; } private set { SetHandsCount(PlayerType.ME, value); } }
     private int _opponentHandsCount;
     public int OpponentHandsCount { get { return _opponentHandsCount; } private set { SetHandsCount(PlayerType.OPPONENT, value); } }
 
     private int _myDeckCount;
-    public int MyDeckCount { get { return _myDeckCount; } private set { SetDeckCount(PlayerType.YOU, value); } }
+    public int MyDeckCount { get { return _myDeckCount; } private set { SetDeckCount(PlayerType.ME, value); } }
     private int _opponentDeckCount;
     public int OpponentDeckCount { get { return _opponentDeckCount; } private set { SetDeckCount(PlayerType.OPPONENT, value); } }
 
     private int _myMana;
-    public int MyMana { get { return _myMana; } private set { SetMana(PlayerType.YOU, value); } }
+    public int MyMana { get { return _myMana; } private set { SetMana(PlayerType.ME, value); } }
     private int _opponentMana;
     public int OpponentMana { get { return _opponentMana; } private set { SetMana(PlayerType.OPPONENT, value); } }
 
@@ -63,6 +59,8 @@ public class GameManager : MonoBehaviour
     private int turnCount;
     public PlayerType CurrentTurnPlayer { get; private set; }
     public PlayerType FirstPlayer { get; private set; }
+
+    public PlayingCardDirection DefaultDirection { get; private set; }
 
     public bool TaskBlock { get; private set; }
 
@@ -75,8 +73,6 @@ public class GameManager : MonoBehaviour
             instance = Functions.GetRootGO(Functions.NAME_GAMEMANAGER).GetComponent<GameManager>();
             instance.Initialize();
         }
-
-        InitializeGame();
     }
 
     private void Initialize()
@@ -87,23 +83,26 @@ public class GameManager : MonoBehaviour
         {
             Layers[i] = objCanvas.FindChildGO($"{Functions.NAME_LAYER}{i}").transform;
         }
+
+        InitializeGame();
     }
 
     private void InitializeGame()
     {
         //선 플레이어 결정
         int coin = Random.Range(0, 1 + 1);
-        FirstPlayer = coin == 0 ? PlayerType.YOU : PlayerType.OPPONENT;
+        FirstPlayer = coin == 0 ? PlayerType.ME : PlayerType.OPPONENT;
         CurrentTurnPlayer = FirstPlayer;
 
         //초기값 설정
         turnCount = 1;
+        DefaultDirection = FirstPlayer == PlayerType.ME ? PlayingCardDirection.Right :PlayingCardDirection.Left;
         TaskBlock = false;
 
         MyHP = 25;
         OpponentHP = 25;
         //
-        MyMana = OpponentMana = 8;
+        MyMana = OpponentMana = 6;
         MyDeckCount = 40;
         OpponentDeckCount = 40;
         MyHandsCount = 0;
@@ -112,7 +111,7 @@ public class GameManager : MonoBehaviour
         //제너럴 위치 설정
         //
 
-        StartCoroutine(PlayTask(DrawCard(PlayerType.YOU), DrawCard(PlayerType.YOU), DrawCard(PlayerType.YOU), Mulligun(), StartFirstTurn()));
+        StartCoroutine(PlayTask(DrawCard(PlayerType.ME), DrawCard(PlayerType.ME), DrawCard(PlayerType.ME), Mulligun(), StartFirstTurn()));
     }
 
     public void EndTurn()
@@ -137,7 +136,7 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator DrawCard(PlayerType player)
     {
-        if (player == PlayerType.YOU)
+        if (player == PlayerType.ME)
         {
             if (MyDeckCount <= 0)
             {
@@ -180,6 +179,9 @@ public class GameManager : MonoBehaviour
     {
         ++turnCount;
 
+        if (turnEndEvent != null)
+            turnEndEvent.Invoke();
+
         if (CurrentTurnPlayer == PlayerType.OPPONENT)
         {
             if (opponentAdditionMana > 0)
@@ -193,11 +195,11 @@ public class GameManager : MonoBehaviour
             myAdditionMana = 0;
         }
 
-        CurrentTurnPlayer = CurrentTurnPlayer == PlayerType.YOU ? PlayerType.OPPONENT : PlayerType.YOU;
+        CurrentTurnPlayer = CurrentTurnPlayer == PlayerType.ME ? PlayerType.OPPONENT : PlayerType.ME;
 
         UIManager.Instance.ShowTurnStartUI(CurrentTurnPlayer);
 
-        if (CurrentTurnPlayer == PlayerType.YOU)
+        if (CurrentTurnPlayer == PlayerType.ME)
             ++MyMana;
         else
             ++OpponentMana;

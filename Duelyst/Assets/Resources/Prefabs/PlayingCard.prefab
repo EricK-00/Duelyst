@@ -51,6 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72db41e1e6b3a6d42bf0396be65b1500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deathEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &7464261242886628778
 PrefabInstance:
   m_ObjectHideFlags: 0

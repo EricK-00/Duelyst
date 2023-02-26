@@ -10,36 +10,24 @@ public class Board : MonoBehaviour
 
     private GameObject rowPrefab;
 
-    private static Place[,] board;
+    private static Tile[,] board;
 
     private void Awake()
     {
         Initialize();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void Initialize()
     {
         rowPrefab = Functions.ROW;
         MaxColumn = rowPrefab.transform.childCount;
-        board = new Place[MAX_ROW, MaxColumn];
+        board = new Tile[MAX_ROW, MaxColumn];
 
         for (int i = 0; i < board.GetLength(0); i++)
         {
             for (int j = 0; j < board.GetLength(1); j++)
             {
-                board[i, j] = transform.GetChild(i).GetChild(j).GetComponent<Place>();
+                board[i, j] = transform.GetChild(i).GetChild(j).GetComponent<Tile>();
             }
         }
 
@@ -52,13 +40,13 @@ public class Board : MonoBehaviour
         }
     }
 
-    public static bool TryGetPlace(int row, int col, out Place place)
+    public static bool TryGetTile(int row, int col, out Tile tile)
     {
-        place = null;
+        tile = null;
 
         if (row >= 0 && row < MAX_ROW && col >= 0 && col < MaxColumn)
         {
-            place = board[row, col];
+            tile = board[row, col];
             return true;
         }
         

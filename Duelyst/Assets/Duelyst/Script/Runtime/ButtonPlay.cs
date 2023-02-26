@@ -7,7 +7,6 @@ public class ButtonPlay : MonoBehaviour, IPointerClickHandler
 {
     public void OnPointerClick(PointerEventData ped)
     {
-        //Functions.LoadScene("InGameScene");
-        Functions.LoadScene("InGameDev");
+        Functions.LoadScene("InGameScene");
     }
 }

@@ -2,14 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManaTile : Place
+public class ManaTile : Tile
 {
     private bool isManatile = true;
 
-    public override void RegisterCard(GameObject card)
+    public override void OnPlaceEffect()
     {
-        base.RegisterCard(card);
-
         if (isManatile)
         {
             GameManager.Instance.OnManaTileActive(PlacedObject);

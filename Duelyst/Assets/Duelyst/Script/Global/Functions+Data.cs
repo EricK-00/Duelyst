@@ -1,8 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngineInternal;
+
+#region EnumTypes
+namespace EnumTypes
+{
+    public enum PlayerType
+    {
+        ME = 0,
+        OPPONENT
+    }
+
+    public enum PlacedObjType
+    {
+        BLANK = 0,
+        ALLY,
+        ENEMY
+    }
+
+    public enum ActiveType
+    {
+        PLACEABLE = 0,
+        MOVABLE,
+        ATTACKABLE
+    }
+
+    public enum PlayingCardDirection
+    {
+        Left = 180,
+        Right = 0
+    }
+}
+#endregion
 
 public static partial class Functions
 {
@@ -15,13 +42,14 @@ public static partial class Functions
 
     #region GameObject tag
     public const string TAG_UNTAGGED = "Untagged";
-    public const string TAG_PLACE = "Place";
+    public const string TAG_TILE = "Tile";
     #endregion
 
     #region GameObject name
     //Managers
     public const string NAME_GAMEMANAGER = "GameManager";
     public const string NAME_UIMANAGER = "UIManager";
+    public const string NAME_PLAYINGCARDPOOL = "PlayingCardPool";
 
     //GameObject in BgCanvas
     public const string NAME_MANATILE_MANABALL = "ManaBall";
@@ -31,6 +59,8 @@ public static partial class Functions
 
     public const string NAME_LAYER = "Layer";//Layer + number
     public const string NAME_PLAYINGCARD_CARDSPRITE = "CardSprite";
+    public const string NAME_PLATINGCARD_POWERTEXT = "PowerText";
+    public const string NAME_PLATINGCARD_HEALTHTEXT = "HealthText";
 
     //GameObject in UICanvas
     public const string NAME_UICANVAS = "UICanvas";
@@ -62,14 +92,12 @@ public static partial class Functions
 
     public const string NAME_HANDS = "ActionBar";
 
-    public const string NAME_PLAYERCARDDETAIL = "PlayerCardDetail";
-    public const string NAME_ENEMYCARDDETAIL = "EnemyCardDetail";
+    public const string NAME_CARDDETAIL = "CardDetail";
 
     public const string NAME_YOURTURN = "YourTurnUI";
     public const string NAME_ENEMYTURN = "EnemyTurnUI";
 
     #endregion
-
 
     #region Resource files location
     public const string FILELOC_RESOURCES_PREFAB = "Prefabs/";
@@ -78,13 +106,13 @@ public static partial class Functions
 
     #region Prefab name
     public const string ASSETNAME_PREFABS_ROW = "Row";
-    public const string ASSETNAME_PREFABS_PLACE = "Place";
+    public const string ASSETNAME_PREFABS_TILE = "Tile";
     public const string ASSETNAME_PREFABS_PLAYINGCARD = "PlayingCard";
     #endregion
 
     #region Prefabs
     public static readonly GameObject ROW = Resources.Load($"{FILELOC_RESOURCES_PREFAB}{ASSETNAME_PREFABS_ROW}") as GameObject;
-    public static readonly GameObject PLACE = Resources.Load($"{FILELOC_RESOURCES_PREFAB}{ASSETNAME_PREFABS_PLACE}") as GameObject;
+    public static readonly GameObject TILE = Resources.Load($"{FILELOC_RESOURCES_PREFAB}{ASSETNAME_PREFABS_TILE}") as GameObject;
     public static readonly GameObject PLAYINGCARD = Resources.Load($"{FILELOC_RESOURCES_PREFAB}{ASSETNAME_PREFABS_PLAYINGCARD}") as GameObject;
 
     #endregion

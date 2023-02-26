@@ -1,8 +1,7 @@
 using TMPro;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using EnumTypes;
 
 public class UIManager : MonoBehaviour
 {
@@ -24,13 +23,13 @@ public class UIManager : MonoBehaviour
 
     private Hands hands;
 
-    private GameObject playerCardDetail;
-    private Image playerCardDetailImage;
-    private Animator playerCardDetailAnim;
+    private GameObject myCardDetail;
+    private Image myCardDetailImage;
+    private Animator myCardDetailAnim;
 
-    private GameObject enemyCardDetail;
-    private Image enemyCardDetailImage;
-    private Animator enemyCardDetailAnim;
+    private GameObject opponentCardDetail;
+    private Image opponentCardDetailImage;
+    private Animator opponentCardDetailAnim;
 
     private Animator yourTurnUI;
     private Animator enemyTurnUI;
@@ -58,6 +57,7 @@ public class UIManager : MonoBehaviour
     private TMP_Text opponentHandsText;
     private TMP_Text opponentDeckText;
 
+    private GameObject selectingArrow;
 
     private void Start()
     {
@@ -74,18 +74,10 @@ public class UIManager : MonoBehaviour
 
         hands = uiCanvas.FindChildGO(Functions.NAME_HANDS).GetComponent<Hands>();
 
-        playerCardDetail = uiCanvas.FindChildGO(Functions.NAME_PLAYERCARDDETAIL);
-        playerCardDetailImage = playerCardDetail.transform.GetChild(0).GetComponent<Image>();
-        playerCardDetailAnim = playerCardDetail.transform.GetChild(0).GetComponent<Animator>();
-
-        enemyCardDetail = uiCanvas.FindChildGO(Functions.NAME_ENEMYCARDDETAIL);
-        enemyCardDetailImage = enemyCardDetail.transform.GetChild(0).GetComponent<Image>();
-        enemyCardDetailAnim = enemyCardDetail.transform.GetChild(0).GetComponent<Animator>();
-
         yourTurnUI = uiCanvas.FindChildGO(Functions.NAME_YOURTURN).GetComponent<Animator>();
         enemyTurnUI = uiCanvas.FindChildGO(Functions.NAME_ENEMYTURN).GetComponent<Animator>();
 
-        (myPlayerUI, opponentPlayerUI) = GameManager.Instance.FirstPlayer == PlayerType.YOU ?
+        (myPlayerUI, opponentPlayerUI) = GameManager.Instance.FirstPlayer == PlayerType.ME ?
                 (uiCanvas.FindChildGO(Functions.NAME_LPLAYERUI), uiCanvas.FindChildGO(Functions.NAME_RPLAYERUI)) :
                 (uiCanvas.FindChildGO(Functions.NAME_RPLAYERUI), uiCanvas.FindChildGO(Functions.NAME_LPLAYERUI));
 
@@ -110,6 +102,10 @@ public class UIManager : MonoBehaviour
         myDeckUI = uiCanvas.FindChildGO(Functions.NAME_MYDECKUI);
         myDeckText = myDeckUI.FindChildGO(Functions.NAME_MYDECKTEXT).GetComponent<TMP_Text>();
 
+        myCardDetail = myPlayerUI.FindChildGO(Functions.NAME_CARDDETAIL);
+        myCardDetailImage = myCardDetail.transform.GetChild(0).GetComponent<Image>();
+        myCardDetailAnim = myCardDetail.transform.GetChild(0).GetComponent<Animator>();
+
         opponentManaUI = opponentPlayerUI.FindChildGO(Functions.NAME_PLAYERUI_OPPONENTMANAUI);
         opponentHandsUI = opponentPlayerUI.FindChildGO(Functions.NAME_PLAYERUI_OPPONENTHANDSUI);
         opponentDeckUI = opponentPlayerUI.FindChildGO(Functions.NAME_PLAYERUI_OPPONENTDECKUI);
@@ -121,6 +117,11 @@ public class UIManager : MonoBehaviour
         opponentHandsText = opponentHandsUI.FindChildGO(Functions.NAME_PLAYERUI_HANDSTEXT).GetComponent<TMP_Text>();
         opponentDeckText = opponentDeckUI.FindChildGO(Functions.NAME_PLAYERUI_DECKTEXT).GetComponent<TMP_Text>();
 
+        opponentCardDetail = opponentPlayerUI.FindChildGO(Functions.NAME_CARDDETAIL);
+        opponentCardDetailImage = opponentCardDetail.transform.GetChild(0).GetComponent<Image>();
+        opponentCardDetailAnim = opponentCardDetail.transform.GetChild(0).GetComponent<Animator>();
+
+        selectingArrow = uiCanvas.FindChildGO(Functions.NAME_SELECTINGARROW);
     }
 
     private void Update()
@@ -133,25 +134,25 @@ public class UIManager : MonoBehaviour
 
     public void ShowPlayerCardDetail(Animator cardAnim)
     {
-        playerCardDetail.gameObject.SetActive(true);
+        myCardDetail.gameObject.SetActive(true);
 
         //ID로 카드 변경하기
         //
         //
 
         if (cardAnim != null)
-            playerCardDetailAnim.runtimeAnimatorController = cardAnim.runtimeAnimatorController;
+            myCardDetailAnim.runtimeAnimatorController = cardAnim.runtimeAnimatorController;
     }
 
     public void DisableCardDetails()
     {
-        playerCardDetail.gameObject.SetActive(false);
-        enemyCardDetail.gameObject.SetActive(false);
+        myCardDetail.gameObject.SetActive(false);
+        opponentCardDetail.gameObject.SetActive(false);
     }
 
     public void ShowTurnStartUI(PlayerType player)
     {
-        Animator turnStartUI = player == PlayerType.YOU ? yourTurnUI : enemyTurnUI;
+        Animator turnStartUI = player == PlayerType.ME ? yourTurnUI : enemyTurnUI;
         turnStartUI.Play("TurnStartUI_Start");
     }
 
@@ -208,5 +209,23 @@ public class UIManager : MonoBehaviour
         {
             myDeckText.SetTMPText(GameManager.Instance.MyDeckCount);
         }
+    }
+
+    public void ShowSelectingArrow(RectTransform rect)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Camera.main.WorldToScreenPoint(rect.position));
+
+        float CanvasZPos = uiCanvas.transform.position.z;
+        float distance = (CanvasZPos - ray.origin.z) / ray.direction.z;
+        Vector3 point = ray.origin + ray.direction * distance;
+        point.z = CanvasZPos;
+
+        selectingArrow.transform.position = point;
+        selectingArrow.transform.localScale = Vector3.one;
+    }
+
+    public void HideSelectingArrow()
+    {
+        selectingArrow.transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);
     }
 }
