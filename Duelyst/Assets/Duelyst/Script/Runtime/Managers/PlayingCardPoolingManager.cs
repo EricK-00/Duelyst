@@ -1,3 +1,4 @@
+using EnumTypes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class PlayingCardPoolingManager : MonoBehaviour
         {
             if (instance == null)
             {
-                instance = Functions.GetRootGO(Functions.NAME_OBJCANVAS).FindChildGO(Functions.NAME_PLAYINGCARDPOOL).GetComponent<PlayingCardPoolingManager>();
+                instance = Functions.GetRootGO(Functions.NAME__OBJ_CANVAS).FindChildGO(Functions.NAME__PLAYING_CARD_POOL).GetComponent<PlayingCardPoolingManager>();
                 instance.Initialize();
             }
             return instance;
@@ -28,7 +29,7 @@ public class PlayingCardPoolingManager : MonoBehaviour
     {
         if (instance == null)
         {
-            instance = Functions.GetRootGO(Functions.NAME_OBJCANVAS).FindChildGO(Functions.NAME_PLAYINGCARDPOOL).GetComponent<PlayingCardPoolingManager>();
+            instance = Functions.GetRootGO(Functions.NAME__OBJ_CANVAS).FindChildGO(Functions.NAME__PLAYING_CARD_POOL).GetComponent<PlayingCardPoolingManager>();
             instance.Initialize();
         }
     }
@@ -50,7 +51,7 @@ public class PlayingCardPoolingManager : MonoBehaviour
         playingCardPool.Enqueue(playingCardInst.GetComponent<PlayingCard>());
     }
 
-    public void Active(Tile tile, Card data, bool isRush)
+    public void ActiveAndRegisterCard(Tile tile, Card data, bool isRush, PlayerType owner)
     {
         if (playingCardPool.Count <= 0)
         {
@@ -59,15 +60,16 @@ public class PlayingCardPoolingManager : MonoBehaviour
 
         PlayingCard card = playingCardPool.Dequeue();
         card.transform.position = tile.GetComponent<RectTransform>().position;
-        tile.RegisterCard(card.gameObject);
+
         card.gameObject.SetActive(true);
-        card.SetUp(data, tile.GetRow(), isRush);
+        tile.RegisterCard(card.gameObject, owner);
+        card.SetUp(data, owner, tile.RowIndex, isRush);
     }
 
-    public void Inactive(PlayingCard go)
+    public void Inactive(PlayingCard card)
     {
-        go.transform.SetParent(transform, false);
-        go.gameObject.SetActive(false);
-        playingCardPool.Enqueue(go);
+        card.transform.SetParent(transform, false);
+        card.gameObject.SetActive(false);
+        playingCardPool.Enqueue(card);
     }
 }

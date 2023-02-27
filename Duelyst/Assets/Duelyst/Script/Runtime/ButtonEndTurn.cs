@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ButtonEndTurn : MonoBehaviour, IPointerClickHandler
+public class ButtonEndTurn : MonoBehaviour, IPointerUpHandler
 {
-    public void OnPointerClick(PointerEventData ped)
+    public void OnPointerUp(PointerEventData ped)
     {
         GameManager.Instance.EndTurn();
     }

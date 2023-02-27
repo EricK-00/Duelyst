@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class ManaTile : Tile
 {
-    private bool isManatile = true;
+    private void Start()
+    {
+        HaveMana = true;
+    }
 
     public override void OnPlaceEffect()
     {
-        if (isManatile)
+        if (HaveMana)
         {
             GameManager.Instance.OnManaTileActive(PlacedObject);
-            gameObject.FindChildGO(Functions.NAME_MANATILE_MANABALL).SetActive(false);
-            isManatile = false;
+            gameObject.FindChildGO(Functions.NAME__MANA_TILE__MANA_BALL).SetActive(false);
+            HaveMana = false;
         }
     }
 }

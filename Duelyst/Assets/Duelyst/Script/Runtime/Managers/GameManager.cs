@@ -1,6 +1,6 @@
+using EnumTypes;
 using System.Collections;
 using UnityEngine;
-using EnumTypes;
 using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
         {
             if (instance == null)
             {
-                instance = Functions.GetRootGO(Functions.NAME_GAMEMANAGER).GetComponent<GameManager>();
+                instance = Functions.GetRootGO(Functions.NAME__GAME_MANAGER).GetComponent<GameManager>();
                 instance.Initialize();
             }
             return instance;
@@ -60,7 +60,8 @@ public class GameManager : MonoBehaviour
     public PlayerType CurrentTurnPlayer { get; private set; }
     public PlayerType FirstPlayer { get; private set; }
 
-    public PlayingCardDirection DefaultDirection { get; private set; }
+    public PlayingCardDirection MyDefaultDirection { get; private set; }
+    public PlayingCardDirection OpponentDefaultDirection { get; private set; }
 
     public bool TaskBlock { get; private set; }
 
@@ -70,18 +71,18 @@ public class GameManager : MonoBehaviour
     {
         if (instance == null)
         {
-            instance = Functions.GetRootGO(Functions.NAME_GAMEMANAGER).GetComponent<GameManager>();
+            instance = Functions.GetRootGO(Functions.NAME__GAME_MANAGER).GetComponent<GameManager>();
             instance.Initialize();
         }
     }
 
     private void Initialize()
     {
-        objCanvas = Functions.GetRootGO(Functions.NAME_OBJCANVAS);
+        objCanvas = Functions.GetRootGO(Functions.NAME__OBJ_CANVAS);
 
         for (int i = 0; i < Layers.Length; i++)
         {
-            Layers[i] = objCanvas.FindChildGO($"{Functions.NAME_LAYER}{i}").transform;
+            Layers[i] = objCanvas.FindChildGO($"{Functions.NAME__LAYER}{i}").transform;
         }
 
         InitializeGame();
@@ -96,7 +97,8 @@ public class GameManager : MonoBehaviour
 
         //초기값 설정
         turnCount = 1;
-        DefaultDirection = FirstPlayer == PlayerType.ME ? PlayingCardDirection.Right :PlayingCardDirection.Left;
+        (MyDefaultDirection, OpponentDefaultDirection) = (FirstPlayer == PlayerType.ME) ?
+            (PlayingCardDirection.Right, PlayingCardDirection.Left) : (PlayingCardDirection.Left, PlayingCardDirection.Right);
         TaskBlock = false;
 
         MyHP = 25;
@@ -168,7 +170,9 @@ public class GameManager : MonoBehaviour
         if (MyMana < cost)
             return false;
 
-        myAdditionMana -= cost;
+        if (myAdditionMana > 0)
+            myAdditionMana -= Mathf.Min(cost, myAdditionMana);
+
         MyMana -= cost;
         --MyHandsCount;
 

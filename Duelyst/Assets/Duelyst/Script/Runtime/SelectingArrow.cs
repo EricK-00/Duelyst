@@ -20,7 +20,7 @@ public class SelectingArrow : MonoBehaviour
 
     private void Awake()
     {
-        uiCanvas = Functions.GetRootGO(Functions.NAME_UICANVAS).GetComponent<Canvas>();
+        uiCanvas = Functions.GetRootGO(Functions.NAME__UI_CANVAS).GetComponent<Canvas>();
         uiCanvasRect = uiCanvas.GetComponent<RectTransform>();
     }
 

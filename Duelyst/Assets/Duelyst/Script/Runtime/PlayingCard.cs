@@ -25,13 +25,13 @@ public class PlayingCard : MonoBehaviour
 
     private void Awake()
     {
-        cardSprite = gameObject.FindChildGO(Functions.NAME_PLAYINGCARD_CARDSPRITE);
+        cardSprite = gameObject.FindChildGO(Functions.NAME__PLAYING_CARD__CARD_SPRITE);
         cardAnimator = cardSprite.GetComponent<Animator>();
-        powerText = gameObject.FindChildGO(Functions.NAME_PLATINGCARD_POWERTEXT).GetComponent<TMP_Text>();
-        healthText = gameObject.FindChildGO(Functions.NAME_PLATINGCARD_HEALTHTEXT).GetComponent<TMP_Text>();
+        powerText = gameObject.FindChildGO(Functions.NAME__PLAYING_CARD__POWER_TEXT).GetComponent<TMP_Text>();
+        healthText = gameObject.FindChildGO(Functions.NAME__PLAYING_CARD__HEALTH_TEXT).GetComponent<TMP_Text>();
     }
 
-    public void SetUp(Card card, int row, bool isRush)
+    public void SetUp(Card card, PlayerType owner, int row, bool isRush)
     {
         cardData = card;
 
@@ -41,7 +41,7 @@ public class PlayingCard : MonoBehaviour
         Power = cardData.Power;
         Health = cardData.Health;
 
-        defaultDirection = GameManager.Instance.DefaultDirection;
+        defaultDirection = owner == PlayerType.ME ? GameManager.Instance.MyDefaultDirection : GameManager.Instance.OpponentDefaultDirection;
         ChangeDirection(0, 0);
 
         MoveChance = isRush ? 1 : 0;
@@ -131,16 +131,16 @@ public class PlayingCard : MonoBehaviour
             if (deathEvent != null)
                 deathEvent.Invoke();
 
-
+            yield return new WaitForEndOfFrame();
         }
         if (target.Health <= 0)
         {
             target.cardAnimator.SetTrigger("isDead");
             if (target.deathEvent != null)
                 target.deathEvent.Invoke();
-        }
 
-        yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+        }
 
         if (Health <= 0 && target.Health <= 0)
         {
@@ -161,7 +161,6 @@ public class PlayingCard : MonoBehaviour
 
             PlayingCardPoolingManager.Instance.Inactive(target);
         }
-
     }
 
     private void SetLayer(int layerNum)

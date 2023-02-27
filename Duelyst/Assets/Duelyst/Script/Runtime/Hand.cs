@@ -28,17 +28,17 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     {
         handRect = GetComponent<RectTransform>();
 
-        objCanvas = Functions.GetRootGO(Functions.NAME_OBJCANVAS);
+        objCanvas = Functions.GetRootGO(Functions.NAME__OBJ_CANVAS);
 
-        cardDetail = gameObject.FindChildGO(Functions.NAME_HAND_CARDDETAIL);
-        card = gameObject.FindChildGO(Functions.NAME_HAND_CARDSPRITE);
+        cardDetail = gameObject.FindChildGO(Functions.NAME__HAND__CARD_DETAIL);
+        card = gameObject.FindChildGO(Functions.NAME__HAND__CARD_SPRITE);
         cardImage = GetComponent<Image>();
         defaultCardSprite = cardImage.sprite;
         cardAnimator = card.GetComponent<Animator>();
 
-        drawAnimator = gameObject.FindChildGO(Functions.NAME_HAND_DRAWANIM).GetComponent<Animator>();
+        drawAnimator = gameObject.FindChildGO(Functions.NAME__HAND__DRAW_ANIM).GetComponent<Animator>();
 
-        costText = gameObject.FindChildGO(Functions.NAME_HAND_COSTTEXT).GetComponent<TMP_Text>();
+        costText = gameObject.FindChildGO(Functions.NAME__HAND__COST_TEXT).GetComponent<TMP_Text>();
     }
 
     public void OnPointerEnter(PointerEventData ped)
@@ -129,16 +129,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     private void PlacePlayingCard(Tile tile)
     {
-        //GameObject playingCardInst = Instantiate(Functions.PLAYINGCARD, objCanvas.transform);
-        //playingCardInst.transform.position = tile.transform.position;
-
-        //PlayingCard playingCard = playingCardInst.GetComponent<PlayingCard>();
-
-        //playingCard.SetUp(cardData, tile.GetRow(), false);
-
-        //tile.RegisterCard(playingCardInst);
-
-        PlayingCardPoolingManager.Instance.Active(tile, cardData, false);
+        PlayingCardPoolingManager.Instance.ActiveAndRegisterCard(tile, cardData, false, PlayerType.ME);
         tile.OnPlaceEffect();
     }
 

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DrawTest : MonoBehaviour, IPointerClickHandler
+public class DrawTest : MonoBehaviour, IPointerUpHandler
 {
-    public void OnPointerClick(PointerEventData ped)
+    public void OnPointerUp(PointerEventData ped)
     {
         Functions.LoadScene("MainScene");
         //StartCoroutine(GameManager.Instance.PlayTask(GameManager.Instance.DrawCard()));

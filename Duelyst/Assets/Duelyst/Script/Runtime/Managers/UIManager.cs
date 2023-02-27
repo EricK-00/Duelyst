@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
         {
             if (instance == null)
             {
-                instance = Functions.GetRootGO(Functions.NAME_UIMANAGER).GetComponent<UIManager>();
+                instance = Functions.GetRootGO(Functions.NAME__UI_MANAGER).GetComponent<UIManager>();
                 instance.Initialize();
             }
             return instance;
@@ -63,65 +63,65 @@ public class UIManager : MonoBehaviour
     {
         if (instance == null)
         {
-            instance = Functions.GetRootGO(Functions.NAME_UIMANAGER).GetComponent<UIManager>();
+            instance = Functions.GetRootGO(Functions.NAME__UI_MANAGER).GetComponent<UIManager>();
             instance.Initialize();
         }
     }
 
     private void Initialize()
     {
-        uiCanvas = Functions.GetRootGO(Functions.NAME_UICANVAS);
+        uiCanvas = Functions.GetRootGO(Functions.NAME__UI_CANVAS);
 
-        hands = uiCanvas.FindChildGO(Functions.NAME_HANDS).GetComponent<Hands>();
+        hands = uiCanvas.FindChildGO(Functions.NAME__HANDS).GetComponent<Hands>();
 
-        yourTurnUI = uiCanvas.FindChildGO(Functions.NAME_YOURTURN).GetComponent<Animator>();
-        enemyTurnUI = uiCanvas.FindChildGO(Functions.NAME_ENEMYTURN).GetComponent<Animator>();
+        yourTurnUI = uiCanvas.FindChildGO(Functions.NAME__YOUR_TURN_UI).GetComponent<Animator>();
+        enemyTurnUI = uiCanvas.FindChildGO(Functions.NAME__ENEMY_TURN_UI).GetComponent<Animator>();
 
         (myPlayerUI, opponentPlayerUI) = GameManager.Instance.FirstPlayer == PlayerType.ME ?
-                (uiCanvas.FindChildGO(Functions.NAME_LPLAYERUI), uiCanvas.FindChildGO(Functions.NAME_RPLAYERUI)) :
-                (uiCanvas.FindChildGO(Functions.NAME_RPLAYERUI), uiCanvas.FindChildGO(Functions.NAME_LPLAYERUI));
+                (uiCanvas.FindChildGO(Functions.NAME__LPLAYER_UI), uiCanvas.FindChildGO(Functions.NAME__RPLAYER_UI)) :
+                (uiCanvas.FindChildGO(Functions.NAME__RPLAYER_UI), uiCanvas.FindChildGO(Functions.NAME__LPLAYER_UI));
 
-        myNameText = myPlayerUI.FindChildGO(Functions.NAME_PLAYERUI_NAME).GetComponent<TMP_Text>();
+        myNameText = myPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__NAME_TEXT).GetComponent<TMP_Text>();
         myNameText.text = "YOU";
-        opponentNameText = opponentPlayerUI.FindChildGO(Functions.NAME_PLAYERUI_NAME).GetComponent<TMP_Text>();
-        opponentNameText.text = Functions.TEXT_OPPONENT;
+        opponentNameText = opponentPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__NAME_TEXT).GetComponent<TMP_Text>();
+        opponentNameText.text = Functions.TEXT__OPPONENT;
 
-        myHPText = myPlayerUI.FindChildGO(Functions.NAME_PLAYERUI_HP).GetComponent<TMP_Text>();
-        opponentHPText = opponentPlayerUI.FindChildGO(Functions.NAME_PLAYERUI_HP).GetComponent<TMP_Text>();
+        myHPText = myPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__HP_TEXT).GetComponent<TMP_Text>();
+        opponentHPText = opponentPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__HP_TEXT).GetComponent<TMP_Text>();
 
-        myManaUI = myPlayerUI.FindChildGO(Functions.NAME_PLAYERUI_MYMANAUI);
+        myManaUI = myPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI_MY_MANA_UI);
         myManaUI.SetActive(true);
 
-        myManaImages = myManaUI.FindChildGO(Functions.NAME_PLAYERUI_MANAIMAGES);
+        myManaImages = myManaUI.FindChildGO(Functions.NAME__PLAYER_UI__MANA_IMAGES);
         for (int i = 0; i < manaImages.Length; i++)
         {
             manaImages[i] = myManaImages.transform.GetChild(i).gameObject;
         }
-        myManaText = myManaUI.FindChildGO(Functions.NAME_PLAYERUI_MANATEXT).GetComponent<TMP_Text>();
+        myManaText = myManaUI.FindChildGO(Functions.NAME__PLAYER_UI__MANA_TEXT).GetComponent<TMP_Text>();
 
-        myDeckUI = uiCanvas.FindChildGO(Functions.NAME_MYDECKUI);
-        myDeckText = myDeckUI.FindChildGO(Functions.NAME_MYDECKTEXT).GetComponent<TMP_Text>();
+        myDeckUI = uiCanvas.FindChildGO(Functions.NAME__MY_DECK_UI);
+        myDeckText = myDeckUI.FindChildGO(Functions.NAME__MY_DECK_TEXT).GetComponent<TMP_Text>();
 
-        myCardDetail = myPlayerUI.FindChildGO(Functions.NAME_CARDDETAIL);
+        myCardDetail = myPlayerUI.FindChildGO(Functions.NAME__CARD_DETAIL);
         myCardDetailImage = myCardDetail.transform.GetChild(0).GetComponent<Image>();
         myCardDetailAnim = myCardDetail.transform.GetChild(0).GetComponent<Animator>();
 
-        opponentManaUI = opponentPlayerUI.FindChildGO(Functions.NAME_PLAYERUI_OPPONENTMANAUI);
-        opponentHandsUI = opponentPlayerUI.FindChildGO(Functions.NAME_PLAYERUI_OPPONENTHANDSUI);
-        opponentDeckUI = opponentPlayerUI.FindChildGO(Functions.NAME_PLAYERUI_OPPONENTDECKUI);
+        opponentManaUI = opponentPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__OPPONENT_MANA_UI);
+        opponentHandsUI = opponentPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__OPPONENT_HANDS_UI);
+        opponentDeckUI = opponentPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__OPPONENT_DECK_UI);
         opponentManaUI.SetActive(true);
         opponentHandsUI.SetActive(true);
         opponentDeckUI.SetActive(true);
 
-        opponentManaText = opponentManaUI.FindChildGO(Functions.NAME_PLAYERUI_MANATEXT).GetComponent<TMP_Text>();
-        opponentHandsText = opponentHandsUI.FindChildGO(Functions.NAME_PLAYERUI_HANDSTEXT).GetComponent<TMP_Text>();
-        opponentDeckText = opponentDeckUI.FindChildGO(Functions.NAME_PLAYERUI_DECKTEXT).GetComponent<TMP_Text>();
+        opponentManaText = opponentManaUI.FindChildGO(Functions.NAME__PLAYER_UI__MANA_TEXT).GetComponent<TMP_Text>();
+        opponentHandsText = opponentHandsUI.FindChildGO(Functions.NAME__PLAYER_UI__HANDS_TEXT).GetComponent<TMP_Text>();
+        opponentDeckText = opponentDeckUI.FindChildGO(Functions.NAME__PLAYER_UI__DECK_TEXT).GetComponent<TMP_Text>();
 
-        opponentCardDetail = opponentPlayerUI.FindChildGO(Functions.NAME_CARDDETAIL);
+        opponentCardDetail = opponentPlayerUI.FindChildGO(Functions.NAME__CARD_DETAIL);
         opponentCardDetailImage = opponentCardDetail.transform.GetChild(0).GetComponent<Image>();
         opponentCardDetailAnim = opponentCardDetail.transform.GetChild(0).GetComponent<Animator>();
 
-        selectingArrow = uiCanvas.FindChildGO(Functions.NAME_SELECTINGARROW);
+        selectingArrow = uiCanvas.FindChildGO(Functions.NAME__SELECTING_ARROW);
     }
 
     private void Update()
@@ -132,16 +132,28 @@ public class UIManager : MonoBehaviour
         //}
     }
 
-    public void ShowPlayerCardDetail(Animator cardAnim)
+    public void ShowPlayerCardDetail(Animator cardAnim, PlayerType player)
     {
-        myCardDetail.gameObject.SetActive(true);
+        if (player == PlayerType.ME)
+        {
+            myCardDetail.SetActive(true);
 
-        //ID로 카드 변경하기
-        //
-        //
+            //ID로 카드 변경하기
+            //
+            //
+            if (cardAnim != null)
+                myCardDetailAnim.runtimeAnimatorController = cardAnim.runtimeAnimatorController;
+        }
+        else
+        {
+            opponentCardDetail.SetActive(true);
 
-        if (cardAnim != null)
-            myCardDetailAnim.runtimeAnimatorController = cardAnim.runtimeAnimatorController;
+            //ID로 카드 변경하기
+            //
+            //
+            if (cardAnim != null)
+                opponentCardDetailAnim.runtimeAnimatorController = cardAnim.runtimeAnimatorController;
+        }
     }
 
     public void DisableCardDetails()

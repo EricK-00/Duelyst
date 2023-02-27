@@ -34,94 +34,96 @@ namespace EnumTypes
 public static partial class Functions
 {
     #region UI text
-    public const string TEXT_OPPONENT = "OPPONENT";
+    public const string TEXT__OPPONENT = "OPPONENT";
     #endregion
 
     #region AnimationState name
     #endregion
 
     #region GameObject tag
-    public const string TAG_UNTAGGED = "Untagged";
-    public const string TAG_TILE = "Tile";
+    public const string TAG__UNTAGGED = "Untagged";
+    public const string TAG__TILE = "Tile";
     #endregion
 
     #region GameObject name
     //Managers
-    public const string NAME_GAMEMANAGER = "GameManager";
-    public const string NAME_UIMANAGER = "UIManager";
-    public const string NAME_PLAYINGCARDPOOL = "PlayingCardPool";
+    public const string NAME__GAME_MANAGER = "GameManager";
+    public const string NAME__UI_MANAGER = "UIManager";
+    public const string NAME__PLAYING_CARD_POOL = "PlayingCardPool";
 
     //GameObject in BgCanvas
-    public const string NAME_MANATILE_MANABALL = "ManaBall";
+    public const string NAME__MANA_TILE__MANA_BALL = "ManaBall";
 
     //GameObject in ObjectCanvas
-    public const string NAME_OBJCANVAS = "ObjectCanvas";
+    public const string NAME__OBJ_CANVAS = "ObjectCanvas";
 
-    public const string NAME_LAYER = "Layer";//Layer + number
-    public const string NAME_PLAYINGCARD_CARDSPRITE = "CardSprite";
-    public const string NAME_PLATINGCARD_POWERTEXT = "PowerText";
-    public const string NAME_PLATINGCARD_HEALTHTEXT = "HealthText";
+    public const string NAME__LAYER = "Layer";//Layer + number
+    public const string NAME__PLAYING_CARD__CARD_SPRITE = "CardSprite";
+    public const string NAME__PLAYING_CARD__POWER_TEXT = "PowerText";
+    public const string NAME__PLAYING_CARD__HEALTH_TEXT = "HealthText";
 
     //GameObject in UICanvas
-    public const string NAME_UICANVAS = "UICanvas";
+    public const string NAME__UI_CANVAS = "UICanvas";
 
-    public const string NAME_LPLAYERUI = "LeftPlayerUI";
-    public const string NAME_RPLAYERUI = "RightPlayerUI";
-    public const string NAME_PLAYERUI_NAME = "NameText";
-    public const string NAME_PLAYERUI_HP = "HealthText";
+    public const string NAME__LPLAYER_UI = "LeftPlayerUI";
+    public const string NAME__RPLAYER_UI = "RightPlayerUI";
+    public const string NAME__PLAYER_UI__NAME_TEXT = "NameText";
+    public const string NAME__PLAYER_UI__HP_TEXT = "HealthText";
 
-    public const string NAME_PLAYERUI_MYMANAUI = "MyMana";
-    public const string NAME_PLAYERUI_OPPONENTMANAUI = "OpponentMana";
-    public const string NAME_PLAYERUI_OPPONENTHANDSUI = "OpponentHands";
-    public const string NAME_PLAYERUI_OPPONENTDECKUI = "OpponentDeck";
+    public const string NAME__PLAYER_UI_MY_MANA_UI = "MyMana";
+    public const string NAME__PLAYER_UI__OPPONENT_MANA_UI = "OpponentMana";
+    public const string NAME__PLAYER_UI__OPPONENT_HANDS_UI = "OpponentHands";
+    public const string NAME__PLAYER_UI__OPPONENT_DECK_UI = "OpponentDeck";
 
-    public const string NAME_PLAYERUI_MANAIMAGES = "ManaImages";
-    public const string NAME_PLAYERUI_MANATEXT = "CurrentManaText";
-    public const string NAME_PLAYERUI_HANDSTEXT = "CurrentHandsText";
-    public const string NAME_PLAYERUI_DECKTEXT = "CurrentDeckText";
+    public const string NAME__PLAYER_UI__MANA_IMAGES = "ManaImages";
+    public const string NAME__PLAYER_UI__MANA_TEXT = "CurrentManaText";
+    public const string NAME__PLAYER_UI__HANDS_TEXT = "CurrentHandsText";
+    public const string NAME__PLAYER_UI__DECK_TEXT = "CurrentDeckText";
 
-    public const string NAME_MYDECKUI = "MyDeckUI";
-    public const string NAME_MYDECKTEXT = "CurrentDeckText";
+    public const string NAME__MY_DECK_UI = "MyDeckUI";
+    public const string NAME__MY_DECK_TEXT = "CurrentDeckText";
 
-    public const string NAME_SELECTINGARROW = "SelectingArrow";
+    public const string NAME__SELECTING_ARROW = "SelectingArrow";
 
-    public const string NAME_HAND_CARDDETAIL = "CardDetail";
-    public const string NAME_HAND_CARDSPRITE = "CardSprite";
-    public const string NAME_HAND_COSTTEXT = "CostText";
-    public const string NAME_HAND_DRAWANIM = "DrawAnim";
+    public const string NAME__HAND__CARD_DETAIL = "CardDetail";
+    public const string NAME__HAND__CARD_SPRITE = "CardSprite";
+    public const string NAME__HAND__COST_TEXT = "CostText";
+    public const string NAME__HAND__DRAW_ANIM = "DrawAnim";
 
-    public const string NAME_HANDS = "ActionBar";
+    public const string NAME__HANDS = "ActionBar";
 
-    public const string NAME_CARDDETAIL = "CardDetail";
+    public const string NAME__CARD_DETAIL = "CardDetail";
 
-    public const string NAME_YOURTURN = "YourTurnUI";
-    public const string NAME_ENEMYTURN = "EnemyTurnUI";
+    public const string NAME__YOUR_TURN_UI = "YourTurnUI";
+    public const string NAME__ENEMY_TURN_UI = "EnemyTurnUI";
 
     #endregion
 
     #region Resource files location
-    public const string FILELOC_RESOURCES_PREFAB = "Prefabs/";
-    public const string FILELOC_RESOURCES_MATERIALS = "Materials/";
+    public const string FILELOC__RESOURCES__PREFAB = "Prefabs/";
+    public const string FILELOC__RESOURCES__MATERIALS = "Materials/";
     #endregion
 
     #region Prefab name
-    public const string ASSETNAME_PREFABS_ROW = "Row";
-    public const string ASSETNAME_PREFABS_TILE = "Tile";
-    public const string ASSETNAME_PREFABS_PLAYINGCARD = "PlayingCard";
+    public const string ASSETNAME__PREFABS__ROW = "Row";
+    public const string ASSETNAME__PREFABS__TILE = "Tile";
+    public const string ASSETNAME__PREFABS__PLAYING_CARD = "PlayingCard";
     #endregion
 
     #region Prefabs
-    public static readonly GameObject ROW = Resources.Load($"{FILELOC_RESOURCES_PREFAB}{ASSETNAME_PREFABS_ROW}") as GameObject;
-    public static readonly GameObject TILE = Resources.Load($"{FILELOC_RESOURCES_PREFAB}{ASSETNAME_PREFABS_TILE}") as GameObject;
-    public static readonly GameObject PLAYINGCARD = Resources.Load($"{FILELOC_RESOURCES_PREFAB}{ASSETNAME_PREFABS_PLAYINGCARD}") as GameObject;
+    public static readonly GameObject ROW = Resources.Load($"{FILELOC__RESOURCES__PREFAB}{ASSETNAME__PREFABS__ROW}") as GameObject;
+    public static readonly GameObject TILE = Resources.Load($"{FILELOC__RESOURCES__PREFAB}{ASSETNAME__PREFABS__TILE}") as GameObject;
+    public static readonly GameObject PLAYINGCARD = Resources.Load($"{FILELOC__RESOURCES__PREFAB}{ASSETNAME__PREFABS__PLAYING_CARD}") as GameObject;
 
     #endregion
 
     #region Materials name
-    public const string ASSETNAME_MATERIALS_OUTLINE = "Outline";
+    public const string ASSETNAME_MATERIALS_ALLYOUTLINE = "AllyOutline";
+    public const string ASSETNAME_MATERIALS_ENEMYOUTLINE = "EnemyOutline";
     #endregion
 
     #region Materials
-    public static readonly Material OUTLINE = Resources.Load($"{FILELOC_RESOURCES_MATERIALS}{ASSETNAME_MATERIALS_OUTLINE}") as Material;
+    public static readonly Material ALLY_OUTLINE = Resources.Load($"{FILELOC__RESOURCES__MATERIALS}{ASSETNAME_MATERIALS_ALLYOUTLINE}") as Material;
+    public static readonly Material ENEMY_OUTLINE = Resources.Load($"{FILELOC__RESOURCES__MATERIALS}{ASSETNAME_MATERIALS_ENEMYOUTLINE}") as Material;
     #endregion
 }
