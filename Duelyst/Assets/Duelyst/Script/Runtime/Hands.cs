@@ -6,8 +6,6 @@ public class Hands : MonoBehaviour
 {
     private Hand[] myHands = new Hand[GameManager.MAX_HANDS];
 
-    private List<Card> opponentHands = new List<Card>();
-
     private void Awake()
     {
         for (int i = 0; i < myHands.Length; i++)

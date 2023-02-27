@@ -15,6 +15,8 @@ public class PlayingCard : MonoBehaviour
     public int MoveChance { get; private set; } = 1;
     public int AttackChance { get; private set; } = 1;
 
+    public bool IsGeneral { get; protected set; } = false;
+
     private Card cardData;
     private GameObject cardSprite;
     private Animator cardAnimator;
@@ -31,7 +33,7 @@ public class PlayingCard : MonoBehaviour
         healthText = gameObject.FindChildGO(Functions.NAME__PLAYING_CARD__HEALTH_TEXT).GetComponent<TMP_Text>();
     }
 
-    public void SetUp(Card card, PlayerType owner, int row, bool isRush)
+    public virtual void SetUp(Card card, PlayerType owner, int row, bool isRush)
     {
         cardData = card;
 
@@ -50,13 +52,6 @@ public class PlayingCard : MonoBehaviour
         GameManager.Instance.turnEndEvent.AddListener(Refresh);
 
         SetLayer(row);
-    }
-
-    public void Refresh()
-    {
-        Debug.Log("Refresh");
-        MoveChance = 1;
-        AttackChance = 1;
     }
 
     public IEnumerator Move(Tile newTile, int destRow, int sourceCol, int destCol)
@@ -161,6 +156,12 @@ public class PlayingCard : MonoBehaviour
 
             PlayingCardPoolingManager.Instance.Inactive(target);
         }
+    }
+
+    private void Refresh()
+    {
+        MoveChance = 1;
+        AttackChance = 1;
     }
 
     private void SetLayer(int layerNum)

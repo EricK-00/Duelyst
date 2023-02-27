@@ -6,7 +6,11 @@ using System.Data;
 
 public class AI : MonoBehaviour
 {
-    public ManaTile[] manaTiles = new ManaTile[3];
+    [SerializeField]
+    private ManaTile[] manaTiles = new ManaTile[3];
+
+    [SerializeField]
+    private List<Tile>MoveCopy = new List<Tile>();
 
     [SerializeField]
     //List<List<Tile>>
@@ -25,7 +29,7 @@ public class AI : MonoBehaviour
     };
 
     [SerializeField]
-    private List<Tile> closeEnemyTiles = new List<Tile>();
+    private List<Tile> closeFoeTiles = new List<Tile>();
     private (int, int)[] oneAroundDistanceTilesDelta = new (int, int)[8]
     {
         //(row, col)
@@ -35,6 +39,12 @@ public class AI : MonoBehaviour
     };
 
     private bool[,] boardVisitedCheck = new bool[5, 9];
+
+    [SerializeField]
+    private Card[] opponentHands = new Card[GameManager.MAX_HANDS];
+
+    [SerializeField]
+    private List<(bool, Tile)> refreshedCardList = new List<(bool, Tile)>();
 
     private void Update()
     {
@@ -51,7 +61,7 @@ public class AI : MonoBehaviour
         Init(PlayerType.ME);
         foreach (var tile in movableTiles)
         {
-            GetAroundDistanceWithManaTile(tile);
+            SetManaTileWeight(tile);
         }
     }
 
@@ -61,27 +71,46 @@ public class AI : MonoBehaviour
 
         foreach (var tile in fieldList)
         {
-            GetMoveRange(tile.RowIndex, tile.ColumnIndex);
+            if (tile.Card.MoveChance > 0 && tile.Card.AttackChance > 0)
+            {
+                refreshedCardList.Add((true, tile));
+
+                //SetMovebaleList(tile.RowIndex, tile.ColumnIndex);
+            }
         }
-        GetCloseEnemy();
+
+        //health 높은 순
+        //refreshedCardList.Sort(IComparer);
+
+        //SetCloseEnemyList();
     }
 
-    private void GetMoveRange(int row, int col)
+    public void AIFlow()
+    {
+        //Move+Attack(Foe) & Move(ManaTIle, General)
+        //HandsCheck + CostCheck -> Place(ManaTIle, General)
+
+        //turnEnd(Draw)
+
+        //ChangeTurn
+    }
+
+    private void SetMovebaleList(int row, int col)
     {
         movableTiles.Clear();
         ClearBoardVisitedCheck();
 
-        GetXDistanceTiles(row, col, 2, PlayerType.ME);
+        FindMovableInXDistance(row, col, 2, PlayerType.ME);
     }
 
-    private void GetCloseEnemy()
+    private void SetCloseEnemyList()
     {
-        closeEnemyTiles.Clear();
+        closeFoeTiles.Clear();
         ClearBoardVisitedCheck();
 
         foreach (var tile in movableTiles)
         {
-            GetOneAroundDistanceTiles(tile.RowIndex, tile.ColumnIndex, PlayerType.ME);
+            FindEnemyInOneAroundDistance(tile.RowIndex, tile.ColumnIndex, PlayerType.ME);
         }
     }
 
@@ -96,7 +125,7 @@ public class AI : MonoBehaviour
         }
     }
 
-    private void GetXDistanceTiles(int standardRow, int standardCol, int xDistance, PlayerType player)
+    private void FindMovableInXDistance(int standardRow, int standardCol, int xDistance, PlayerType player)
     {
         if (xDistance <= 0)
             return;
@@ -121,12 +150,12 @@ public class AI : MonoBehaviour
                 }
 
                 boardVisitedCheck[row, col] = true;
-                GetXDistanceTiles(row, col, xDistance - 1, player);
+                FindMovableInXDistance(row, col, xDistance - 1, player);
             }
         }
     }
 
-    private void GetOneAroundDistanceTiles(int standardRow, int standardCol, PlayerType player)
+    private void FindEnemyInOneAroundDistance(int standardRow, int standardCol, PlayerType player)
     {
         Tile tile;
         PlacedObjType foe = player == PlayerType.ME ? PlacedObjType.ENEMY : PlacedObjType.ALLY;
@@ -140,7 +169,28 @@ public class AI : MonoBehaviour
             {
                 if (tile.PlacedObject == foe)
                 {
-                    closeEnemyTiles.Add(tile);
+                    closeFoeTiles.Add(tile);
+                }
+
+                boardVisitedCheck[row, col] = true;
+            }
+        }
+    }
+
+    private void FindPlaceableInOneAroundDistance(int standardRow, int standardCol)
+    {
+        Tile tile;
+
+        for (int i = 0; i < oneAroundDistanceTilesDelta.Length; i++)
+        {
+            int row = standardRow + oneAroundDistanceTilesDelta[i].Item1;
+            int col = standardCol + oneAroundDistanceTilesDelta[i].Item2;
+
+            if (Board.TryGetTile(row, col, out tile) && !boardVisitedCheck[row, col])
+            {
+                if (tile.PlacedObject == PlacedObjType.BLANK)
+                {
+                    closeFoeTiles.Add(tile);
                 }
 
                 boardVisitedCheck[row, col] = true;
@@ -153,17 +203,22 @@ public class AI : MonoBehaviour
         if (tile.debug_Weight < weight)
             tile.debug_Weight = weight;
 
-        //이동 가능 범위 가져오기 -> 제너럴과의 거리, 마나타일과의  거리에 따라 가중치 적용
+        //이동 가능 범위 가져오기 -> 제너럴과의 거리, 마나타일과의 거리에 따라 가중치 적용
         //이동 및 공격 가능 범위 가져오기 -> 범위 안의 적 가져오기 -> 가중치 적용
     }
 
-    private void GetAroundDistanceWithPlayerGeneral()
+    private void SetFoeGeneralWeight()
     {
         //제너럴과의 거리에 따라 가중치 적용
     }
 
+    protected void SetFoeMinionWeight()
+    {
+        //적과의 거리에 따라 가중치 적용
+    }
 
-    private void GetAroundDistanceWithManaTile(Tile movableTile)
+
+    private void SetManaTileWeight(Tile movableTile)
     {
         //마나타일과의 거리에 따라 가중치 적용
         foreach(var manaTile in manaTiles)

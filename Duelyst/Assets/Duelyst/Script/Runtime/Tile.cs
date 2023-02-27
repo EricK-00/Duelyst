@@ -23,7 +23,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     private Image tileImage;
     private Color tileDefaultColor;
 
-    private PlayingCard playingCard;
+    public PlayingCard Card { get; private set; }
     private Image cardImage;
     private Animator cardAnimator;
 
@@ -37,7 +37,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     public bool isMovable { get; private set; } = false;
     public bool isAttackable { get; private set; } = false;
 
-    public bool HaveMana { get; internal set; } = false;
+    public bool HaveMana { get; protected set; } = false;
 
     public int debug_Weight = 0;
 
@@ -85,10 +85,10 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         //드래그 시작
         UIManager.Instance.ShowSelectingArrow(tileRect);
 
-        if (playingCard != null && playingCard.MoveChance > 0)
+        if (Card != null && Card.MoveChance > 0)
             ShowMoveRange();
 
-        if (playingCard != null && playingCard.AttackChance > 0)
+        if (Card != null && Card.AttackChance > 0)
             ShowAttackRange();
     }
 
@@ -130,12 +130,12 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     private void Battle(Tile attackTarget)
     {
-        StartCoroutine(GameManager.Instance.PlayTask(playingCard.Battle(attackTarget.playingCard, ColumnIndex, attackTarget.ColumnIndex)));
+        StartCoroutine(GameManager.Instance.PlayTask(Card.Battle(attackTarget.Card, ColumnIndex, attackTarget.ColumnIndex)));
     }
 
     private void Move(Tile moveTarget)
     {
-        PlayingCard targetCard = playingCard.GetComponent<PlayingCard>();
+        PlayingCard targetCard = Card.GetComponent<PlayingCard>();
 
         //카드 등록 장소 변경
         moveTarget.RegisterCard(targetCard.gameObject, 
@@ -156,8 +156,8 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         if (PlacedObject != PlacedObjType.BLANK)
             return;
 
-        playingCard = card.GetComponent<PlayingCard>();
-        playingCard.deathEvent.AddListener(UnregisterCard);
+        Card = card.GetComponent<PlayingCard>();
+        Card.deathEvent.AddListener(UnregisterCard);
 
         GameObject cardSpriteGO = card.FindChildGO(Functions.NAME__PLAYING_CARD__CARD_SPRITE);
         cardImage = cardSpriteGO.GetComponent<Image>();
@@ -171,9 +171,9 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void UnregisterCard()
     {
-        playingCard.deathEvent.RemoveListener(UnregisterCard);
+        Card.deathEvent.RemoveListener(UnregisterCard);
 
-        playingCard = null;
+        Card = null;
         cardImage = null;
         cardAnimator = null;
 
