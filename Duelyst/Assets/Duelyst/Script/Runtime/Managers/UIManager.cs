@@ -230,11 +230,11 @@ public class UIManager : MonoBehaviour
         point.z = CanvasZPos;
 
         selectingArrow.transform.position = point;
-        selectingArrow.transform.localScale = Vector3.one;
+        selectingArrow.SetActive(true);
     }
 
     public void HideSelectingArrow()
     {
-        selectingArrow.transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);
+        selectingArrow.SetActive(false);
     }
 }

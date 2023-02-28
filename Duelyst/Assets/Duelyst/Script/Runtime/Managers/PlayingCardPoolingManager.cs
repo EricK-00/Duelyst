@@ -20,9 +20,8 @@ public class PlayingCardPoolingManager : MonoBehaviour
     }
 
     private static int INIT_CARD_COUNT = 45;
-    private static Queue<PlayingCard> playingCardPool = new Queue<PlayingCard>();
 
-    //prefab
+    private Queue<PlayingCard> playingCardPool = new Queue<PlayingCard>();
     private GameObject playingCardPrefab;
 
     private void Awake()

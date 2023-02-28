@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events; 
 using EnumTypes;
+using Unity.VisualScripting;
 
 public class PlayingCard : MonoBehaviour
 {
@@ -31,6 +32,9 @@ public class PlayingCard : MonoBehaviour
     private PlayingCardDirection defaultDirection;
 
     private Image image;
+    private Material defaultMat;
+    private Material allyOutline;
+    private Material enemyOutline;
 
     private void Awake()
     {
@@ -38,6 +42,11 @@ public class PlayingCard : MonoBehaviour
         cardAnimator = cardSprite.GetComponent<Animator>();
         powerText = gameObject.FindChildGO(Functions.NAME__PLAYING_CARD__POWER_TEXT).GetComponent<TMP_Text>();
         healthText = gameObject.FindChildGO(Functions.NAME__PLAYING_CARD__HEALTH_TEXT).GetComponent<TMP_Text>();
+
+        image = cardSprite.GetComponent<Image>();
+        defaultMat = image.material;
+        allyOutline = Functions.ALLY_OUTLINE;
+        enemyOutline = Functions.ENEMY_OUTLINE;
     }
 
     public virtual void SetUp(Card card, PlayerType owner, int row, bool isRush)
@@ -59,10 +68,9 @@ public class PlayingCard : MonoBehaviour
 
         GameManager.Instance.turnEndEvent.AddListener(Refresh);
 
-        image = cardSprite.GetComponent<Image>();
         if (!isRush)
         {
-            BeExhausted();
+            PaintGray();
         }
 
         SetLayer(row);
@@ -74,12 +82,13 @@ public class PlayingCard : MonoBehaviour
 
         SetLayer(destTile.RowIndex);
 
-        const int FRAME = 60;
+        int frame = 60;
 
         Vector3 destPos = destTile.transform.GetComponent<RectTransform>().position;
         Vector3 sourcePos = transform.position;
         float timer = 1f;
-        float term = (float)1f / FRAME;
+        float term = (float)1f / frame;
+        float speed = 1.5f;
 
         //방향전환
         ChangeDirection(sourceTile.ColumnIndex, destTile.ColumnIndex);
@@ -89,7 +98,7 @@ public class PlayingCard : MonoBehaviour
             transform.position = Vector3.Lerp(sourcePos, destPos, 1 - timer);
 
             yield return new WaitForSeconds(term);
-            timer -= term;
+            timer -= term * speed;
         }
 
         destTile.OnPlaceEffect();
@@ -100,6 +109,9 @@ public class PlayingCard : MonoBehaviour
 
     public IEnumerator Battle(PlayingCard target, int sourceCol, int destCol)
     {
+        if (target == null)
+            yield break;
+
         --MoveChance;
         --AttackChance;
 
@@ -171,17 +183,33 @@ public class PlayingCard : MonoBehaviour
             PlayingCardPoolingManager.Instance.Inactive(target);
         }
 
-        BeExhausted();
+        if (AttackChance <= 0)
+            PaintGray();
     }
 
-    public void BeExhausted()
+    public void PaintGray()
     {
         image.color = Color.gray;
     }
 
-    private void Refresh()
+    public void PaintDefault()
     {
         image.color = Color.white;
+    }
+
+    public void ShowOutline()
+    {
+        image.material = Owner == PlayerType.ME ? allyOutline : enemyOutline;
+    }
+
+    public void HideOutline()
+    {
+        image.material = defaultMat;
+    }
+
+    private void Refresh()
+    {
+        PaintDefault();
         if (GameManager.Instance.CurrentTurnPlayer == Owner)
         {
             MoveChance = 1;

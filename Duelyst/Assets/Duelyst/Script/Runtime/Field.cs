@@ -7,10 +7,11 @@ using EnumTypes;
 
 public class Field : MonoBehaviour
 {
-    public GameObject objCanvas;
+    //
     public Card cardData;
 
-    //
+    public static bool IsPlaceableShowing { get; private set; }
+
     private static List<Tile> _myFieldList;
     public static ReadOnlyCollection<Tile> MyFieldList { get { return _myFieldList.AsReadOnly(); } }
     private static List<Tile> _opponentFieldList;
@@ -79,6 +80,7 @@ public class Field : MonoBehaviour
         if (_myFieldList.Count <= 0)
             return;
 
+        IsPlaceableShowing = true;
         foreach (var tile in _myFieldList)
         {
             tile.ShowPlacementRange();
@@ -87,10 +89,11 @@ public class Field : MonoBehaviour
 
     public static void HidePlaceableTiles()
     {
+        IsPlaceableShowing = false;
         if (_myFieldList.Count <= 0)
             return;
 
-        foreach(var tile in _myFieldList)
+        foreach (var tile in _myFieldList)
         {
             tile.HidePlacementRange();
         }

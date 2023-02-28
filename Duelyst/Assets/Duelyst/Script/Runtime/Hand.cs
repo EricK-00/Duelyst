@@ -85,21 +85,24 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnDrag(PointerEventData ped)
     {
-        //OnBeginDrag()와 OnEndDrag()에 이벤트 데이터를 받기 위해 필요
-        /* Do nothing */
+
     }
 
     public void OnEndDrag(PointerEventData ped)
     {
-        if (NoCard || GameManager.Instance.CurrentTurnPlayer == PlayerType.OPPONENT)
-            return;
-
         //드래그 종료
         UIManager.Instance.HideSelectingArrow();
         isDragged = false;
 
         //breathing으로 전환
         cardAnimator.SetBool("isMouseOver", false);
+
+        if (NoCard || GameManager.Instance.CurrentTurnPlayer == PlayerType.OPPONENT || GameManager.Instance.TaskBlock)
+        {
+            Field.HidePlaceableTiles();
+            return;
+        }
+
 
         //현재 레이캐스트 결과 가져오기
         GameObject raycastTarget = ped.pointerCurrentRaycast.gameObject;

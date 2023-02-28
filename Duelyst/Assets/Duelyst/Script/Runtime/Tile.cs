@@ -10,6 +10,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 {
     private readonly Color COLOR_WHITE = new Color(1, 1, 1, 0.1f); //white
     private readonly Color COLOR_YELLOW = new Color(1, 1, 0, 0.3f);//yellow
+    private readonly Color COLOR_GREEN = new Color(0.1f, 1, 0, 0.3f);//yellow
 
     public int RowIndex { get; private set; } = -1;
     public int ColumnIndex { get; private set; } = -1;
@@ -27,10 +28,6 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     private Image cardImage;
     private Animator cardAnimator;
 
-    private Material cardDefaultMat;
-    private Material allyOutline;
-    private Material enemyOutline;
-
     public PlacedObjType PlacedObject = PlacedObjType.BLANK; //{ get; private set; } = PlacedObj.BLANK;
 
     public bool IsPlaceable { get; private set; } = false;
@@ -47,9 +44,6 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
         tileImage = GetComponent<Image>();
         tileDefaultColor = tileImage.color;
-
-        allyOutline = Functions.ALLY_OUTLINE;
-        enemyOutline = Functions.ENEMY_OUTLINE;
     }
 
     public void OnPointerEnter(PointerEventData ped)
@@ -62,7 +56,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         UIManager.Instance.ShowPlayerCardDetail(cardAnimator, 
            PlacedObject == PlacedObjType.ALLY ? PlayerType.ME : PlayerType.OPPONENT);
 
-        cardImage.material = PlacedObject == PlacedObjType.ALLY ? allyOutline : enemyOutline;
+        Card.ShowOutline();
     }
 
     public void OnPointerExit(PointerEventData ped)
@@ -74,7 +68,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         //카드 상세보기 종료
         UIManager.Instance.DisableCardDetails();
 
-        cardImage.material = cardDefaultMat;
+        Card.HideOutline();
     }
 
     public void OnBeginDrag(PointerEventData ped)
@@ -99,11 +93,16 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnEndDrag(PointerEventData ped)
     {
-        if (PlacedObject != PlacedObjType.ALLY || GameManager.Instance.CurrentTurnPlayer == PlayerType.OPPONENT)
-            return;
-
         //드래그 종료
         UIManager.Instance.HideSelectingArrow();
+
+        if (PlacedObject != PlacedObjType.ALLY || GameManager.Instance.CurrentTurnPlayer == PlayerType.OPPONENT)
+        {
+            HideAttackRange();
+            HideMoveRange();
+
+            return;
+        }
 
         //현재 레이캐스트 결과 가져오기
         Tile targetTile = ped.pointerCurrentRaycast.gameObject?.GetComponent<Tile>();
@@ -154,15 +153,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     public virtual void OnPlaceEffect()
     {
         PlacedObjType foeObj = Card.Owner == PlayerType.ME ? PlacedObjType.ENEMY : PlacedObjType.ALLY;
-        foreach (var tile in aroundTiles)
-        {
-            if (tile.PlacedObject == foeObj)
-            {
-                return;
-            }
-        }
-
-        Card.BeExhausted();
+        CheckExhausted(foeObj);
     }
 
     public void RegisterCard(GameObject card, PlayerType owner)
@@ -176,25 +167,50 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         GameObject cardSpriteGO = card.FindChildGO(Functions.NAME__PLAYING_CARD__CARD_SPRITE);
         cardImage = cardSpriteGO.GetComponent<Image>();
         cardAnimator = cardSpriteGO.GetComponent<Animator>();
-        cardDefaultMat = cardImage.material;
 
         PlacedObject = owner == PlayerType.ME ? PlacedObjType.ALLY : PlacedObjType.ENEMY;
 
         Field.AddTile(this, owner);
+
+        if (GameManager.Instance.CurrentTurnPlayer != owner)
+        {
+            foreach (var tile in aroundTiles)
+            {
+                if (tile.Card != null && tile.Card.Owner != owner)
+                    tile.CheckRefreshed(PlacedObject);
+            }
+        }
     }
 
     public void UnregisterCard()
     {
-        Card.deathEvent.RemoveListener(UnregisterCard);
+        PlayerType beforeCardOwner = Card.Owner;
+        PlacedObjType beforePlacedObject = PlacedObject;
 
+        Card.deathEvent.RemoveListener(UnregisterCard);
         Card = null;
         cardImage = null;
         cardAnimator = null;
-
-        Field.RemoveTile(this,
-            (PlacedObject == PlacedObjType.ALLY) ? PlayerType.ME : PlayerType.OPPONENT);
-
         PlacedObject = PlacedObjType.BLANK;
+
+        bool isHandsDragging = Field.IsPlaceableShowing;
+        if (isHandsDragging)
+            Field.HidePlaceableTiles();
+
+        Field.RemoveTile(this, beforeCardOwner);
+
+        if (isHandsDragging)
+            Field.ShowPlaceableTiles();
+
+        if (GameManager.Instance.CurrentTurnPlayer != beforeCardOwner)
+        {
+            foreach (var tile in aroundTiles)
+            {
+                if (tile.Card != null && tile.Card.Owner != beforeCardOwner)
+                    tile.CheckExhausted(beforePlacedObject);
+            }
+        }
+
     }
 
     public void InitializeIndex(int tileRow, int tileCol)
@@ -308,7 +324,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         switch (activeType)
         {
             case ActiveType.PLACEABLE:
-                tileImage.color = COLOR_YELLOW;
+                tileImage.color = COLOR_GREEN;
                 IsPlaceable = true;
                 break;
 
@@ -331,5 +347,48 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         isAttackable = false;
         isMovable = false;
         IsPlaceable = false;
+    }
+    
+    private void CheckExhausted(PlacedObjType foeObject)
+    {
+        if (Card == null)
+            return;
+
+        if (Card.MoveChance > 0)
+            return;
+
+        if (Card.AttackChance <= 0)
+        {
+            Card.PaintGray();
+            return;
+        }
+
+        foreach (var tile in aroundTiles)
+        {
+            if (tile.PlacedObject == foeObject)
+            {
+                return;
+            }
+        }
+
+        Card.PaintGray();
+    }
+
+    private void CheckRefreshed(PlacedObjType foeObject)
+    {
+        if (Card == null)
+            return;
+
+        if (Card.AttackChance <= 0)
+            return;
+
+        foreach (var tile in aroundTiles)
+        {
+            if (tile.PlacedObject == foeObject)
+            {
+                Card.PaintDefault();
+                return;
+            }
+        }
     }
 }
