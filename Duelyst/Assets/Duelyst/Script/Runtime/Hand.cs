@@ -113,7 +113,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         if (raycastTarget.TryGetComponent<Tile>(out targetTile) && targetTile.IsPlaceable)
         {
             //코스트 지불
-            if (!GameManager.Instance.TryPlaceCard(cardData.Cost))
+            if (!GameManager.Instance.TryCostMana(cardData.Cost, PlayerType.ME))
             {
                 Field.HidePlaceableTiles();
                 return;

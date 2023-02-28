@@ -11,6 +11,8 @@ public class ManaTile : Tile
 
     public override void OnPlaceEffect()
     {
+        base.OnPlaceEffect();
+
         if (HaveMana)
         {
             GameManager.Instance.OnManaTileActive(PlacedObject);

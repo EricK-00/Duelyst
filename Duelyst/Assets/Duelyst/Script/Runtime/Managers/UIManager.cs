@@ -203,12 +203,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void UpdateHandsText(PlayerType player)
+    public void UpdateOpponentHandsText()
     {
-        if (player == PlayerType.OPPONENT)
-        {
-            opponentHandsText.SetTMPText(GameManager.Instance.OpponentHandsCount);
-        }
+        opponentHandsText.SetTMPText(GameManager.Instance.OpponentHandsCount);
     }
 
     public void UpdateDeckText(PlayerType player)

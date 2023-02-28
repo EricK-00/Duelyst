@@ -51,6 +51,9 @@ public static partial class Functions
     public const string NAME__UI_MANAGER = "UIManager";
     public const string NAME__PLAYING_CARD_POOL = "PlayingCardPool";
 
+    //AI
+    public const string NAME__AI = "AI";
+
     //GameObject in BgCanvas
     public const string NAME__MANA_TILE__MANA_BALL = "ManaBall";
 

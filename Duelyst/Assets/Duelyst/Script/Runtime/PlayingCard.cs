@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events; 
 using EnumTypes;
 
@@ -12,9 +13,13 @@ public class PlayingCard : MonoBehaviour
     public int Power { get { return _power; } private set { SetPower(value); } }
     private int _health;
     public int Health { get { return _health; } private set { SetHealth(value); } }
-    public int MoveChance { get; private set; } = 1;
-    public int AttackChance { get; private set; } = 1;
+    public PlayerType Owner { get; private set; }
 
+    [field: SerializeField]
+    public int MoveChance { get; private set; }
+    [field: SerializeField]
+    public int AttackChance { get; private set; }
+    [field: SerializeField]
     public bool IsGeneral { get; protected set; } = false;
 
     private Card cardData;
@@ -24,6 +29,8 @@ public class PlayingCard : MonoBehaviour
     private TMP_Text healthText;
 
     private PlayingCardDirection defaultDirection;
+
+    private Image image;
 
     private void Awake()
     {
@@ -43,7 +50,8 @@ public class PlayingCard : MonoBehaviour
         Power = cardData.Power;
         Health = cardData.Health;
 
-        defaultDirection = owner == PlayerType.ME ? GameManager.Instance.MyDefaultDirection : GameManager.Instance.OpponentDefaultDirection;
+        Owner = owner;
+        defaultDirection = Owner == PlayerType.ME ? GameManager.Instance.MyDefaultDirection : GameManager.Instance.OpponentDefaultDirection;
         ChangeDirection(0, 0);
 
         MoveChance = isRush ? 1 : 0;
@@ -51,24 +59,30 @@ public class PlayingCard : MonoBehaviour
 
         GameManager.Instance.turnEndEvent.AddListener(Refresh);
 
+        image = cardSprite.GetComponent<Image>();
+        if (!isRush)
+        {
+            BeExhausted();
+        }
+
         SetLayer(row);
     }
 
-    public IEnumerator Move(Tile newTile, int destRow, int sourceCol, int destCol)
+    public IEnumerator Move(Tile sourceTile, Tile destTile)//, int destRow, int sourceCol, int destCol)
     {
         --MoveChance;
 
-        SetLayer(destRow);
+        SetLayer(destTile.RowIndex);
 
         const int FRAME = 60;
 
-        Vector3 destPos = newTile.transform.GetComponent<RectTransform>().position;
+        Vector3 destPos = destTile.transform.GetComponent<RectTransform>().position;
         Vector3 sourcePos = transform.position;
         float timer = 1f;
         float term = (float)1f / FRAME;
 
         //방향전환
-        ChangeDirection(sourceCol, destCol);
+        ChangeDirection(sourceTile.ColumnIndex, destTile.ColumnIndex);
 
         while (timer >= 0)
         {
@@ -78,7 +92,7 @@ public class PlayingCard : MonoBehaviour
             timer -= term;
         }
 
-        newTile.OnPlaceEffect();
+        destTile.OnPlaceEffect();
 
         //기본방향으로 전환
         ChangeDirection(0, 0);
@@ -156,12 +170,23 @@ public class PlayingCard : MonoBehaviour
 
             PlayingCardPoolingManager.Instance.Inactive(target);
         }
+
+        BeExhausted();
+    }
+
+    public void BeExhausted()
+    {
+        image.color = Color.gray;
     }
 
     private void Refresh()
     {
-        MoveChance = 1;
-        AttackChance = 1;
+        image.color = Color.white;
+        if (GameManager.Instance.CurrentTurnPlayer == Owner)
+        {
+            MoveChance = 1;
+            AttackChance = 1;
+        }
     }
 
     private void SetLayer(int layerNum)

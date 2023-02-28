@@ -117,38 +117,52 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
         if (targetTile.isAttackable)
         {
-            Battle(targetTile);
+            BattleWithTarget(targetTile);
         }
         else if (targetTile.isMovable)
         {
-            Move(targetTile);
+            MoveCard(targetTile);
         }
 
         HideAttackRange();
         HideMoveRange();
     }
 
-    private void Battle(Tile attackTarget)
+    private void BattleWithTarget(Tile attackTarget)
     {
         StartCoroutine(GameManager.Instance.PlayTask(Card.Battle(attackTarget.Card, ColumnIndex, attackTarget.ColumnIndex)));
     }
 
-    private void Move(Tile moveTarget)
+    private void MoveCard(Tile moveTarget)
     {
         PlayingCard targetCard = Card.GetComponent<PlayingCard>();
 
         //카드 등록 장소 변경
-        moveTarget.RegisterCard(targetCard.gameObject, 
-            (PlacedObject == PlacedObjType.ALLY) ? PlayerType.ME : PlayerType.OPPONENT);
-        UnregisterCard();
+        ChangeTile(targetCard, moveTarget);
 
         //이동
-        StartCoroutine(GameManager.Instance.PlayTask(targetCard.Move(moveTarget, moveTarget.RowIndex, ColumnIndex, moveTarget.ColumnIndex)));
+        StartCoroutine(GameManager.Instance.PlayTask(targetCard.Move(this, moveTarget)));
+    }
+
+    public void ChangeTile(PlayingCard targetCard, Tile moveTarget)
+    {
+        PlayerType owner = (PlacedObject == PlacedObjType.ALLY) ? PlayerType.ME : PlayerType.OPPONENT;
+        UnregisterCard();
+        moveTarget.RegisterCard(targetCard.gameObject, owner);
     }
 
     public virtual void OnPlaceEffect()
     {
-        //Special tiles override this
+        PlacedObjType foeObj = Card.Owner == PlayerType.ME ? PlacedObjType.ENEMY : PlacedObjType.ALLY;
+        foreach (var tile in aroundTiles)
+        {
+            if (tile.PlacedObject == foeObj)
+            {
+                return;
+            }
+        }
+
+        Card.BeExhausted();
     }
 
     public void RegisterCard(GameObject card, PlayerType owner)

@@ -7,6 +7,6 @@ public class ButtonEndTurn : MonoBehaviour, IPointerUpHandler
 {
     public void OnPointerUp(PointerEventData ped)
     {
-        GameManager.Instance.EndTurn();
+        GameManager.Instance.EndMyTurn();
     }
 }

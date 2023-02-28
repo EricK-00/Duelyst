@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     public const int MAX_HANDS = 6;
     public const int MAX_DECK = 40;
     public const int MAX_LAYER_COUNT = 5;
+    public const int START_MANA = 7;
     public const int MAX_MANA = 9;
 
     private int _myHP;
@@ -39,9 +40,8 @@ public class GameManager : MonoBehaviour
     public int OpponentHP { get { return _opponentHP; } private set { SetHP(PlayerType.OPPONENT, value); } }
 
     private int _myHandsCount;
-    public int MyHandsCount { get { return _myHandsCount; } private set { SetHandsCount(PlayerType.ME, value); } }
-    private int _opponentHandsCount;
-    public int OpponentHandsCount { get { return _opponentHandsCount; } private set { SetHandsCount(PlayerType.OPPONENT, value); } }
+    public int MyHandsCount { get { return _myHandsCount; } private set { SetMyHandsCount(value); } }
+    public int OpponentHandsCount { get { return ai.GetHandsCount(); } }
 
     private int _myDeckCount;
     public int MyDeckCount { get { return _myDeckCount; } private set { SetDeckCount(PlayerType.ME, value); } }
@@ -50,8 +50,12 @@ public class GameManager : MonoBehaviour
 
     private int _myMana;
     public int MyMana { get { return _myMana; } private set { SetMana(PlayerType.ME, value); } }
+
+    private int myCurrentMaxMana;
+
     private int _opponentMana;
     public int OpponentMana { get { return _opponentMana; } private set { SetMana(PlayerType.OPPONENT, value); } }
+    private int opponentCurrentMaxMana;
 
     private int myAdditionMana;
     private int opponentAdditionMana;
@@ -67,6 +71,8 @@ public class GameManager : MonoBehaviour
 
     public Transform[] Layers { get; private set; } = new Transform[MAX_LAYER_COUNT];
 
+    private AI ai;
+
     private void Start()
     {
         if (instance == null)
@@ -79,6 +85,7 @@ public class GameManager : MonoBehaviour
     private void Initialize()
     {
         objCanvas = Functions.GetRootGO(Functions.NAME__OBJ_CANVAS);
+        ai = Functions.GetRootGO(Functions.NAME__AI).GetComponent<AI>();
 
         for (int i = 0; i < Layers.Length; i++)
         {
@@ -104,24 +111,27 @@ public class GameManager : MonoBehaviour
         MyHP = 25;
         OpponentHP = 25;
         //
-        MyMana = OpponentMana = 6;
+        MyMana = OpponentMana = myCurrentMaxMana = opponentCurrentMaxMana = START_MANA;
         MyDeckCount = 40;
         OpponentDeckCount = 40;
         MyHandsCount = 0;
-        OpponentHandsCount = 0;
 
         //제너럴 위치 설정
         //
 
-        StartCoroutine(PlayTask(DrawCard(PlayerType.ME), DrawCard(PlayerType.ME), DrawCard(PlayerType.ME), Mulligun(), StartFirstTurn()));
+        StartCoroutine(PlayTask(DrawMyCard(), DrawMyCard(), DrawMyCard(), Mulligun(), StartFirstTurn()));
+
+        DrawOpponentCard();
+        DrawOpponentCard();
+        DrawOpponentCard();
     }
 
-    public void EndTurn()
+    public void EndMyTurn()
     {
         if (TaskBlock)
             return;
 
-        StartCoroutine(PlayTask(DrawCard(CurrentTurnPlayer), DrawCard(CurrentTurnPlayer), ChangeTurn()));
+        StartCoroutine(PlayTask(DrawMyCard(), DrawMyCard(), ChangeTurn()));
     }
 
     public IEnumerator PlayTask(params IEnumerator[] coroutines)
@@ -136,50 +146,68 @@ public class GameManager : MonoBehaviour
         TaskBlock = false;
     }
 
-    public IEnumerator DrawCard(PlayerType player)
+    public IEnumerator DrawMyCard()
+    {
+        if (MyDeckCount <= 0)
+        {
+            //게임 패배
+        }
+
+        if (MyHandsCount < MAX_HANDS)
+        {
+            UIManager.Instance.AddCard(card);
+            ++MyHandsCount;
+            --MyDeckCount;
+
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    public void DrawOpponentCard()
+    {
+        if (OpponentDeckCount <= 0)
+        {
+            //게임 승리
+        }
+
+        if (OpponentHandsCount < MAX_HANDS)
+        {
+            ai.AddCard(card);
+            UIManager.Instance.UpdateOpponentHandsText();
+            --OpponentDeckCount;
+        }
+    }
+
+    public bool TryCostMana(int cost, PlayerType player)
     {
         if (player == PlayerType.ME)
         {
-            if (MyDeckCount <= 0)
-            {
-                //게임 패배
-            }
+            if (MyMana < cost)
+                return false;
 
-            if (MyHandsCount < MAX_HANDS)
-            {
-                UIManager.Instance.AddCard(card);
-                ++MyHandsCount;
-                --MyDeckCount;
+            if (myAdditionMana > 0)
+                myAdditionMana -= Mathf.Min(cost, myAdditionMana);
 
-                yield return new WaitForSeconds(0.5f);
-            }
+            MyMana -= cost;
+            --MyHandsCount;
+
+            return true;
         }
         else
         {
-            if (OpponentDeckCount <= 0)
-            {
-                //게임 승리
-            }
+            if (OpponentMana < cost)
+                return false;
 
-            yield return null;
+            if (opponentAdditionMana > 0)
+                opponentAdditionMana -= Mathf.Min(cost, opponentAdditionMana);
+
+            OpponentMana -= cost;
+
+            return true;
         }
     }
 
-    public bool TryPlaceCard(int cost)
-    {
-        if (MyMana < cost)
-            return false;
-
-        if (myAdditionMana > 0)
-            myAdditionMana -= Mathf.Min(cost, myAdditionMana);
-
-        MyMana -= cost;
-        --MyHandsCount;
-
-        return true;
-    }
-
-    private IEnumerator ChangeTurn()
+    public IEnumerator ChangeTurn()
     {
         ++turnCount;
 
@@ -188,27 +216,39 @@ public class GameManager : MonoBehaviour
 
         if (CurrentTurnPlayer == PlayerType.OPPONENT)
         {
-            if (opponentAdditionMana > 0)
-                OpponentMana -= opponentAdditionMana;
-            opponentAdditionMana = 0;
+            //if (opponentAdditionMana > 0)
+            //    OpponentMana -= opponentAdditionMana;
+            //opponentAdditionMana = 0;
         }
         else
         {
-            if (myAdditionMana > 0)
-                MyMana -= myAdditionMana;
-            myAdditionMana = 0;
+            //if (myAdditionMana > 0)
+            //    MyMana -= myAdditionMana;
+            //myAdditionMana = 0;
         }
 
         CurrentTurnPlayer = CurrentTurnPlayer == PlayerType.ME ? PlayerType.OPPONENT : PlayerType.ME;
+        StartTurn();
 
+        yield return new WaitForSeconds(1f);
+    }
+
+    public void StartTurn()
+    {
         UIManager.Instance.ShowTurnStartUI(CurrentTurnPlayer);
 
         if (CurrentTurnPlayer == PlayerType.ME)
-            ++MyMana;
+        {
+            if (myCurrentMaxMana < MAX_MANA)
+                ++myCurrentMaxMana;
+            MyMana = myCurrentMaxMana;
+        }
         else
-            ++OpponentMana;
-
-        yield return new WaitForSeconds(1f);
+        {
+            if (opponentCurrentMaxMana < MAX_MANA)
+                ++opponentCurrentMaxMana;
+            OpponentMana = opponentCurrentMaxMana;
+        }
     }
 
     private IEnumerator Mulligun()
@@ -223,6 +263,8 @@ public class GameManager : MonoBehaviour
     {
         UIManager.Instance.ShowTurnStartUI(CurrentTurnPlayer);
         yield return new WaitForSeconds(1f);
+
+        StartCoroutine(ai.AILoop(PlayerType.OPPONENT));
     }
 
     private void SetHP(PlayerType player, int currentHP)
@@ -238,20 +280,12 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.UpdateHPText(player);
     }
 
-    private void SetHandsCount(PlayerType player, int currentHands)
+    private void SetMyHandsCount(int currentHands)
     {
         if (currentHands > MAX_HANDS)
             return;
 
-        if (player == PlayerType.OPPONENT)
-        {
-            _opponentHandsCount = currentHands;
-        }
-        else
-        {
-            _myHandsCount = currentHands;
-        }
-        UIManager.Instance.UpdateHandsText(player);
+        _myHandsCount = currentHands;
     }
 
     private void SetMana(PlayerType player, int currentMana)
@@ -290,12 +324,18 @@ public class GameManager : MonoBehaviour
     {
         if (placedObj == PlacedObjType.ENEMY)
         {
-            ++opponentAdditionMana;
+            if (OpponentMana >= MAX_MANA)
+                return;
+
+            //++opponentAdditionMana;
             ++OpponentMana;
         }
         else
         {
-            ++myAdditionMana;
+            if (MyMana >= MAX_MANA)
+                return;
+
+            //++myAdditionMana;
             ++MyMana;
         }
     }
