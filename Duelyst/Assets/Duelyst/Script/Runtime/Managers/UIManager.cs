@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using EnumTypes;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
@@ -21,18 +22,24 @@ public class UIManager : MonoBehaviour
 
     private GameObject uiCanvas;
 
+    #region PlayerUI
     private Hands hands;
 
     private GameObject myCardDetail;
-    private Image myCardDetailImage;
     private Animator myCardDetailAnim;
+    private TMP_Text myCardDetailPower;
+    private TMP_Text myCardDetailHealth;
+    private TMP_Text myCardDetailType;
+    private TMP_Text myCardDetailName;
+    private TMP_Text myCardDetailCost;
 
     private GameObject opponentCardDetail;
-    private Image opponentCardDetailImage;
     private Animator opponentCardDetailAnim;
-
-    private Animator yourTurnUI;
-    private Animator enemyTurnUI;
+    private TMP_Text opponentCardDetailPower;
+    private TMP_Text opponentCardDetailHealth;
+    private TMP_Text opponentCardDetailType;
+    private TMP_Text opponentCardDetailName;
+    private TMP_Text opponentCardDetailCost;
 
     private GameObject myPlayerUI;
     private GameObject opponentPlayerUI;
@@ -46,6 +53,7 @@ public class UIManager : MonoBehaviour
     private GameObject myManaImages;
     private GameObject[] manaImages = new GameObject[GameManager.MAX_MANA];
     private TMP_Text myManaText;
+    private TMP_Text myMaxManaText;
 
     private GameObject myDeckUI;
     private TMP_Text myDeckText;
@@ -53,11 +61,23 @@ public class UIManager : MonoBehaviour
     private GameObject opponentManaUI;
     private GameObject opponentHandsUI;
     private GameObject opponentDeckUI;
+
     private TMP_Text opponentManaText;
+    private TMP_Text opponentMaxMaxText;
     private TMP_Text opponentHandsText;
     private TMP_Text opponentDeckText;
 
+    #endregion
+
+    private Animator yourTurnUI;
+    private Animator enemyTurnUI;
+
+    private Animator placeAnim;
     private GameObject selectingArrow;
+    private GameObject gameOverUIVictory;
+    private GameObject gameOverUIDefeat;
+    private GameObject gameOverUIDraw;
+
 
     private void Start()
     {
@@ -72,22 +92,19 @@ public class UIManager : MonoBehaviour
     {
         uiCanvas = Functions.GetRootGO(Functions.NAME__UI_CANVAS);
 
-        hands = uiCanvas.FindChildGO(Functions.NAME__HANDS).GetComponent<Hands>();
 
-        yourTurnUI = uiCanvas.FindChildGO(Functions.NAME__YOUR_TURN_UI).GetComponent<Animator>();
-        enemyTurnUI = uiCanvas.FindChildGO(Functions.NAME__ENEMY_TURN_UI).GetComponent<Animator>();
-
+        #region PlayerUI Initialize
+        //Player UI 초기화
         (myPlayerUI, opponentPlayerUI) = GameManager.Instance.FirstPlayer == PlayerType.ME ?
                 (uiCanvas.FindChildGO(Functions.NAME__LPLAYER_UI), uiCanvas.FindChildGO(Functions.NAME__RPLAYER_UI)) :
                 (uiCanvas.FindChildGO(Functions.NAME__RPLAYER_UI), uiCanvas.FindChildGO(Functions.NAME__LPLAYER_UI));
 
+        //my player ui
+        hands = uiCanvas.FindChildGO(Functions.NAME__HANDS).GetComponent<Hands>();
+
         myNameText = myPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__NAME_TEXT).GetComponent<TMP_Text>();
         myNameText.text = "YOU";
-        opponentNameText = opponentPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__NAME_TEXT).GetComponent<TMP_Text>();
-        opponentNameText.text = Functions.TEXT__OPPONENT;
-
         myHPText = myPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__HP_TEXT).GetComponent<TMP_Text>();
-        opponentHPText = opponentPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__HP_TEXT).GetComponent<TMP_Text>();
 
         myManaUI = myPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI_MY_MANA_UI);
         myManaUI.SetActive(true);
@@ -98,13 +115,24 @@ public class UIManager : MonoBehaviour
             manaImages[i] = myManaImages.transform.GetChild(i).gameObject;
         }
         myManaText = myManaUI.FindChildGO(Functions.NAME__PLAYER_UI__MANA_TEXT).GetComponent<TMP_Text>();
+        myMaxManaText = myManaUI.FindChildGO(Functions.NAME__PLAYER_UI__MAX_MANA_TEXT).GetComponent<TMP_Text>();
 
         myDeckUI = uiCanvas.FindChildGO(Functions.NAME__MY_DECK_UI);
         myDeckText = myDeckUI.FindChildGO(Functions.NAME__MY_DECK_TEXT).GetComponent<TMP_Text>();
 
+        //my card detail
         myCardDetail = myPlayerUI.FindChildGO(Functions.NAME__CARD_DETAIL);
-        myCardDetailImage = myCardDetail.transform.GetChild(0).GetComponent<Image>();
-        myCardDetailAnim = myCardDetail.transform.GetChild(0).GetComponent<Animator>();
+        myCardDetailAnim = myCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__SPRITE).GetComponent<Animator>();
+        myCardDetailPower = myCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__POWER).GetComponent<TMP_Text>();
+        myCardDetailHealth = myCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__HEALTH).GetComponent<TMP_Text>();
+        myCardDetailType = myCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__TYPE).GetComponent<TMP_Text>();
+        myCardDetailName = myCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__NAME).GetComponent<TMP_Text>();
+        myCardDetailCost = myCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__COST).GetComponent<TMP_Text>();
+
+        //opponent player ui
+        opponentNameText = opponentPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__NAME_TEXT).GetComponent<TMP_Text>();
+        opponentNameText.text = Functions.TEXT__OPPONENT;
+        opponentHPText = opponentPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__HP_TEXT).GetComponent<TMP_Text>();
 
         opponentManaUI = opponentPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__OPPONENT_MANA_UI);
         opponentHandsUI = opponentPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__OPPONENT_HANDS_UI);
@@ -114,49 +142,68 @@ public class UIManager : MonoBehaviour
         opponentDeckUI.SetActive(true);
 
         opponentManaText = opponentManaUI.FindChildGO(Functions.NAME__PLAYER_UI__MANA_TEXT).GetComponent<TMP_Text>();
+        opponentMaxMaxText = opponentManaUI.FindChildGO(Functions.NAME__PLAYER_UI__MAX_MANA_TEXT).GetComponent<TMP_Text>();
         opponentHandsText = opponentHandsUI.FindChildGO(Functions.NAME__PLAYER_UI__HANDS_TEXT).GetComponent<TMP_Text>();
         opponentDeckText = opponentDeckUI.FindChildGO(Functions.NAME__PLAYER_UI__DECK_TEXT).GetComponent<TMP_Text>();
 
+        //opponent card detail
         opponentCardDetail = opponentPlayerUI.FindChildGO(Functions.NAME__CARD_DETAIL);
-        opponentCardDetailImage = opponentCardDetail.transform.GetChild(0).GetComponent<Image>();
-        opponentCardDetailAnim = opponentCardDetail.transform.GetChild(0).GetComponent<Animator>();
+        opponentCardDetailAnim = opponentCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__SPRITE).GetComponent<Animator>();
+        opponentCardDetailPower = opponentCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__POWER).GetComponent<TMP_Text>();
+        opponentCardDetailHealth = opponentCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__HEALTH).GetComponent<TMP_Text>();
+        opponentCardDetailType = opponentCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__TYPE).GetComponent<TMP_Text>();
+        opponentCardDetailName = opponentCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__NAME).GetComponent<TMP_Text>();
+        opponentCardDetailCost = opponentCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__COST).GetComponent<TMP_Text>();
+        #endregion
 
+        yourTurnUI = uiCanvas.FindChildGO(Functions.NAME__YOUR_TURN_UI).GetComponent<Animator>();
+        enemyTurnUI = uiCanvas.FindChildGO(Functions.NAME__ENEMY_TURN_UI).GetComponent<Animator>();
+
+        placeAnim = uiCanvas.FindChildGO(Functions.NAME__PLACE_ANIM).GetComponent<Animator>();
         selectingArrow = uiCanvas.FindChildGO(Functions.NAME__SELECTING_ARROW);
+        gameOverUIVictory = uiCanvas.FindChildGO(Functions.NAME__GAME_OVER_UI_VICTORY);
+        gameOverUIDefeat = uiCanvas.FindChildGO(Functions.NAME__GAME_OVER_UI_DEFEAT);
+        gameOverUIDraw = uiCanvas.FindChildGO(Functions.NAME__GAME_OVER_UI_DRAW);
     }
 
-    private void Update()
+    public void ShowPlayingCardDetail(PlayingCard card)
     {
-        //if (Input.GetMouseButton(0))
-        //{
-        //    DisableCardDetails();
-        //}
-    }
+        if (card == null || card.Data == null)
+            return;
 
-    public void ShowPlayerCardDetail(Animator cardAnim, PlayerType player)
-    {
-        if (player == PlayerType.ME)
+        if (card.Owner == PlayerType.ME)
         {
             myCardDetail.SetActive(true);
+            myCardDetailAnim.runtimeAnimatorController = card.Data.Anim;
+            myCardDetailPower.SetTMPText(card.Power);
+            myCardDetailHealth.SetTMPText(card.Health);
+            myCardDetailType.SetTMPText(card.Data.Type);
+            myCardDetailName.SetTMPText(card.Data.Name);
+            myCardDetailCost.SetTMPText(card.Data.Cost);
 
-            //ID로 카드 변경하기
-            //
-            //
-            if (cardAnim != null)
-                myCardDetailAnim.runtimeAnimatorController = cardAnim.runtimeAnimatorController;
+            if (card.Data.Type != CardType.GENERAL)
+                myCardDetailCost.transform.parent.gameObject.SetActive(true);
+            else
+                myCardDetailCost.transform.parent.gameObject.SetActive(false);
         }
         else
         {
             opponentCardDetail.SetActive(true);
+            opponentCardDetailAnim.runtimeAnimatorController = card.Data.Anim;
+            opponentCardDetailPower.SetTMPText(card.Power);
+            opponentCardDetailHealth.SetTMPText(card.Health);
+            opponentCardDetailType.SetTMPText(card.Data.Type);
+            opponentCardDetailName.SetTMPText(card.Data.Name);
+            opponentCardDetailCost.SetTMPText(card.Data.Cost);
 
-            //ID로 카드 변경하기
-            //
-            //
-            if (cardAnim != null)
-                opponentCardDetailAnim.runtimeAnimatorController = cardAnim.runtimeAnimatorController;
+            if (card.Data.Type != CardType.GENERAL)
+                opponentCardDetailCost.transform.parent.gameObject.SetActive(true);
+            else
+                opponentCardDetailCost.transform.parent.gameObject.SetActive(false);
         }
     }
 
-    public void DisableCardDetails()
+    public void HidePlayingCardDetails()
     {
         myCardDetail.gameObject.SetActive(false);
         opponentCardDetail.gameObject.SetActive(false);
@@ -165,7 +212,7 @@ public class UIManager : MonoBehaviour
     public void ShowTurnStartUI(PlayerType player)
     {
         Animator turnStartUI = player == PlayerType.ME ? yourTurnUI : enemyTurnUI;
-        turnStartUI.Play("TurnStartUI_Start");
+        turnStartUI.Play(Functions.NAME__ANIMATION_STATE__TURN_START);
     }
 
     public void AddCard(Card card)
@@ -203,6 +250,18 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void UpdateMaxManaText(PlayerType player)
+    {
+        if (player == PlayerType.OPPONENT)
+        {
+            opponentMaxMaxText.SetTMPText($"/ {GameManager.Instance.OpponentCurrentMaxMana}");
+        }
+        else
+        {
+            myMaxManaText.SetTMPText($"/ {GameManager.Instance.MyCurrentMaxMana}");
+        }
+    }
+
     public void UpdateOpponentHandsText()
     {
         opponentHandsText.SetTMPText(GameManager.Instance.OpponentHandsCount);
@@ -236,5 +295,26 @@ public class UIManager : MonoBehaviour
     public void HideSelectingArrow()
     {
         selectingArrow.SetActive(false);
+    }
+
+    public void ShowGameOverUI(string gameResult)
+    {
+        GameObject gameOverUI;
+
+        if (gameResult == "Draw")
+            gameOverUI = gameOverUIDraw;
+        else if (gameResult == "Defeat")
+            gameOverUI = gameOverUIDefeat;
+        else
+            gameOverUI = gameOverUIVictory;
+
+        gameOverUI.SetActive(true);
+        gameOverUI.GetComponent<Animator>().Play(Functions.NAME__ANIMATION_STATE__GAME_OVER);
+    }
+
+    public void PlayPlacingAnim(Tile tile)
+    {
+        placeAnim.transform.position = tile.transform.position;
+        placeAnim.SetTrigger("Play");
     }
 }

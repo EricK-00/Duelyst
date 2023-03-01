@@ -61,28 +61,6 @@ Shader "Unlit/OutlineShader"
 
             fixed4 frag(v2f i) : SV_Target
             {
-                //fixed4 texColor = tex2D(_MainTex, i.uv);
-                //fixed4 vertexColor = i.color;
-
-                //fixed leftPixel = tex2D(_MainTex, i.uv + _Strength * float2(-_MainTex_TexelSize.x, 0)).a;
-                //fixed rightPixel = tex2D(_MainTex, i.uv + _Strength * float2(_MainTex_TexelSize.x, 0)).a;
-                //fixed upPixel = tex2D(_MainTex, i.uv + _Strength * float2(0, _MainTex_TexelSize.y)).a;
-                //fixed downPixel = tex2D(_MainTex, i.uv + _Strength * float2(0, -_MainTex_TexelSize.y)).a;
-
-                //fixed upperLeftPixel = tex2D(_MainTex, i.uv + _Strength * float2(-_MainTex_TexelSize.x, _MainTex_TexelSize.y)).a;
-                //fixed upperRightPixel = tex2D(_MainTex, i.uv + _Strength * float2(_MainTex_TexelSize.x, _MainTex_TexelSize.y)).a;
-                //fixed bottomLeftPixel = tex2D(_MainTex, i.uv + _Strength * float2(-_MainTex_TexelSize.x, -_MainTex_TexelSize.y)).a;
-                //fixed bottomRightPixel = tex2D(_MainTex, i.uv + _Strength * float2(_MainTex_TexelSize.x, -_MainTex_TexelSize.y)).a;
-
-                //fixed maxValue = max(max(max(leftPixel, rightPixel), max(upPixel, downPixel)), 
-                //    max(max(upperLeftPixel, bottomRightPixel), max(bottomLeftPixel, upperRightPixel)));
-                //float total = leftPixel + rightPixel + upPixel + downPixel + upperLeftPixel + upperRightPixel + bottomLeftPixel + bottomRightPixel - maxValue;
-
-                //fixed outlineRate = maxValue - texColor.a;
-
-                //fixed4 outlineColor = lerp(_OutlineColor, _BlankColor, total);
-                //return lerp(texColor, outlineColor, outlineRate);
-
                 fixed4 texColor = tex2D(_MainTex, i.uv);
                 fixed4 vertexColor = i.color;
 

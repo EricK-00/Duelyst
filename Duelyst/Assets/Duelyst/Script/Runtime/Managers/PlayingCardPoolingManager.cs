@@ -19,8 +19,9 @@ public class PlayingCardPoolingManager : MonoBehaviour
         }
     }
 
-    private static int INIT_CARD_COUNT = 45;
+    private static int INIT_CARD_POOL_COUNT = 15;
 
+    [SerializeField]
     private Queue<PlayingCard> playingCardPool = new Queue<PlayingCard>();
     private GameObject playingCardPrefab;
 
@@ -35,8 +36,8 @@ public class PlayingCardPoolingManager : MonoBehaviour
 
     private void Initialize()
     {
-        playingCardPrefab = Functions.PLAYINGCARD;
-        for (int i = 0; i < INIT_CARD_COUNT; i++)
+        playingCardPrefab = Functions.PLAYING_CARD;
+        for (int i = 0; i < INIT_CARD_POOL_COUNT; i++)
         {
             CreateInstance();
         }
@@ -50,8 +51,11 @@ public class PlayingCardPoolingManager : MonoBehaviour
         playingCardPool.Enqueue(playingCardInst.GetComponent<PlayingCard>());
     }
 
-    public void ActiveAndRegisterCard(Tile tile, Card data, bool isRush, PlayerType owner)
+    public void ActiveNewCard(Tile tile, Card data, PlayerType owner)
     {
+        if (tile.PlacedObject != PlacedObjType.BLANK)
+            return;
+
         if (playingCardPool.Count <= 0)
         {
             CreateInstance();
@@ -61,13 +65,19 @@ public class PlayingCardPoolingManager : MonoBehaviour
         card.transform.position = tile.GetComponent<RectTransform>().position;
 
         card.gameObject.SetActive(true);
-        tile.RegisterCard(card.gameObject, owner);
-        card.SetUp(data, owner, tile.RowIndex, isRush);
+        card.SetUp(data, owner, false);
+        tile.RegisterCard(card);
     }
 
-    public void Inactive(PlayingCard card)
+    public void InactiveCard(PlayingCard card)
     {
-        card.transform.SetParent(transform, false);
+        if (card.Data.Type == CardType.GENERAL)
+        {
+            GameManager.Instance.GameOver();
+            return;
+        }
+
+        card.transform.SetParent(transform);
         card.gameObject.SetActive(false);
         playingCardPool.Enqueue(card);
     }

@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ManaTile : Tile
 {
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
         HaveMana = true;
     }
 

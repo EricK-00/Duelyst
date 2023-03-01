@@ -21,9 +21,8 @@ public class PlayingCard : MonoBehaviour
     [field: SerializeField]
     public int AttackChance { get; private set; }
     [field: SerializeField]
-    public bool IsGeneral { get; protected set; } = false;
+    public Card Data { get; private set; }
 
-    private Card cardData;
     private GameObject cardSprite;
     private Animator cardAnimator;
     private TMP_Text powerText;
@@ -35,6 +34,8 @@ public class PlayingCard : MonoBehaviour
     private Material defaultMat;
     private Material allyOutline;
     private Material enemyOutline;
+
+    bool isRush;
 
     private void Awake()
     {
@@ -49,38 +50,40 @@ public class PlayingCard : MonoBehaviour
         enemyOutline = Functions.ENEMY_OUTLINE;
     }
 
-    public virtual void SetUp(Card card, PlayerType owner, int row, bool isRush)
+    public void SetUp(Card card, PlayerType owner, bool isRush)
     {
-        cardData = card;
-
-        cardAnimator.runtimeAnimatorController = cardData.Anim;
-        cardAnimator.SetBool("onField", true);
-
-        Power = cardData.Power;
-        Health = cardData.Health;
-
+        Data = card;
+        cardAnimator.runtimeAnimatorController = Data.Anim;
+        Power = Data.Power;
+        Health = Data.Health;
         Owner = owner;
+
         defaultDirection = Owner == PlayerType.ME ? GameManager.Instance.MyDefaultDirection : GameManager.Instance.OpponentDefaultDirection;
         ChangeDirection(0, 0);
 
-        MoveChance = isRush ? 1 : 0;
-        AttackChance = isRush ? 1 : 0;
-
         GameManager.Instance.turnEndEvent.AddListener(Refresh);
 
-        if (!isRush)
+        cardAnimator.SetBool("onField", true);
+
+        if (isRush || Data.Type == CardType.GENERAL)
         {
+            MoveChance = 1;
+            AttackChance = 1;
+            PaintDefault();
+        }
+        else
+        {
+            MoveChance = 0;
+            AttackChance = 0;
             PaintGray();
         }
-
-        SetLayer(row);
     }
 
-    public IEnumerator Move(Tile sourceTile, Tile destTile)//, int destRow, int sourceCol, int destCol)
+    public IEnumerator Move(Tile sourceTile, Tile destTile)
     {
         --MoveChance;
 
-        SetLayer(destTile.RowIndex);
+        SetLayer(destTile.Row);
 
         int frame = 60;
 
@@ -88,10 +91,11 @@ public class PlayingCard : MonoBehaviour
         Vector3 sourcePos = transform.position;
         float timer = 1f;
         float term = (float)1f / frame;
-        float speed = 1.5f;
+        float speed = 1.25f;
 
         //방향전환
-        ChangeDirection(sourceTile.ColumnIndex, destTile.ColumnIndex);
+        cardAnimator.SetBool("isMoving", true);
+        ChangeDirection(sourceTile.Column, destTile.Column);
 
         while (timer >= 0)
         {
@@ -101,10 +105,11 @@ public class PlayingCard : MonoBehaviour
             timer -= term * speed;
         }
 
-        destTile.OnPlaceEffect();
-
         //기본방향으로 전환
         ChangeDirection(0, 0);
+        cardAnimator.SetBool("isMoving", false);
+
+        destTile.OnPlaceEffect();
     }
 
     public IEnumerator Battle(PlayingCard target, int sourceCol, int destCol)
@@ -167,20 +172,20 @@ public class PlayingCard : MonoBehaviour
         {
             yield return new WaitForSeconds(Mathf.Max(cardAnimator.GetCurrentAnimatorStateInfo(0).length, target.cardAnimator.GetCurrentAnimatorStateInfo(0).length));
 
-            PlayingCardPoolingManager.Instance.Inactive(this);
-            PlayingCardPoolingManager.Instance.Inactive(target);
+            PlayingCardPoolingManager.Instance.InactiveCard(this);
+            PlayingCardPoolingManager.Instance.InactiveCard(target);
         }
         else if (Health <= 0)
         {
             yield return new WaitForSeconds(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
 
-            PlayingCardPoolingManager.Instance.Inactive(this);
+            PlayingCardPoolingManager.Instance.InactiveCard(this);
         }
         else if (target.Health <= 0)
         {
             yield return new WaitForSeconds(target.cardAnimator.GetCurrentAnimatorStateInfo(0).length);
 
-            PlayingCardPoolingManager.Instance.Inactive(target);
+            PlayingCardPoolingManager.Instance.InactiveCard(target);
         }
 
         if (AttackChance <= 0)
@@ -189,7 +194,8 @@ public class PlayingCard : MonoBehaviour
 
     public void PaintGray()
     {
-        image.color = Color.gray;
+        if (Data.Type == CardType.MINION || Data.Type == CardType.GENERAL)
+            image.color = Color.gray;
     }
 
     public void PaintDefault()
@@ -206,21 +212,21 @@ public class PlayingCard : MonoBehaviour
     {
         image.material = defaultMat;
     }
+    public void SetLayer(int layerNum)
+    {
+        transform.SetParent(GameManager.Instance.Layers[layerNum]);
+    }
 
     private void Refresh()
     {
-        PaintDefault();
         if (GameManager.Instance.CurrentTurnPlayer == Owner)
         {
             MoveChance = 1;
             AttackChance = 1;
+            PaintDefault();
         }
     }
 
-    private void SetLayer(int layerNum)
-    {
-        transform.SetParent(GameManager.Instance.Layers[layerNum]);
-    }
 
     private void SetPower(int currentPower)
     {
@@ -228,9 +234,11 @@ public class PlayingCard : MonoBehaviour
         powerText.SetTMPText(Power);
     }
 
-    private void SetHealth(int currentHealth)
+    protected virtual void SetHealth(int currentHealth)
     {
         _health = currentHealth;
+        if (_health < 0)
+            _health = 0;
         healthText.SetTMPText(Health);
     }
 

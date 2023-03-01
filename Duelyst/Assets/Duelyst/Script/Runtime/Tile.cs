@@ -8,12 +8,12 @@ using EnumTypes;
 
 public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    private readonly Color COLOR_WHITE = new Color(1, 1, 1, 0.1f); //white
+    private readonly Color COLOR_WHITE = new Color(1, 1, 1, 0.3f); //white
     private readonly Color COLOR_YELLOW = new Color(1, 1, 0, 0.3f);//yellow
-    private readonly Color COLOR_GREEN = new Color(0.1f, 1, 0, 0.3f);//yellow
+    private readonly Color COLOR_GREEN = new Color(0.1f, 1, 0, 0.3f);//green
 
-    public int RowIndex { get; private set; } = -1;
-    public int ColumnIndex { get; private set; } = -1;
+    public int Row { get; private set; } = -1;
+    public int Column { get; private set; } = -1;
     [SerializeField]
     private List<Tile> aroundTiles = new List<Tile>();
     [SerializeField]
@@ -25,10 +25,8 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     private Color tileDefaultColor;
 
     public PlayingCard Card { get; private set; }
-    private Image cardImage;
-    private Animator cardAnimator;
 
-    public PlacedObjType PlacedObject = PlacedObjType.BLANK; //{ get; private set; } = PlacedObj.BLANK;
+    public PlacedObjType PlacedObject { get; private set; } = PlacedObjType.BLANK;
 
     public bool IsPlaceable { get; private set; } = false;
     public bool isMovable { get; private set; } = false;
@@ -38,7 +36,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public int debug_Weight = 0;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         tileRect = GetComponent<RectTransform>();
 
@@ -53,8 +51,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             return;
 
         //카드 상세보기
-        UIManager.Instance.ShowPlayerCardDetail(cardAnimator, 
-           PlacedObject == PlacedObjType.ALLY ? PlayerType.ME : PlayerType.OPPONENT);
+        UIManager.Instance.ShowPlayingCardDetail(Card);
 
         Card.ShowOutline();
     }
@@ -66,7 +63,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             return;
 
         //카드 상세보기 종료
-        UIManager.Instance.DisableCardDetails();
+        UIManager.Instance.HidePlayingCardDetails();
 
         Card.HideOutline();
     }
@@ -88,7 +85,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnDrag(PointerEventData ped)
     {
-
+        /* Do nothing */
     }
 
     public void OnEndDrag(PointerEventData ped)
@@ -129,7 +126,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     private void BattleWithTarget(Tile attackTarget)
     {
-        StartCoroutine(GameManager.Instance.PlayTask(Card.Battle(attackTarget.Card, ColumnIndex, attackTarget.ColumnIndex)));
+        StartCoroutine(GameManager.Instance.PlayTask(Card.Battle(attackTarget.Card, Column, attackTarget.Column)));
     }
 
     private void MoveCard(Tile moveTarget)
@@ -145,9 +142,11 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void ChangeTile(PlayingCard targetCard, Tile moveTarget)
     {
-        PlayerType owner = (PlacedObject == PlacedObjType.ALLY) ? PlayerType.ME : PlayerType.OPPONENT;
+        if (targetCard.Data == null)
+            return;
+
         UnregisterCard();
-        moveTarget.RegisterCard(targetCard.gameObject, owner);
+        moveTarget.RegisterCard(targetCard);
     }
 
     public virtual void OnPlaceEffect()
@@ -156,27 +155,24 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         CheckExhausted(foeObj);
     }
 
-    public void RegisterCard(GameObject card, PlayerType owner)
+    public void RegisterCard(PlayingCard card)
     {
         if (PlacedObject != PlacedObjType.BLANK)
             return;
 
-        Card = card.GetComponent<PlayingCard>();
+        Card = card;
+        Card.SetLayer(Row);
         Card.deathEvent.AddListener(UnregisterCard);
 
-        GameObject cardSpriteGO = card.FindChildGO(Functions.NAME__PLAYING_CARD__CARD_SPRITE);
-        cardImage = cardSpriteGO.GetComponent<Image>();
-        cardAnimator = cardSpriteGO.GetComponent<Animator>();
+        PlacedObject = Card.Owner == PlayerType.ME ? PlacedObjType.ALLY : PlacedObjType.ENEMY;
 
-        PlacedObject = owner == PlayerType.ME ? PlacedObjType.ALLY : PlacedObjType.ENEMY;
+        Field.AddPlayerTile(this, Card.Owner);
 
-        Field.AddTile(this, owner);
-
-        if (GameManager.Instance.CurrentTurnPlayer != owner)
+        if (GameManager.Instance.CurrentTurnPlayer != Card.Owner)
         {
             foreach (var tile in aroundTiles)
             {
-                if (tile.Card != null && tile.Card.Owner != owner)
+                if (tile.Card != null && tile.Card.Owner != Card.Owner)
                     tile.CheckRefreshed(PlacedObject);
             }
         }
@@ -189,15 +185,13 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
         Card.deathEvent.RemoveListener(UnregisterCard);
         Card = null;
-        cardImage = null;
-        cardAnimator = null;
         PlacedObject = PlacedObjType.BLANK;
 
         bool isHandsDragging = Field.IsPlaceableShowing;
         if (isHandsDragging)
             Field.HidePlaceableTiles();
 
-        Field.RemoveTile(this, beforeCardOwner);
+        Field.RemovePlayerTile(this, beforeCardOwner);
 
         if (isHandsDragging)
             Field.ShowPlaceableTiles();
@@ -215,22 +209,22 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void InitializeIndex(int tileRow, int tileCol)
     {
-        if (RowIndex != -1 && ColumnIndex != -1)
+        if (Row != -1 && Column != -1)
             return;
 
-        RowIndex = tileRow;
-        ColumnIndex = tileCol;
+        Row = tileRow;
+        Column = tileCol;
 
         int row, col;
         for (int i = -1; i <= 1; i++)
         {
-            row = RowIndex + i;
+            row = Row + i;
             for (int j = -1; j <= 1; j++)
             {
                 if (i == 0 && j == 0)
                     continue;
 
-                col = ColumnIndex + j;
+                col = Column + j;
 
                 Tile tile;
                 if (Board.TryGetTile(row, col, out tile))

@@ -53,7 +53,11 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 77fbb7e066ea03a498a4ec5b0ae23b27, type: 3}
   - {fileID: 21300000, guid: 80b2d6f1d38e0eb439ca953fce339e7d, type: 3}
   - {fileID: 21300000, guid: 215779023b2afd244b631cbbca022fec, type: 3}
-  - {fileID: 21300000, guid: cceb1074e3801f349b6a82862b9b960d, type: 3}
+  - {fileID: 21300000, guid: d9c1cef2e9b9c584c8a6e85ae99041e1, type: 3}
+  - {fileID: 21300000, guid: 3a72db333dbbf0e4c998420a6579fc9a, type: 3}
+  - {fileID: 21300000, guid: a11da993bddb872418506e5880ab9ac3, type: 3}
+  - {fileID: 21300000, guid: 6caad0148ce582644b18a47b159c9087, type: 3}
+  - {fileID: 21300000, guid: c3872e845d28e4e4984c7d760a3f034b, type: 3}
   - {fileID: 21300000, guid: 40d2df84863a06645b02b5267d73beb7, type: 3}
   - {fileID: 21300000, guid: ad6277a4875c95c4a9a3fa4ae32b4f0e, type: 3}
   - {fileID: 21300000, guid: 62998325fe2e7a64ab7190b131c45088, type: 3}
@@ -63,18 +67,17 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 6fd245a6ab83df8448cd1d1a024e9ae9, type: 3}
   - {fileID: 21300000, guid: 609382f6f3367fe429e65d53d11bdf19, type: 3}
   - {fileID: 21300000, guid: 9156c6f76cbe1c547bcf1c2d58371003, type: 3}
-  - {fileID: 21300000, guid: e1f56c28e42c688418f431d27ba9b9b0, type: 3}
   - {fileID: 21300000, guid: 9fc2fd58930688648a922a120f93ecae, type: 3}
-  - {fileID: 21300000, guid: 11d321884110c3a49ab0dc1fe45a69fa, type: 3}
   - {fileID: 21300000, guid: 97a913a88314d9346a9ff022764b2e01, type: 3}
   - {fileID: 21300000, guid: 557085a8d520fd04fb7605067d49912c, type: 3}
-  - {fileID: 21300000, guid: 0d9739092b97d824aa1ba0eb196a7e35, type: 3}
-  - {fileID: 21300000, guid: d719cf19ad211dd40a4e15d87bacc83e, type: 3}
   - {fileID: 21300000, guid: edca1479491c016498027d713e347c53, type: 3}
   - {fileID: 21300000, guid: 84384589a4de78948928f5229aa78571, type: 3}
+  - {fileID: 21300000, guid: cf5cb3c94abacf9428797d0efd5fdfbc, type: 3}
   - {fileID: 21300000, guid: 38b505c972fdeaa4382d18872543d674, type: 3}
-  - {fileID: 21300000, guid: fba16c0a84d47c446bdd559fa0e04fb1, type: 3}
   - {fileID: 21300000, guid: d3c3a22ae2e29244580fcd3b4dc8f4bb, type: 3}
+  - {fileID: 21300000, guid: 8dafe69aa58478944a9b96351f7058aa, type: 3}
+  - {fileID: 21300000, guid: 80ca2dea5078e874d81b344b294c65b0, type: 3}
+  - {fileID: 21300000, guid: c40bc4bbfc3e64f41940af60ed078259, type: 3}
   - {fileID: 21300000, guid: c8ba202cfcca7da4f926e8b2ab7f3e76, type: 3}
   - {fileID: 21300000, guid: 42443f6cc79449d4a8a282649b22886f, type: 3}
   - {fileID: 21300000, guid: f4221fccf7e5cda43979398a5c165f47, type: 3}
@@ -95,18 +98,36 @@ SpriteAtlas:
   - {fileID: 21300000, guid: ec82bf0dcf137ef43b56baffa4cea631, type: 3}
   - {fileID: 21300000, guid: cba16c5d9bd535142b92cae347c1ce0f, type: 3}
   - {fileID: 21300000, guid: 5162107d7eda7034cbc8b042c2518771, type: 3}
-  - {fileID: 21300000, guid: 08dec1bdb006d9e43b02b5d1086b4d43, type: 3}
   - {fileID: 21300000, guid: cbd279cd513e83243bf1a1c06de3ec5e, type: 3}
+  - {fileID: 21300000, guid: 480c8d1ee979025428e10b1582dd6b85, type: 3}
+  - {fileID: 21300000, guid: b7faac3e5f9ac8444a238cd0c18af6ea, type: 3}
   - {fileID: 21300000, guid: e6f8eb6ed3f901b4dba26e93a7bc33ec, type: 3}
-  - {fileID: 21300000, guid: 658c327eea61a7f47ae295602f343780, type: 3}
-  - {fileID: 21300000, guid: 22defabe46395c746a99de66478934c7, type: 3}
-  - {fileID: 21300000, guid: a6ad550f9d217014881f18f1d4458ff8, type: 3}
+  - {fileID: 21300000, guid: 1ba8985fe9d84024abccef5e67ab4855, type: 3}
+  - {fileID: -897913533, guid: e86c626fc4cf4d54faa45b9d68324d98, type: 3}
+  - {fileID: 797003260, guid: e86c626fc4cf4d54faa45b9d68324d98, type: 3}
+  - {fileID: 1692260233, guid: e86c626fc4cf4d54faa45b9d68324d98, type: 3}
+  - {fileID: -1721565841, guid: e86c626fc4cf4d54faa45b9d68324d98, type: 3}
+  - {fileID: -1044962131, guid: e86c626fc4cf4d54faa45b9d68324d98, type: 3}
+  - {fileID: 1286345778, guid: e86c626fc4cf4d54faa45b9d68324d98, type: 3}
+  - {fileID: -405284898, guid: e86c626fc4cf4d54faa45b9d68324d98, type: 3}
+  - {fileID: 1204538062, guid: e86c626fc4cf4d54faa45b9d68324d98, type: 3}
+  - {fileID: -1975085054, guid: e86c626fc4cf4d54faa45b9d68324d98, type: 3}
+  - {fileID: 1938393011, guid: e86c626fc4cf4d54faa45b9d68324d98, type: 3}
+  - {fileID: 1338152653, guid: e86c626fc4cf4d54faa45b9d68324d98, type: 3}
+  - {fileID: 1410524357, guid: e86c626fc4cf4d54faa45b9d68324d98, type: 3}
+  - {fileID: 861011488, guid: e86c626fc4cf4d54faa45b9d68324d98, type: 3}
+  - {fileID: -675534841, guid: e86c626fc4cf4d54faa45b9d68324d98, type: 3}
   - {fileID: 21300000, guid: b250b89fc32e2364c81b0420100f4193, type: 3}
+  - {fileID: 21300000, guid: 428db3efc7deccf43866cdd2ae10a6da, type: 3}
   m_PackedSpriteNamesToIndex:
   - general_portrait_image_hex_f5@2x
   - icon_atk@2x
   - glow
-  - icon_atk_bw@2x
+  - neutral_unit
+  - general_f5
+  - midground
+  - battlemap3_foreground
+  - battlemap3_middleground
   - replace_outer_ring_shine@2x
   - button_end_turn_mine
   - tile_path_attack
@@ -116,18 +137,17 @@ SpriteAtlas:
   - notification_enemy_turn
   - symbol_main_menu_diamond@2x
   - button_end_turn_mine_glow
-  - cloud_1
   - icon_mana_inactive@2x
-  - near_pillars
   - button_primary@2x
   - notification_your_turn
-  - troop
-  - cloud_0
   - battlemap6_middleground@2x
   - global_game_background
+  - vs_crest
   - tile_mana_idle
-  - tile_mana_depleted
   - button_primary_glow@2x
+  - obsidian_woods_background
+  - obsidian_woods_pillar
+  - highlight_white
   - icon_hp@2x
   - icon_general
   - symbol_main_menu_diamond
@@ -148,13 +168,27 @@ SpriteAtlas:
   - icon_mana@2x
   - replace_background@2x
   - button_end_turn_finished@2x
-  - symbol_main_menu_center
   - replace_outer_ring_smoke@2x
+  - foreground
+  - obsidian_woods_cliff
   - rift_level_ring
-  - provoke
-  - cloud_2
-  - icon_hp_bw@2x
+  - battlemap3_background
+  - fx_teleportrecallblue_12
+  - fx_teleportrecallblue_13
+  - fx_teleportrecallblue_9
+  - fx_teleportrecallblue_10
+  - fx_teleportrecallblue_8
+  - fx_teleportrecallblue_11
+  - fx_teleportrecallblue_7
+  - fx_teleportrecallblue_6
+  - fx_teleportrecallblue_5
+  - fx_teleportrecallblue_4
+  - fx_teleportrecallblue_3
+  - fx_teleportrecallblue_2
+  - fx_teleportrecallblue_1
+  - fx_teleportrecallblue_0
   - brand_duelyst
+  - background
   m_RenderDataMap: {}
   m_Tag: UISpriteAtlas
   m_IsVariant: 0

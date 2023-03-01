@@ -6,40 +6,40 @@ using UnityEngine.EventSystems;
 
 public enum CardType
 {
-    General,
-    Minion
+    GENERAL,
+    MINION
 }
 
 [CreateAssetMenu(fileName = "CardData", menuName = "Scriptable Objects/Card", order = 1)]
 public class Card : ScriptableObject
 {
     [SerializeField]
-    private int id;
-    public int Id { get { return id; } }
+    private int _id;
+    public int Id { get { return _id; } }
 
     [SerializeField]
-    private int cost;
-    public int Cost { get { return cost; } }
+    private int _cost;
+    public int Cost { get { return _cost; } }
 
     [SerializeField]
-    private string cardName;
-    public string CardName { get { return cardName; } }
+    private string _name;
+    public string Name { get { return _name; } }
 
     //public string Effect { get; private set; }
 
     [SerializeField]
-    private CardType type;
-    public CardType Type { get { return type; } }
+    private CardType _type;
+    public CardType Type { get { return _type; } }
 
     [SerializeField, Range(0, 99)]
-    private int power;
-    public int Power { get { return power; } }
+    private int _power;
+    public int Power { get { return _power; } }
 
     [SerializeField, Range(0, 99)]
-    private int health;
-    public int Health { get { return health; } }
+    private int _health;
+    public int Health { get { return _health; } }
 
     [SerializeField]
-    private AnimatorController anim;
-    public AnimatorController Anim { get { return anim; } }
+    private AnimatorOverrideController _anim;
+    public AnimatorOverrideController Anim { get { return _anim; } }
 }

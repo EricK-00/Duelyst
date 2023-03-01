@@ -8,14 +8,19 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 {
     private RectTransform handRect;
 
-    private GameObject objCanvas;
-    private GameObject cardDetail;
-    private GameObject card;
-    private Image cardImage;
+    private GameObject cardSprite;
     private Sprite defaultCardSprite;
-    private Animator cardAnimator;
+    private Animator cardAnim;
 
-    private Animator drawAnimator;
+    private GameObject cardDetail;
+    private Animator cardDetailAnim;
+    private TMP_Text cardDetailPower;
+    private TMP_Text cardDetailHealth;
+    private TMP_Text cardDetailType;
+    private TMP_Text cardDetailName;
+    private TMP_Text cardDetailCost;
+
+    private Animator drawAnim;
 
     private TMP_Text costText;
 
@@ -28,15 +33,19 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     {
         handRect = GetComponent<RectTransform>();
 
-        objCanvas = Functions.GetRootGO(Functions.NAME__OBJ_CANVAS);
+        cardSprite = gameObject.FindChildGO(Functions.NAME__HAND__CARD_SPRITE);
+        defaultCardSprite = GetComponent<Image>().sprite;
+        cardAnim = cardSprite.GetComponent<Animator>();
 
-        cardDetail = gameObject.FindChildGO(Functions.NAME__HAND__CARD_DETAIL);
-        card = gameObject.FindChildGO(Functions.NAME__HAND__CARD_SPRITE);
-        cardImage = GetComponent<Image>();
-        defaultCardSprite = cardImage.sprite;
-        cardAnimator = card.GetComponent<Animator>();
+        cardDetail = gameObject.FindChildGO(Functions.NAME__CARD_DETAIL);
+        cardDetailAnim = cardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__SPRITE).GetComponent<Animator>();
+        cardDetailPower = cardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__POWER).GetComponent<TMP_Text>();
+        cardDetailHealth = cardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__HEALTH).GetComponent<TMP_Text>();
+        cardDetailType = cardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__TYPE).GetComponent<TMP_Text>();
+        cardDetailName = cardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__NAME).GetComponent<TMP_Text>();
+        cardDetailCost = cardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__COST).GetComponent<TMP_Text>();
 
-        drawAnimator = gameObject.FindChildGO(Functions.NAME__HAND__DRAW_ANIM).GetComponent<Animator>();
+        drawAnim = gameObject.FindChildGO(Functions.NAME__HAND__DRAW_ANIM).GetComponent<Animator>();
 
         costText = gameObject.FindChildGO(Functions.NAME__HAND__COST_TEXT).GetComponent<TMP_Text>();
     }
@@ -48,9 +57,10 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
         if (!isDragged)
         {
-            //카드 상세보기 + idle로 전환
-            cardDetail.SetActive(true);
-            cardAnimator.SetBool("isMouseOver", true);
+            ShowCardDetail();
+
+            //idle로 전환
+            cardAnim.SetBool("isTargetedInHands", true);
         }
     }
 
@@ -68,11 +78,10 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         else
         {
             //breathing으로 전환
-            cardAnimator.SetBool("isMouseOver", false);
+            cardAnim.SetBool("isTargetedInHands", false);
         }
 
-        //카드 상세보기 삭제
-        cardDetail.SetActive(false);
+        HideCardDetail();
     }
 
     public void OnBeginDrag(PointerEventData ped)
@@ -85,7 +94,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnDrag(PointerEventData ped)
     {
-
+        /* Do nothing */
     }
 
     public void OnEndDrag(PointerEventData ped)
@@ -95,7 +104,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         isDragged = false;
 
         //breathing으로 전환
-        cardAnimator.SetBool("isMouseOver", false);
+        cardAnim.SetBool("isTargetedInHands", false);
 
         if (NoCard || GameManager.Instance.CurrentTurnPlayer == PlayerType.OPPONENT || GameManager.Instance.TaskBlock)
         {
@@ -113,7 +122,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         }
 
         Tile targetTile;
-        if (raycastTarget.TryGetComponent<Tile>(out targetTile) && targetTile.IsPlaceable)
+        if (raycastTarget.TryGetComponent(out targetTile) && targetTile.IsPlaceable)
         {
             //코스트 지불
             if (!GameManager.Instance.TryCostMana(cardData.Cost, PlayerType.ME))
@@ -132,15 +141,16 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     private void PlacePlayingCard(Tile tile)
     {
-        PlayingCardPoolingManager.Instance.ActiveAndRegisterCard(tile, cardData, false, PlayerType.ME);
+        PlayingCardPoolingManager.Instance.ActiveNewCard(tile, cardData, PlayerType.ME);
+        UIManager.Instance.PlayPlacingAnim(tile);
         tile.OnPlaceEffect();
     }
 
     private void SetDefault()
     {
         NoCard = true;
-        cardImage.sprite = defaultCardSprite;
-        cardAnimator.runtimeAnimatorController = null;
+        GetComponent<Image>().sprite = defaultCardSprite;
+        cardAnim.runtimeAnimatorController = null;
         costText.text = string.Empty;
     }
 
@@ -149,9 +159,31 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         NoCard = false;
 
         cardData = card;
-        cardAnimator.runtimeAnimatorController = cardData.Anim;
+        cardAnim.runtimeAnimatorController = cardData.Anim;
         costText.SetTMPText(cardData.Cost);
 
-        drawAnimator.Play("HandDraw_Start");
+        drawAnim.Play(Functions.NAME__ANIMATION_STATE__DRAW);
+    }
+
+    private void ShowCardDetail()
+    {
+        cardDetailAnim.runtimeAnimatorController = cardData.Anim;
+        cardDetailPower.SetTMPText(cardData.Power);
+        cardDetailHealth.SetTMPText(cardData.Health);
+        cardDetailType.SetTMPText(cardData.Type);
+        cardDetailName.SetTMPText(cardData.Name);
+        cardDetailCost.SetTMPText(cardData.Cost);
+
+        if (cardData.Type != CardType.GENERAL)
+            cardDetailCost.transform.parent.gameObject.SetActive(true);
+        else
+            cardDetailCost.transform.parent.gameObject.SetActive(false);
+
+        cardDetail.SetActive(true);
+    }
+
+    private void HideCardDetail()
+    {
+        cardDetail.SetActive(false);
     }
 }

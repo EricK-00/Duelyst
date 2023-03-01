@@ -2,21 +2,16 @@ using EnumTypes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class General : PlayingCard
 {
-    public override void SetUp(Card card, PlayerType owner, int row, bool isRush)
-    {
-        base.SetUp(card, owner, row, isRush);
-    }
+    public UnityEvent<PlayerType, int> healthUpdateEvent = new UnityEvent<PlayerType, int>();
 
-    private void OnEnable()
+    protected override void SetHealth(int currentHealth)
     {
-        IsGeneral = true;
-    }
-
-    private void OnDisable()
-    {
-        //GameOver()
+        base.SetHealth(currentHealth);
+        if (healthUpdateEvent != null)
+            healthUpdateEvent.Invoke(Owner, Health);
     }
 }

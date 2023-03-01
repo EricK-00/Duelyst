@@ -1,12 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using EnumTypes;
 
-public class ButtonEndTurn : MonoBehaviour, IPointerUpHandler
+public class ButtonEndTurn : MonoBehaviour, IPointerClickHandler
 {
-    public void OnPointerUp(PointerEventData ped)
+    public void OnPointerClick(PointerEventData ped)
     {
-        GameManager.Instance.EndMyTurn();
+        if (GameManager.Instance.CurrentTurnPlayer == PlayerType.ME && ped.button == PointerEventData.InputButton.Left)
+        {
+            GameManager.Instance.EndMyTurn();
+        }
     }
 }

@@ -9,6 +9,7 @@ public class Field : MonoBehaviour
 {
     //
     public Card cardData;
+    public Card cardData_general;
 
     public static bool IsPlaceableShowing { get; private set; }
 
@@ -17,11 +18,15 @@ public class Field : MonoBehaviour
     private static List<Tile> _opponentFieldList;
     public static ReadOnlyCollection<Tile> OpponentFieldList { get { return _opponentFieldList.AsReadOnly(); } }
 
-    private void Start()
+    private void Awake()
     {
         _myFieldList = new List<Tile>();
         _opponentFieldList = new List<Tile>();
+    }
 
+    private void Start()
+    {
+        //
         Tile myStartTile, opponentStartTile;
 
         //
@@ -50,16 +55,16 @@ public class Field : MonoBehaviour
             Board.TryGetTile(4, 2, out aiTestOppoentTile3);
         }
 
-        PlayingCardPoolingManager.Instance.ActiveAndRegisterCard(myStartTile, cardData, true, PlayerType.ME);
-        PlayingCardPoolingManager.Instance.ActiveAndRegisterCard(opponentStartTile, cardData, true, PlayerType.OPPONENT);
+        PlayingCardPoolingManager.Instance.ActiveNewCard(myStartTile, cardData_general, PlayerType.ME);
+        PlayingCardPoolingManager.Instance.ActiveNewCard(opponentStartTile, cardData_general, PlayerType.OPPONENT);
 
         //
-        PlayingCardPoolingManager.Instance.ActiveAndRegisterCard(aiTestOppoentTile1, cardData, true, PlayerType.OPPONENT);
-        PlayingCardPoolingManager.Instance.ActiveAndRegisterCard(aiTestOppoentTile2, cardData, true, PlayerType.OPPONENT);
-        PlayingCardPoolingManager.Instance.ActiveAndRegisterCard(aiTestOppoentTile3, cardData, true, PlayerType.OPPONENT);
+        PlayingCardPoolingManager.Instance.ActiveNewCard(aiTestOppoentTile1, cardData, PlayerType.ME);
+        PlayingCardPoolingManager.Instance.ActiveNewCard(aiTestOppoentTile2, cardData, PlayerType.ME);
+        PlayingCardPoolingManager.Instance.ActiveNewCard(aiTestOppoentTile3, cardData, PlayerType.ME);
     }
 
-    public static void AddTile(Tile tile, PlayerType player)
+    public static void AddPlayerTile(Tile tile, PlayerType player)
     {
         if (player == PlayerType.ME)
             _myFieldList.Add(tile);
@@ -67,7 +72,7 @@ public class Field : MonoBehaviour
             _opponentFieldList.Add(tile);
     }
 
-    public static void RemoveTile(Tile tile, PlayerType player)
+    public static void RemovePlayerTile(Tile tile, PlayerType player)
     {
         if (player == PlayerType.ME)
             _myFieldList.Remove(tile);

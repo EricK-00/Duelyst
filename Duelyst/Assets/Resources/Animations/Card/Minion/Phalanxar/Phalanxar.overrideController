@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Phalanxar
+  m_Controller: {fileID: 9100000, guid: 20b4b3825bbbc03429447b3304973c66, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 37ea73a38eaa7894f999bb3fafe43316, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 37ea73a38eaa7894f999bb3fafe43316, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 9164b191319b6bb4a8cb2d2096d9eadc, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 9164b191319b6bb4a8cb2d2096d9eadc, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 1874b1e9c1c1f7445a72cc8c1edb85d3, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 1874b1e9c1c1f7445a72cc8c1edb85d3, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: f839f33f93f6f3842861dacb8e3689bd, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: f839f33f93f6f3842861dacb8e3689bd, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: a3d6e02faab604c40a95b79a90435f48, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a3d6e02faab604c40a95b79a90435f48, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: f0434289a329fcb4a8c4c7cfd002b5f2, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: f0434289a329fcb4a8c4c7cfd002b5f2, type: 2}

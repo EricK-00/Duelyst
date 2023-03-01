@@ -7,7 +7,7 @@ public class DrawTest : MonoBehaviour, IPointerUpHandler
 {
     public void OnPointerUp(PointerEventData ped)
     {
-        Functions.LoadScene("MainScene");
+        Functions.LoadScene("01.MainMenuScene");
         //StartCoroutine(GameManager.Instance.PlayTask(GameManager.Instance.DrawCard()));
     }
 }

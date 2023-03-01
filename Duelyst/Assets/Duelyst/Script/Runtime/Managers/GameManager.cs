@@ -1,7 +1,9 @@
 using EnumTypes;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.UI.GridLayoutGroup;
 
 public class GameManager : MonoBehaviour
 {
@@ -31,7 +33,7 @@ public class GameManager : MonoBehaviour
     public const int MAX_HANDS = 6;
     public const int MAX_DECK = 40;
     public const int MAX_LAYER_COUNT = 5;
-    public const int START_MANA = 7;
+    public const int START_MANA = 2;
     public const int MAX_MANA = 9;
 
     private int _myHP;
@@ -51,14 +53,15 @@ public class GameManager : MonoBehaviour
     private int _myMana;
     public int MyMana { get { return _myMana; } private set { SetMana(PlayerType.ME, value); } }
 
-    private int myCurrentMaxMana;
+    private int _myCurrentMaxMana;
+    public int MyCurrentMaxMana { get { return _myCurrentMaxMana; } private set { SetMaxMana(PlayerType.ME, value); } }
 
     private int _opponentMana;
     public int OpponentMana { get { return _opponentMana; } private set { SetMana(PlayerType.OPPONENT, value); } }
-    private int opponentCurrentMaxMana;
+    private int _opponentCurrentMaxMana;
+    public int OpponentCurrentMaxMana { get { return _opponentCurrentMaxMana; } private set { SetMaxMana(PlayerType.OPPONENT, value); } }
 
-    private int myAdditionMana;
-    private int opponentAdditionMana;
+
 
     private int turnCount;
     public PlayerType CurrentTurnPlayer { get; private set; }
@@ -69,9 +72,12 @@ public class GameManager : MonoBehaviour
 
     public bool TaskBlock { get; private set; }
 
-    public Transform[] Layers { get; private set; } = new Transform[MAX_LAYER_COUNT];
+    public RectTransform[] Layers { get; private set; } = new RectTransform[MAX_LAYER_COUNT];
 
     private AI ai;
+    private Card generalSO;
+    private General myGeneral;
+    private General opponentGeneral;
 
     private void Start()
     {
@@ -86,10 +92,13 @@ public class GameManager : MonoBehaviour
     {
         objCanvas = Functions.GetRootGO(Functions.NAME__OBJ_CANVAS);
         ai = Functions.GetRootGO(Functions.NAME__AI).GetComponent<AI>();
+        generalSO = Functions.VAATH_THE_IMMORTAL;
+        myGeneral = objCanvas.FindChildGO(Functions.NAME__MY_GENERAL).GetComponent<General>();
+        opponentGeneral = objCanvas.FindChildGO(Functions.NAME__OPPONENT_GENERAL).GetComponent<General>();
 
         for (int i = 0; i < Layers.Length; i++)
         {
-            Layers[i] = objCanvas.FindChildGO($"{Functions.NAME__LAYER}{i}").transform;
+            Layers[i] = objCanvas.FindChildGO($"{Functions.NAME__LAYER}{i}").GetComponent<RectTransform>();
         }
 
         InitializeGame();
@@ -103,27 +112,42 @@ public class GameManager : MonoBehaviour
         CurrentTurnPlayer = FirstPlayer;
 
         //초기값 설정
-        turnCount = 1;
-        (MyDefaultDirection, OpponentDefaultDirection) = (FirstPlayer == PlayerType.ME) ?
-            (PlayingCardDirection.Right, PlayingCardDirection.Left) : (PlayingCardDirection.Left, PlayingCardDirection.Right);
+        turnCount = 0;
         TaskBlock = false;
-
         MyHP = 25;
         OpponentHP = 25;
-        //
-        MyMana = OpponentMana = myCurrentMaxMana = opponentCurrentMaxMana = START_MANA;
-        MyDeckCount = 40;
-        OpponentDeckCount = 40;
+        MyMana = OpponentMana = MyCurrentMaxMana = OpponentCurrentMaxMana = START_MANA;
+        MyDeckCount = OpponentDeckCount = MAX_DECK;
         MyHandsCount = 0;
 
-        //제너럴 위치 설정
-        //
+        (MyDefaultDirection, OpponentDefaultDirection) = (FirstPlayer == PlayerType.ME) ?
+            (PlayingCardDirection.Right, PlayingCardDirection.Left) : (PlayingCardDirection.Left, PlayingCardDirection.Right);
+        ((int, int)myStartPos, (int, int)opponentStartPos) = (FirstPlayer == PlayerType.ME) ? 
+            ((Board.MAX_ROW / 2 , 0), (Board.MAX_ROW / 2, Board.MaxColumn - 1)) : 
+            ((Board.MAX_ROW / 2, Board.MaxColumn - 1), (Board.MAX_ROW / 2, 0));
+
+        //내 제너럴 초기화
+        Tile myStartTile;
+        if (!Board.TryGetTile(myStartPos.Item1, myStartPos.Item2, out myStartTile))
+            return;
+        myGeneral.SetUp(generalSO, PlayerType.ME, true);
+        myGeneral.healthUpdateEvent.AddListener(SetHP);
+        myGeneral.transform.position = myStartTile.GetComponent<RectTransform>().position;
+        myStartTile.RegisterCard(myGeneral);
+
+        //상대 제너럴 초기화
+        Tile opponentStartTile;
+        if (!Board.TryGetTile(opponentStartPos.Item1, opponentStartPos.Item2, out opponentStartTile))
+            return;
+        opponentGeneral.SetUp(generalSO, PlayerType.OPPONENT, true);
+        opponentGeneral.healthUpdateEvent.AddListener(SetHP);
+        opponentGeneral.transform.position = opponentStartTile.GetComponent<RectTransform>().position;
+        opponentStartTile.RegisterCard(opponentGeneral);
 
         StartCoroutine(PlayTask(DrawMyCard(), DrawMyCard(), DrawMyCard(), Mulligun(), StartFirstTurn()));
 
-        DrawOpponentCard();
-        DrawOpponentCard();
-        DrawOpponentCard();
+        for (int i = 0; i < 3; i++)
+            DrawOpponentCard();
     }
 
     public void EndMyTurn()
@@ -131,7 +155,7 @@ public class GameManager : MonoBehaviour
         if (TaskBlock)
             return;
 
-        StartCoroutine(PlayTask(DrawMyCard(), DrawMyCard(), ChangeTurn()));
+        StartCoroutine(PlayTask(DrawMyCard(), DrawMyCard(), EndTurn()));
     }
 
     public IEnumerator PlayTask(params IEnumerator[] coroutines)
@@ -151,6 +175,7 @@ public class GameManager : MonoBehaviour
         if (MyDeckCount <= 0)
         {
             //게임 패배
+            GameOver();
         }
 
         if (MyHandsCount < MAX_HANDS)
@@ -168,6 +193,7 @@ public class GameManager : MonoBehaviour
         if (OpponentDeckCount <= 0)
         {
             //게임 승리
+            GameOver();
         }
 
         if (OpponentHandsCount < MAX_HANDS)
@@ -185,9 +211,6 @@ public class GameManager : MonoBehaviour
             if (MyMana < cost)
                 return false;
 
-            if (myAdditionMana > 0)
-                myAdditionMana -= Mathf.Min(cost, myAdditionMana);
-
             MyMana -= cost;
             --MyHandsCount;
 
@@ -198,34 +221,16 @@ public class GameManager : MonoBehaviour
             if (OpponentMana < cost)
                 return false;
 
-            if (opponentAdditionMana > 0)
-                opponentAdditionMana -= Mathf.Min(cost, opponentAdditionMana);
-
             OpponentMana -= cost;
 
             return true;
         }
     }
 
-    public IEnumerator ChangeTurn()
+    public IEnumerator EndTurn()
     {
-        ++turnCount;
-
         if (turnEndEvent != null)
             turnEndEvent.Invoke();
-
-        if (CurrentTurnPlayer == PlayerType.OPPONENT)
-        {
-            //if (opponentAdditionMana > 0)
-            //    OpponentMana -= opponentAdditionMana;
-            //opponentAdditionMana = 0;
-        }
-        else
-        {
-            //if (myAdditionMana > 0)
-            //    MyMana -= myAdditionMana;
-            //myAdditionMana = 0;
-        }
 
         CurrentTurnPlayer = CurrentTurnPlayer == PlayerType.ME ? PlayerType.OPPONENT : PlayerType.ME;
         StartTurn();
@@ -235,19 +240,20 @@ public class GameManager : MonoBehaviour
 
     public void StartTurn()
     {
+        ++turnCount;
         UIManager.Instance.ShowTurnStartUI(CurrentTurnPlayer);
 
         if (CurrentTurnPlayer == PlayerType.ME)
         {
-            if (myCurrentMaxMana < MAX_MANA)
-                ++myCurrentMaxMana;
-            MyMana = myCurrentMaxMana;
+            if (MyCurrentMaxMana < MAX_MANA)
+                ++MyCurrentMaxMana;
+            MyMana = MyCurrentMaxMana;
         }
         else
         {
-            if (opponentCurrentMaxMana < MAX_MANA)
-                ++opponentCurrentMaxMana;
-            OpponentMana = opponentCurrentMaxMana;
+            if (OpponentCurrentMaxMana < MAX_MANA)
+                ++OpponentCurrentMaxMana;
+            OpponentMana = OpponentCurrentMaxMana;
         }
     }
 
@@ -261,10 +267,11 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator StartFirstTurn()
     {
+        ++turnCount;
         UIManager.Instance.ShowTurnStartUI(CurrentTurnPlayer);
         yield return new WaitForSeconds(1f);
 
-        StartCoroutine(ai.AILoop(PlayerType.OPPONENT));
+        StartCoroutine(ai.AILoop());
     }
 
     private void SetHP(PlayerType player, int currentHP)
@@ -307,6 +314,25 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.UpdateManaUI(player);
     }
 
+    private void SetMaxMana(PlayerType player, int currentMaxMana)
+    {
+        if (currentMaxMana > MAX_MANA)
+            return;
+
+        if (currentMaxMana < 0)
+            currentMaxMana = 0;
+
+        if (player == PlayerType.OPPONENT)
+        {
+            _opponentCurrentMaxMana = currentMaxMana;
+        }
+        else
+        {
+            _myCurrentMaxMana = currentMaxMana;
+        }
+        UIManager.Instance.UpdateMaxManaText(player);
+    }
+
     private void SetDeckCount(PlayerType player, int currentDeck)
     {
         if (player == PlayerType.OPPONENT)
@@ -327,7 +353,6 @@ public class GameManager : MonoBehaviour
             if (OpponentMana >= MAX_MANA)
                 return;
 
-            //++opponentAdditionMana;
             ++OpponentMana;
         }
         else
@@ -335,8 +360,30 @@ public class GameManager : MonoBehaviour
             if (MyMana >= MAX_MANA)
                 return;
 
-            //++myAdditionMana;
             ++MyMana;
         }
+    }
+
+    public void GameOver()
+    {
+        Time.timeScale = 0;
+
+        string gameResult;
+        if (MyHP <= 0 && OpponentHP <= 0)
+        {
+            Debug.Log("DRAW");
+            gameResult = "Draw";
+        }
+        else if (MyHP <= 0 || MyDeckCount <= 0)
+        {
+            Debug.Log("DEFEAT");
+            gameResult = "Defeat";
+        }
+        else
+        {
+            Debug.Log("VICTORY");
+            gameResult = "Victory";
+        }
+        UIManager.Instance.ShowGameOverUI(gameResult);
     }
 }

@@ -1,0 +1,1741 @@
+fileFormatVersion: 2
+guid: b84011a256d96044b974d98c84965a93
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: f5_genesis_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 923
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 230ec57b7e59c554582d9baaa395e58a
+      internalID: -1898264282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_1
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 923
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2115d76ec7fd0aa4d9631a8cb3fd8e43
+      internalID: -1242379620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_2
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 923
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd3c3a0c135d7f1478a0961ba2c5df08
+      internalID: -34894260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_3
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 923
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74cc96056a0f94e48b5ba0874a010ccc
+      internalID: 1732322057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_4
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 923
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 935975f9232fa8a4bb2af7228f6c7c1e
+      internalID: -1025617432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_5
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 923
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73335b34105d54b4dad2de4bd84ce9ae
+      internalID: 1798838958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_6
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 923
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10827d64e6fbbfd47ada411dbc39bc65
+      internalID: -702112533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_7
+      rect:
+        serializedVersion: 2
+        x: 707
+        y: 923
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3849d5cf75fb6d44a85a1bb7f87cf001
+      internalID: 1031648893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 822
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d17352ce7ce66044e855c05eb1d1beef
+      internalID: -1486444141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_9
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 822
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1d56ff5c1f000544be5e6a0d66a8126
+      internalID: -968409021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_10
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 822
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa2867d7f5980ef44a9b6fb2d9b2cb0f
+      internalID: -1009691883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_11
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 822
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: edfc6abf6ff1a6844bbb3bb5558131fc
+      internalID: 1651901473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_12
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 822
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d26e2769664c94448e6282125e2092d
+      internalID: 1286868055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_13
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 822
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac0b6677ceb73ff4ab2edd042e8072ba
+      internalID: -290721634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_14
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 822
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e200e5099af5de41ba3863cf02b6967
+      internalID: 1416917338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_15
+      rect:
+        serializedVersion: 2
+        x: 707
+        y: 822
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9469ea2de9f50f1438ada6c6fbaed66d
+      internalID: -671311101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 721
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89c23eab957f4294ea722b462a9636ea
+      internalID: 1422090053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_17
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 721
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6441313cb0e96294bb445f6e1674f8e4
+      internalID: -1846352685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_18
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 721
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5569e922b5f72104ba214a8925180061
+      internalID: 73448775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_19
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 721
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f168348035c6a7a4fa8b35212de7603b
+      internalID: 297377137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_20
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 721
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33e623d9c3f15194995116d11ffcd624
+      internalID: -1843949745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_21
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 721
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f282452b3406b54a9e528d66b0049eb
+      internalID: -339147814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_22
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 721
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d123e18eb5a62db40b5ed3c9de24f94e
+      internalID: 1357705967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_23
+      rect:
+        serializedVersion: 2
+        x: 707
+        y: 721
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d77f9499bbdf3824482c1af89b8e5c57
+      internalID: 2088880607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 620
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa33d57edf2c23c4c98e564cf863ad58
+      internalID: -49189539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_25
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 620
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1221c2d5c885ad94ca0756a103b777cd
+      internalID: -1514047299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_26
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 620
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4f8a08628f5e684d85a33db7cda5cf2
+      internalID: -1739116270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_27
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 620
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a15f7b276b85e744ca4e8e85c1a5d890
+      internalID: 1527628484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_28
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 620
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed8a011ce3c156e4ba277d07c4f29788
+      internalID: -740141349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_29
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 620
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4bd45b97bb605c4a88665d3838d71a5
+      internalID: 2128789027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_30
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 620
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33ef16e2f8d0fde48aee0e874db83884
+      internalID: 1241213444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_31
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 519
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fcbc3b662b972984cbcc2ee4335d437f
+      internalID: -1835462786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_32
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 519
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08969b9c6e681bb48b2d54648af6cfad
+      internalID: 1277855286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_33
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 519
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9e9b0b56da8e5d488cbbecd78a1745d
+      internalID: -2029228322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_34
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 519
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 527ee0eb3231e0f4fb33b23d5fed9a59
+      internalID: 1063490516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_35
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 519
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06ef62dfc651ffb49ac7ae7de71bd95c
+      internalID: -1228068401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_36
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 519
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c3aa86ca15ccdf42977d2dfb417858e
+      internalID: 1025399755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_37
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 519
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52ed40ab03a4adb4aa4d5095e25805d3
+      internalID: 1245577829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_38
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 418
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40dac95a5221a054c84b733fc616f11a
+      internalID: -1074848143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_39
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 418
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08bff434a3541174bbf06b8ca13cc8ca
+      internalID: -1841063505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_40
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 418
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2bfacb8a429dea459784c079f8686e8
+      internalID: 1900266227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_41
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 418
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de1bc6f53fdb72b459f393773830f67e
+      internalID: 457154680
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_42
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 418
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c17b3388ccdefb74880444d3d0fe9a0b
+      internalID: -1413496699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_43
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 418
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: edeff0e3c40180c4caddb1333bb08c79
+      internalID: 1742443749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_44
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 418
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a785832da265ddf4f9b5a2f60bae263c
+      internalID: 1252124491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_45
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 317
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef2daa0309ca7d14aba33635bd25f103
+      internalID: -452488529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_46
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 317
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a388a6b3cd23b6b46acefbd696ed1ddf
+      internalID: -795025319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_47
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 317
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23fe1c63b40ca2844a5f4026bedb5739
+      internalID: -480886082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_48
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 317
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3de3953bc73e6eb4b87e0d55b64f69be
+      internalID: -838701921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_49
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 317
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26d804a43eaae084688a32c1bc4f1dcf
+      internalID: 1964667692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_50
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 317
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6dd2dcd8d15a5d34db746948e7211fa5
+      internalID: 1381522540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_51
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 317
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94d3dcd6f6b00ed4f9a6493be07711ef
+      internalID: -1641567961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_52
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 216
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a23249148bf2c9941b330a2fdb0de641
+      internalID: 1921088314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_53
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 216
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d020d30d7a10494bac15f46009a8c8a
+      internalID: -534144213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_54
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 216
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3131b4d054b695b4583d05f20fb50922
+      internalID: -695609933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_55
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 216
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 982337c55b61b914296b72ea24dc8076
+      internalID: -1424623768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_56
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 216
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3db170d30a65df544bf7e8dae3a42c8e
+      internalID: -2060886611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_57
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 216
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9df56fa1416c7ea40890913af73a7e1a
+      internalID: -770057402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_58
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 216
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 668f26119a37ccb499bd4ce8d4f7c4e2
+      internalID: 1477795479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_59
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 115
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1693d72daca54a945a0afa3b4ff954ff
+      internalID: 1328433970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_60
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 115
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b34b35f7c4c4dd42b7f722ba8813219
+      internalID: 1788737967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_61
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 115
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e558eddcf005334990af027a5a5c67b
+      internalID: 100393268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_62
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 115
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb30565c4eaa93c409a5bbeafc7bafdb
+      internalID: 1790007863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_63
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 115
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4378b0e71a4a41943b0aef3b73a0bf5d
+      internalID: -1822975747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_64
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 115
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a90754e15d95e5e4193a2e109a68243f
+      internalID: 1455572587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_65
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 115
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9cd940bbb86a7e5448d00a6464f64574
+      internalID: 597704060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_66
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 14
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f142cc8259dead04dbb67547d7539573
+      internalID: 1352597546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_67
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 14
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fdf80106946868a4b88da57fbac32ebe
+      internalID: 327810734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_68
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 14
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf473486315092043ac83fac6e538505
+      internalID: 1627252597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_69
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 14
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 912fe34fb48f66f4fad5c8cacd289360
+      internalID: -808603495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_70
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 14
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da17cfd118637bb4ba05bca62dd87949
+      internalID: -434766347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_71
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 14
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af5cb8f84758c624d91cf9c9a23b9543
+      internalID: 2006008797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: f5_genesis_72
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 14
+        width: 101
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ffc289b70f46a94286c0148cac644d4
+      internalID: -999002429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 7fef37c2148f3da4fbeefd844381a292
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      f5_genesis_13: -290721634
+      f5_genesis_52: 1921088314
+      f5_genesis_21: -339147814
+      f5_genesis_24: -49189539
+      f5_genesis_36: 1025399755
+      f5_genesis_71: 2006008797
+      f5_genesis_11: 1651901473
+      f5_genesis_44: 1252124491
+      f5_genesis_47: -480886082
+      f5_genesis_49: 1964667692
+      f5_genesis_54: -695609933
+      f5_genesis_1: -1242379620
+      f5_genesis_56: -2060886611
+      f5_genesis_70: -434766347
+      f5_genesis_46: -795025319
+      f5_genesis_8: -1486444141
+      f5_genesis_22: 1357705967
+      f5_genesis_23: 2088880607
+      f5_genesis_63: -1822975747
+      f5_genesis_66: 1352597546
+      f5_genesis_45: -452488529
+      f5_genesis_33: -2029228322
+      f5_genesis_55: -1424623768
+      f5_genesis_2: -34894260
+      f5_genesis_6: -702112533
+      f5_genesis_10: -1009691883
+      f5_genesis_58: 1477795479
+      f5_genesis_61: 100393268
+      f5_genesis_64: 1455572587
+      f5_genesis_35: -1228068401
+      f5_genesis_34: 1063490516
+      f5_genesis_25: -1514047299
+      f5_genesis_26: -1739116270
+      f5_genesis_38: -1074848143
+      f5_genesis_48: -838701921
+      f5_genesis_0: -1898264282
+      f5_genesis_59: 1328433970
+      f5_genesis_57: -770057402
+      f5_genesis_68: 1627252597
+      f5_genesis_40: 1900266227
+      f5_genesis_27: 1527628484
+      f5_genesis_29: 2128789027
+      f5_genesis_31: -1835462786
+      f5_genesis_60: 1788737967
+      f5_genesis_43: 1742443749
+      f5_genesis_5: 1798838958
+      f5_genesis_39: -1841063505
+      f5_genesis_67: 327810734
+      f5_genesis_16: 1422090053
+      f5_genesis_4: -1025617432
+      f5_genesis_7: 1031648893
+      f5_genesis_41: 457154680
+      f5_genesis_19: 297377137
+      f5_genesis_50: 1381522540
+      f5_genesis_72: -999002429
+      f5_genesis_12: 1286868055
+      f5_genesis_42: -1413496699
+      f5_genesis_51: -1641567961
+      f5_genesis_30: 1241213444
+      f5_genesis_9: -968409021
+      f5_genesis_14: 1416917338
+      f5_genesis_15: -671311101
+      f5_genesis_69: -808603495
+      f5_genesis_3: 1732322057
+      f5_genesis_65: 597704060
+      f5_genesis_32: 1277855286
+      f5_genesis_37: 1245577829
+      f5_genesis_17: -1846352685
+      f5_genesis_53: -534144213
+      f5_genesis_62: 1790007863
+      f5_genesis_18: 73448775
+      f5_genesis_20: -1843949745
+      f5_genesis_28: -740141349
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

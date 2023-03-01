@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public static partial class Functions
 {
-    //! 특정 게임오브젝트의 자식들을 탐색해서 찾는 메서드
+    //특정 게임오브젝트의 자식을 찾는 메서드
     public static GameObject FindChildGO(this GameObject parentGO, string childName)
     {
         GameObject searchTarget;
@@ -26,7 +26,7 @@ public static partial class Functions
         return null;
     }
 
-    //! 루트 게임오브젝트를 탐색해서 찾는 메서드
+    //루트 게임오브젝트를 찾는 메서드
     public static GameObject GetRootGO(string goName)
     {
         Scene activeScene = GetActiveScene();
@@ -40,7 +40,7 @@ public static partial class Functions
             }
         }
 
-        return default;
+        return null;
     }
 
     public static Scene GetActiveScene()
