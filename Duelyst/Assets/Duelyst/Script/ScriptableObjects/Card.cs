@@ -1,10 +1,5 @@
 using UnityEngine;
-
-public enum CardType
-{
-    GENERAL,
-    MINION
-}
+using EnumTypes;
 
 [CreateAssetMenu(fileName = "CardData", menuName = "Scriptable Objects/Card", order = 1)]
 public class Card : ScriptableObject
@@ -21,8 +16,6 @@ public class Card : ScriptableObject
     private string _name;
     public string Name { get { return _name; } }
 
-    //public string Effect { get; private set; }
-
     [SerializeField]
     private CardType _type;
     public CardType Type { get { return _type; } }
@@ -38,4 +31,13 @@ public class Card : ScriptableObject
     [SerializeField]
     private AnimatorOverrideController _anim;
     public AnimatorOverrideController Anim { get { return _anim; } }
+
+    [SerializeField]
+    private string _description;
+    public string Description { get { return _description; } }
+
+    [SerializeField]
+    private bool _isRush;
+    public bool IsRush { get { return _isRush; } }
+
 }

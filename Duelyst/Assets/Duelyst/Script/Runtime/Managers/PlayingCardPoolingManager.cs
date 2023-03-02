@@ -64,7 +64,7 @@ public class PlayingCardPoolingManager : MonoBehaviour
         card.transform.position = tile.GetComponent<RectTransform>().position;
 
         card.gameObject.SetActive(true);
-        card.SetUp(data, owner, false);
+        card.SetUp(data, owner);
         tile.RegisterCard(card);
     }
 

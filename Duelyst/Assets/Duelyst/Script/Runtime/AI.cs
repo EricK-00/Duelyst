@@ -52,7 +52,7 @@ public class AI : MonoBehaviour
         opponentHands.Add(card);
     }
 
-    //AI루프: 공격 및 이동 -> 플레이싱 -> 턴 종료
+    //AI루프: 공격 및 이동 -> 플레이싱(RUSH일 경우 공격 및 이동) -> 턴 종료
     //
     //공격 및 이동 순서 - 체력 높은 순
     //플레이싱 순서 - 마나 높은 순
@@ -84,12 +84,14 @@ public class AI : MonoBehaviour
                 if (movableTiles.Count <= 0)
                     continue;
 
+                //가중치 설정
+                SetManaTileWeight(movableTiles);
+                AddFoeGeneralWeight(movableTiles);
+
                 //MoveAndAttack
                 if (closeFoeTiles.Count > 0)
                 {
-                    //가중치 설정
-                    SetManaTileWeight(movableTiles);
-                    AddFoeGeneralWeight(movableTiles);
+                    //가중치 추가 설정
                     AddMoveAndAttackWeight(refreshedList[i]);
 
                     yield return new WaitForSeconds(1f);
@@ -101,7 +103,6 @@ public class AI : MonoBehaviour
                         //카드 등록 장소 변경
                         PlayingCard card = refreshedList[i].Card.GetComponent<PlayingCard>();
                         refreshedList[i].ChangeTile(card, selectedTile);
-
                         //이동
                         yield return StartCoroutine(card.Move(refreshedList[i], selectedTile));
                         //타일 참조 변경
@@ -117,10 +118,6 @@ public class AI : MonoBehaviour
                 //Move
                 else
                 {
-                    //가중치 설정
-                    SetManaTileWeight(movableTiles);
-                    AddFoeGeneralWeight(movableTiles);
-
                     //이동할 위치 선택
                     Tile selectedTile = GetSelectedTileInList(movableTiles);
 
@@ -171,6 +168,69 @@ public class AI : MonoBehaviour
                 UIManager.Instance.PlayPlacingAnim(selectedTile);
                 selectedTile.OnPlaceEffect();
                 yield return new WaitForSeconds(1.5f);
+
+                //RUSH 키워드 카드일 경우 이동 및 공격
+                if (selectedCard.IsRush)
+                {
+                    targetFoe = null;
+                    ClearWeightMap();
+                    SetMovebaleList(selectedTile);
+                    SetCloseEnemyList();
+
+                    if (movableTiles.Count > 0)
+                    {
+                        //가중치 설정
+                        SetManaTileWeight(movableTiles);
+                        AddFoeGeneralWeight(movableTiles);
+
+                        //RUSH: MoveAndAttack
+                        if (closeFoeTiles.Count > 0)
+                        {
+                            //가중치 추가 설정
+                            AddMoveAndAttackWeight(selectedTile);
+
+                            yield return new WaitForSeconds(1f);
+
+                            //이동할 위치 선택
+                            Tile newTile = GetSelectedTileInList(movableTiles);
+                            if (selectedTile != newTile)
+                            {
+                                //카드 등록 장소 변경
+                                PlayingCard card = selectedTile.Card.GetComponent<PlayingCard>();
+                                selectedTile.ChangeTile(card, newTile);
+                                //이동
+                                yield return StartCoroutine(card.Move(selectedTile, newTile));
+                                //타일 참조 변경
+                                selectedTile = newTile;
+                            }
+
+                            if (targetFoe != null &&
+                                1 == GetAroundDistanceWithTarget(selectedTile.Row, selectedTile.Column, targetFoe.Row, targetFoe.Column))
+                            {
+                                yield return StartCoroutine(selectedTile.Card.Battle(targetFoe.Card, selectedTile.Column, targetFoe.Column));
+                            }
+                        }
+                        //RUSH: Move
+                        else
+                        {
+                            //이동할 위치 선택
+                            Tile newTile = GetSelectedTileInList(movableTiles);
+
+                            if (selectedTile != newTile)
+                            {
+                                //카드 등록 장소 변경
+                                PlayingCard card = selectedTile.Card.GetComponent<PlayingCard>();
+                                selectedTile.ChangeTile(card, newTile);
+                                //이동
+                                yield return StartCoroutine(card.Move(selectedTile, newTile));
+                                //타일 참조 변경
+                                selectedTile = newTile;
+                            }
+                        }
+
+                        yield return new WaitForSeconds(1f);
+                    }
+                }
             }
 
             //Draw

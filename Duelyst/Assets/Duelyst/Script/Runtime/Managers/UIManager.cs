@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour
     private TMP_Text myCardDetailType;
     private TMP_Text myCardDetailName;
     private TMP_Text myCardDetailCost;
+    private TMP_Text myCardDetailDesc;
 
     private GameObject opponentCardDetail;
     private Animator opponentCardDetailAnim;
@@ -40,6 +41,7 @@ public class UIManager : MonoBehaviour
     private TMP_Text opponentCardDetailType;
     private TMP_Text opponentCardDetailName;
     private TMP_Text opponentCardDetailCost;
+    private TMP_Text opponentCardDetailDesc;
 
     private GameObject myPlayerUI;
     private GameObject opponentPlayerUI;
@@ -128,6 +130,7 @@ public class UIManager : MonoBehaviour
         myCardDetailType = myCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__TYPE).GetComponent<TMP_Text>();
         myCardDetailName = myCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__NAME).GetComponent<TMP_Text>();
         myCardDetailCost = myCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__COST).GetComponent<TMP_Text>();
+        myCardDetailDesc = myCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__DESC).GetComponent<TMP_Text>();
 
         //opponent player ui
         opponentNameText = opponentPlayerUI.FindChildGO(Functions.NAME__PLAYER_UI__NAME_TEXT).GetComponent<TMP_Text>();
@@ -154,6 +157,7 @@ public class UIManager : MonoBehaviour
         opponentCardDetailType = opponentCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__TYPE).GetComponent<TMP_Text>();
         opponentCardDetailName = opponentCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__NAME).GetComponent<TMP_Text>();
         opponentCardDetailCost = opponentCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__COST).GetComponent<TMP_Text>();
+        opponentCardDetailDesc = opponentCardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__DESC).GetComponent<TMP_Text>();
         #endregion
 
         yourTurnUI = uiCanvas.FindChildGO(Functions.NAME__YOUR_TURN_UI).GetComponent<Animator>();
@@ -180,6 +184,7 @@ public class UIManager : MonoBehaviour
             myCardDetailType.SetTMPText(card.Data.Type);
             myCardDetailName.SetTMPText(card.Data.Name);
             myCardDetailCost.SetTMPText(card.Data.Cost);
+            myCardDetailDesc.SetTMPText(card.Data.Description);
 
             if (card.Data.Type != CardType.GENERAL)
                 myCardDetailCost.transform.parent.gameObject.SetActive(true);
@@ -195,6 +200,7 @@ public class UIManager : MonoBehaviour
             opponentCardDetailType.SetTMPText(card.Data.Type);
             opponentCardDetailName.SetTMPText(card.Data.Name);
             opponentCardDetailCost.SetTMPText(card.Data.Cost);
+            opponentCardDetailDesc.SetTMPText(card.Data.Description);
 
             if (card.Data.Type != CardType.GENERAL)
                 opponentCardDetailCost.transform.parent.gameObject.SetActive(true);

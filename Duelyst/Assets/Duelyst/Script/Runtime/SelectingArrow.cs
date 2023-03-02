@@ -2,15 +2,11 @@ using UnityEngine;
 
 public class SelectingArrow : MonoBehaviour
 {
-    public GameObject debug_MiddlePoint;
-
     private const int MIN_ARROW_COUNT = 2;//2 이상
 
     private Canvas uiCanvas;
     private RectTransform uiCanvasRect;
     private GameObject mousePointImage;
-
-    private float timer;
 
     private void Awake()
     {
@@ -33,14 +29,12 @@ public class SelectingArrow : MonoBehaviour
     {
         Vector3 mousePos = Input.mousePosition / uiCanvas.scaleFactor;
         mousePos = new Vector3(
-            mousePos.x - uiCanvasRect.rect.width / 2,
+            mousePos.x - uiCanvasRect.rect.width / 2, 
             mousePos.y - uiCanvasRect.rect.height / 2,
             mousePos.z);
 
         Vector2 pointPos = new Vector2((mousePos.x + transform.localPosition.x) / 2,
             100 + (mousePos.y + transform.localPosition.y) / 2);
-
-        debug_MiddlePoint.transform.localPosition = pointPos;
 
         int arrowCount = MIN_ARROW_COUNT + Mathf.Max((int)Mathf.Abs(mousePos.x - transform.localPosition.x) / 50, (int)Mathf.Abs(mousePos.y - transform.localPosition.y) / 50);
 

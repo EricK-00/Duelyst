@@ -35,7 +35,9 @@ public class PlayingCard : MonoBehaviour
     private Material allyOutline;
     private Material enemyOutline;
 
-    bool isRush;
+    private bool isAttackEnd;
+    private bool isHitEnd;
+    private bool isDeathEnd;
 
     private void Awake()
     {
@@ -50,8 +52,12 @@ public class PlayingCard : MonoBehaviour
         enemyOutline = Functions.ENEMY_OUTLINE;
     }
 
-    public void SetUp(Card card, PlayerType owner, bool isRush)
+    public void SetUp(Card card, PlayerType owner)
     {
+        isAttackEnd = false;
+        isHitEnd = false;
+        isDeathEnd = false;
+
         Data = card;
         gameObject.name = Data.Name;
         cardAnimator.runtimeAnimatorController = Data.Anim;
@@ -66,7 +72,7 @@ public class PlayingCard : MonoBehaviour
 
         cardAnimator.SetBool("onField", true);
 
-        if (isRush || Data.Type == CardType.GENERAL)
+        if (Data.IsRush || Data.Type == CardType.GENERAL)
         {
             MoveChance = 1;
             AttackChance = 1;
@@ -125,47 +131,31 @@ public class PlayingCard : MonoBehaviour
         ChangeDirection(sourceCol, destCol);
 
         cardAnimator.SetTrigger("onAttack");
-        yield return new WaitUntil(() => cardAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
-
-        Debug.Log("내 공격");
-        Debug.Log(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
-
-        yield return new WaitForSeconds(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitUntil(() => isAttackEnd);
+        isAttackEnd = false;
 
         //기본방향으로 전환
         ChangeDirection(0, 0);
 
         target.cardAnimator.SetTrigger("isDamaged");
-        yield return new WaitUntil(() => target.cardAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
         target.Health -= Power;
-
-        Debug.Log("적 피해");
-        Debug.Log(target.cardAnimator.GetCurrentAnimatorStateInfo(0).length);
-
-        yield return new WaitForSeconds(target.cardAnimator.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitUntil(() => target.isHitEnd);
+        target.isHitEnd = false;
 
         //방향전환
         target.ChangeDirection(destCol, sourceCol);
 
         target.cardAnimator.SetTrigger("onAttack");
-        yield return new WaitUntil(() => target.cardAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
-
-        Debug.Log("적 공격");
-        Debug.Log(target.cardAnimator.GetCurrentAnimatorStateInfo(0).length);
-
-        yield return new WaitForSeconds(target.cardAnimator.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitUntil(() => target.isAttackEnd);
+        target.isAttackEnd = false;
 
         //기본방향으로 전환
         target.ChangeDirection(0, 0);
 
         cardAnimator.SetTrigger("isDamaged");
-        yield return new WaitUntil(() => cardAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
         Health -= target.Power;
-
-        Debug.Log("내 피해");
-        Debug.Log(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
-
-        yield return new WaitForSeconds(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitUntil(() => isHitEnd);
+        isHitEnd = false;
 
         //die check
         if (Health <= 0)
@@ -173,34 +163,34 @@ public class PlayingCard : MonoBehaviour
             cardAnimator.SetTrigger("isDead");
             if (deathEvent != null)
                 deathEvent.Invoke();
-
-            yield return new WaitForEndOfFrame();
         }
         if (target.Health <= 0)
         {
             target.cardAnimator.SetTrigger("isDead");
             if (target.deathEvent != null)
                 target.deathEvent.Invoke();
-
-            yield return new WaitForEndOfFrame();
         }
 
         if (Health <= 0 && target.Health <= 0)
         {
-            yield return new WaitForSeconds(Mathf.Max(cardAnimator.GetCurrentAnimatorStateInfo(0).length, target.cardAnimator.GetCurrentAnimatorStateInfo(0).length));
+            yield return new WaitUntil(() => isDeathEnd && target.isDeathEnd);
+            isDeathEnd = false;
+            target.isDeathEnd = false;
 
             PlayingCardPoolingManager.Instance.InactiveCard(this);
             PlayingCardPoolingManager.Instance.InactiveCard(target);
         }
         else if (Health <= 0)
         {
-            yield return new WaitForSeconds(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
+            yield return new WaitUntil(() => isDeathEnd);
+            isDeathEnd = false;
 
             PlayingCardPoolingManager.Instance.InactiveCard(this);
         }
         else if (target.Health <= 0)
         {
-            yield return new WaitForSeconds(target.cardAnimator.GetCurrentAnimatorStateInfo(0).length);
+            yield return new WaitUntil(() => target.isDeathEnd);
+            target.isDeathEnd = false;
 
             PlayingCardPoolingManager.Instance.InactiveCard(target);
         }
@@ -273,5 +263,20 @@ public class PlayingCard : MonoBehaviour
         {
             cardSprite.transform.rotation = Quaternion.Euler(0, (int)defaultDirection, 0);
         }
+    }
+
+    public void AttackAnimEndEvent()
+    {
+        isAttackEnd = true;
+    }
+
+    public void HitAnimEndEvent()
+    {
+        isHitEnd = true;
+    }
+
+    public void DeathAnimEndEvent()
+    {
+        isDeathEnd = true;
     }
 }

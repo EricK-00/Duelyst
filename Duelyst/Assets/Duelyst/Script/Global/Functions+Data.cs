@@ -5,6 +5,12 @@ using UnityEngine.Rendering;
 #region EnumTypes
 namespace EnumTypes
 {
+    public enum CardType
+    {
+        GENERAL,
+        MINION
+    }
+
     public enum PlayerType
     {
         ME = 0,
@@ -109,6 +115,7 @@ public static partial class Functions
     public const string NAME__CARD_DETAIL__TYPE = "Type";
     public const string NAME__CARD_DETAIL__NAME = "Name";
     public const string NAME__CARD_DETAIL__COST = "Cost";
+    public const string NAME__CARD_DETAIL__DESC = "Description";
 
     public const string NAME__PLACE_ANIM = "PlaceAnim";
     public const string NAME__YOUR_TURN_UI = "YourTurnUI";

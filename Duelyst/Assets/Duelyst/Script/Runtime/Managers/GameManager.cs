@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
         Tile myStartTile;
         if (!Board.TryGetTile(myStartPos.Item1, myStartPos.Item2, out myStartTile))
             return;
-        myGeneral.SetUp(generalSO, PlayerType.ME, true);
+        myGeneral.SetUp(generalSO, PlayerType.ME);
         myGeneral.healthUpdateEvent.AddListener(SetHP);
         myGeneral.transform.position = myStartTile.GetComponent<RectTransform>().position;
         myStartTile.RegisterCard(myGeneral);
@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour
         Tile opponentStartTile;
         if (!Board.TryGetTile(opponentStartPos.Item1, opponentStartPos.Item2, out opponentStartTile))
             return;
-        opponentGeneral.SetUp(generalSO, PlayerType.OPPONENT, true);
+        opponentGeneral.SetUp(generalSO, PlayerType.OPPONENT);
         opponentGeneral.healthUpdateEvent.AddListener(SetHP);
         opponentGeneral.transform.position = opponentStartTile.GetComponent<RectTransform>().position;
         opponentStartTile.RegisterCard(opponentGeneral);

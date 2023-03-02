@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Genesis
   m_EditorClassIdentifier: 
   _id: 2
-  _cost: 0
+  _cost: 2
   _name: GENESIS
   _type: 1
-  _power: 1
-  _health: 1
+  _power: 2
+  _health: 3
   _anim: {fileID: 22100000, guid: 8c156509964cf444db377bfd79d82c11, type: 2}
+  _description: RUSH
+  _isRush: 1

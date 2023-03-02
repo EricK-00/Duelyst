@@ -19,6 +19,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     private TMP_Text cardDetailType;
     private TMP_Text cardDetailName;
     private TMP_Text cardDetailCost;
+    private TMP_Text cardDetailDesc;
 
     private Animator drawAnim;
 
@@ -44,6 +45,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         cardDetailType = cardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__TYPE).GetComponent<TMP_Text>();
         cardDetailName = cardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__NAME).GetComponent<TMP_Text>();
         cardDetailCost = cardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__COST).GetComponent<TMP_Text>();
+        cardDetailDesc = cardDetail.FindChildGO(Functions.NAME__CARD_DETAIL__DESC).GetComponent<TMP_Text>();
 
         drawAnim = gameObject.FindChildGO(Functions.NAME__HAND__DRAW_ANIM).GetComponent<Animator>();
 
@@ -186,6 +188,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         cardDetailType.SetTMPText(cardData.Type);
         cardDetailName.SetTMPText(cardData.Name);
         cardDetailCost.SetTMPText(cardData.Cost);
+        cardDetailDesc.SetTMPText(cardData.Description);
 
         if (cardData.Type != CardType.GENERAL)
             cardDetailCost.transform.parent.gameObject.SetActive(true);

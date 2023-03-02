@@ -9,8 +9,8 @@ using EnumTypes;
 public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private readonly Color COLOR_WHITE = new Color(1, 1, 1, 0.3f); //white
-    private readonly Color COLOR_YELLOW = new Color(1, 1, 0, 0.3f);//yellow
-    private readonly Color COLOR_GREEN = new Color(0.1f, 1, 0, 0.3f);//green
+    private readonly Color COLOR_YELLOW = new Color(1, 1, 0, 0.6f);//yellow
+    private readonly Color COLOR_GREEN = new Color(0.1f, 1, 0, 0.35f);//green
 
     public int Row { get; private set; } = -1;
     public int Column { get; private set; } = -1;
