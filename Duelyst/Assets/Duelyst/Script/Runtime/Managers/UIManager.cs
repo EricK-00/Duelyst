@@ -267,16 +267,10 @@ public class UIManager : MonoBehaviour
         opponentHandsText.SetTMPText(GameManager.Instance.OpponentHandsCount);
     }
 
-    public void UpdateDeckText(PlayerType player)
+    public void UpdateDeckText(PlayerType player, Deck deck)
     {
-        if (player == PlayerType.OPPONENT)
-        {
-            opponentDeckText.SetTMPText(GameManager.Instance.OpponentDeckCount);
-        }
-        else
-        {
-            myDeckText.SetTMPText(GameManager.Instance.MyDeckCount);
-        }
+        TMP_Text deckText = player == PlayerType.ME ? myDeckText : opponentDeckText;
+        deckText.SetTMPText(deck.GetDeckCount(player));
     }
 
     public void ShowSelectingArrow(RectTransform rect)

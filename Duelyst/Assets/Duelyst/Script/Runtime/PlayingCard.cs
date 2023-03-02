@@ -53,6 +53,7 @@ public class PlayingCard : MonoBehaviour
     public void SetUp(Card card, PlayerType owner, bool isRush)
     {
         Data = card;
+        gameObject.name = Data.Name;
         cardAnimator.runtimeAnimatorController = Data.Anim;
         Power = Data.Power;
         Health = Data.Health;
@@ -85,12 +86,12 @@ public class PlayingCard : MonoBehaviour
 
         SetLayer(destTile.Row);
 
-        int frame = 60;
+        int frame = 100;
 
         Vector3 destPos = destTile.transform.GetComponent<RectTransform>().position;
         Vector3 sourcePos = transform.position;
         float timer = 1f;
-        float term = (float)1f / frame;
+        float term = 1f / frame;
         float speed = 1.25f;
 
         //방향전환

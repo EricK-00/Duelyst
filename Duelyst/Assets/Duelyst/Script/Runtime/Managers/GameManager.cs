@@ -21,20 +21,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private GameObject objCanvas;
-
-    //---
-    public Card card;
-    //---
-
-    public UnityEvent turnEndEvent = new UnityEvent();
-
     public const int MAX_HP = 25;
     public const int MAX_HANDS = 6;
     public const int MAX_DECK = 40;
     public const int MAX_LAYER_COUNT = 5;
     public const int START_MANA = 2;
     public const int MAX_MANA = 9;
+
+    public UnityEvent turnEndEvent = new UnityEvent();
 
     private int _myHP;
     public int MyHP { get { return _myHP; } private set { SetHP(PlayerType.ME, value); } }
@@ -44,11 +38,6 @@ public class GameManager : MonoBehaviour
     private int _myHandsCount;
     public int MyHandsCount { get { return _myHandsCount; } private set { SetMyHandsCount(value); } }
     public int OpponentHandsCount { get { return ai.GetHandsCount(); } }
-
-    private int _myDeckCount;
-    public int MyDeckCount { get { return _myDeckCount; } private set { SetDeckCount(PlayerType.ME, value); } }
-    private int _opponentDeckCount;
-    public int OpponentDeckCount { get { return _opponentDeckCount; } private set { SetDeckCount(PlayerType.OPPONENT, value); } }
 
     private int _myMana;
     public int MyMana { get { return _myMana; } private set { SetMana(PlayerType.ME, value); } }
@@ -61,9 +50,6 @@ public class GameManager : MonoBehaviour
     private int _opponentCurrentMaxMana;
     public int OpponentCurrentMaxMana { get { return _opponentCurrentMaxMana; } private set { SetMaxMana(PlayerType.OPPONENT, value); } }
 
-
-
-    private int turnCount;
     public PlayerType CurrentTurnPlayer { get; private set; }
     public PlayerType FirstPlayer { get; private set; }
 
@@ -74,6 +60,12 @@ public class GameManager : MonoBehaviour
 
     public RectTransform[] Layers { get; private set; } = new RectTransform[MAX_LAYER_COUNT];
 
+    private int turnCount;
+    [SerializeField]
+    private bool myReplacingValid;
+
+    private GameObject objCanvas;
+    private Deck deck;
     private AI ai;
     private Card generalSO;
     private General myGeneral;
@@ -91,6 +83,8 @@ public class GameManager : MonoBehaviour
     private void Initialize()
     {
         objCanvas = Functions.GetRootGO(Functions.NAME__OBJ_CANVAS);
+
+        deck = Functions.GetRootGO(Functions.NAME__DECK).GetComponent<Deck>();
         ai = Functions.GetRootGO(Functions.NAME__AI).GetComponent<AI>();
         generalSO = Functions.VAATH_THE_IMMORTAL;
         myGeneral = objCanvas.FindChildGO(Functions.NAME__MY_GENERAL).GetComponent<General>();
@@ -113,11 +107,12 @@ public class GameManager : MonoBehaviour
 
         //초기값 설정
         turnCount = 0;
+        myReplacingValid = true;
         TaskBlock = false;
         MyHP = 25;
         OpponentHP = 25;
         MyMana = OpponentMana = MyCurrentMaxMana = OpponentCurrentMaxMana = START_MANA;
-        MyDeckCount = OpponentDeckCount = MAX_DECK;
+        //MyDeckCount = OpponentDeckCount = MAX_DECK;
         MyHandsCount = 0;
 
         (MyDefaultDirection, OpponentDefaultDirection) = (FirstPlayer == PlayerType.ME) ?
@@ -172,17 +167,19 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator DrawMyCard()
     {
-        if (MyDeckCount <= 0)
-        {
-            //게임 패배
-            GameOver();
-        }
-
         if (MyHandsCount < MAX_HANDS)
         {
-            UIManager.Instance.AddCard(card);
+            Card nextCard;
+            if (!deck.TryGetDeckTop(out nextCard, PlayerType.ME))
+            {
+                //게임 패배
+                GameOver();
+                yield break;
+            }
+
+            UIManager.Instance.AddCard(nextCard);
             ++MyHandsCount;
-            --MyDeckCount;
+            UIManager.Instance.UpdateDeckText(PlayerType.ME, deck);
 
             yield return new WaitForSeconds(0.5f);
         }
@@ -190,18 +187,36 @@ public class GameManager : MonoBehaviour
 
     public void DrawOpponentCard()
     {
-        if (OpponentDeckCount <= 0)
-        {
-            //게임 승리
-            GameOver();
-        }
-
         if (OpponentHandsCount < MAX_HANDS)
         {
-            ai.AddCard(card);
+            Card nextCard;
+            if (!deck.TryGetDeckTop(out nextCard, PlayerType.OPPONENT))
+            {
+                //게임 승리
+                GameOver();
+                return;
+            }    
+
+            ai.AddCard(nextCard);
             UIManager.Instance.UpdateOpponentHandsText();
-            --OpponentDeckCount;
+            UIManager.Instance.UpdateDeckText(PlayerType.OPPONENT, deck);
         }
+    }
+
+    public bool ReplaceCard(Card hand, out Card newCard, PlayerType player)
+    {
+        newCard = hand;
+
+        if (CurrentTurnPlayer != player || !myReplacingValid)
+            return false;
+
+        if (deck.TryReplaceCard(hand, out newCard, player))
+        {
+            myReplacingValid = false;
+            return true;
+        }
+
+        return false;
     }
 
     public bool TryCostMana(int cost, PlayerType player)
@@ -248,6 +263,8 @@ public class GameManager : MonoBehaviour
             if (MyCurrentMaxMana < MAX_MANA)
                 ++MyCurrentMaxMana;
             MyMana = MyCurrentMaxMana;
+
+            myReplacingValid = true;
         }
         else
         {
@@ -333,19 +350,6 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.UpdateMaxManaText(player);
     }
 
-    private void SetDeckCount(PlayerType player, int currentDeck)
-    {
-        if (player == PlayerType.OPPONENT)
-        {
-            _opponentDeckCount = currentDeck;
-        }
-        else
-        {
-            _myDeckCount = currentDeck;
-        }
-        UIManager.Instance.UpdateDeckText(player);
-    }
-
     public void OnManaTileActive(PlacedObjType placedObj)
     {
         if (placedObj == PlacedObjType.ENEMY)
@@ -371,17 +375,14 @@ public class GameManager : MonoBehaviour
         string gameResult;
         if (MyHP <= 0 && OpponentHP <= 0)
         {
-            Debug.Log("DRAW");
             gameResult = "Draw";
         }
-        else if (MyHP <= 0 || MyDeckCount <= 0)
+        else if (MyHP <= 0 || deck.GetDeckCount(PlayerType.ME) <= 0)
         {
-            Debug.Log("DEFEAT");
             gameResult = "Defeat";
         }
         else
         {
-            Debug.Log("VICTORY");
             gameResult = "Victory";
         }
         UIManager.Instance.ShowGameOverUI(gameResult);

@@ -34,8 +34,6 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public bool HaveMana { get; protected set; } = false;
 
-    public int debug_Weight = 0;
-
     protected virtual void Awake()
     {
         tileRect = GetComponent<RectTransform>();

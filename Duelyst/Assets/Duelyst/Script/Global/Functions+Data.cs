@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -56,7 +57,8 @@ public static partial class Functions
     public const string NAME__UI_MANAGER = "UIManager";
     public const string NAME__PLAYING_CARD_POOL = "PlayingCardPool";
 
-    //AI
+    //GameObject in root
+    public const string NAME__DECK = "Deck";
     public const string NAME__AI = "AI";
 
     //GameObject in BgCanvas
@@ -121,7 +123,8 @@ public static partial class Functions
     #region Resource file location
     public const string FILELOC__RESOURCES__PREFAB = "Prefabs/";
     public const string FILELOC__RESOURCES__MATERIALS = "Materials/";
-    public const string FILELOC__RESOURCES__SO__CARD = "ScriptableObjects/Card/";
+    public const string FILELOC__RESOURCES__SO__CARD__GENERAL = "ScriptableObjects/Card/General/";
+    public const string FILELOC__RESOURCES__SO__CARD__MINION = "ScriptableObjects/Card/Minion/";
     #endregion
 
     #region Resource name
@@ -135,9 +138,9 @@ public static partial class Functions
     public const string ASSETNAME__MATERIALS__ENEMYOUTLINE = "EnemyOutline";
 
     //Scriptable Objects
-    //Card
-    public const string ASSETNAME_SO__CARD__VAATH_THE_IMMORTAL = "VaathTheImmortal";
-    public const string ASSETNAME_SO__CARD__PHALANXAR = "Phalanxar";
+    ////Card
+    //////General
+    public const string ASSETNAME_SO__CARD__GENERAL__VAATH_THE_IMMORTAL = "VaathTheImmortal";
     #endregion
 
     #region Resources
@@ -151,8 +154,10 @@ public static partial class Functions
     public static readonly Material ENEMY_OUTLINE = Resources.Load($"{FILELOC__RESOURCES__MATERIALS}{ASSETNAME__MATERIALS__ENEMYOUTLINE}") as Material;
 
     //Scriptable Object Resources
-    //Card
-    public static readonly Card VAATH_THE_IMMORTAL = Resources.Load($"{FILELOC__RESOURCES__SO__CARD}{ASSETNAME_SO__CARD__VAATH_THE_IMMORTAL}") as Card;
-    public static readonly Card PHALANXAR = Resources.Load($"{FILELOC__RESOURCES__SO__CARD}{ASSETNAME_SO__CARD__PHALANXAR}") as Card;
+    ////Card
+    //////General
+    public static readonly Card VAATH_THE_IMMORTAL = Resources.Load($"{FILELOC__RESOURCES__SO__CARD__GENERAL}{ASSETNAME_SO__CARD__GENERAL__VAATH_THE_IMMORTAL}") as Card;
+    ///////Minion
+    public static readonly Card[] MINIONS = Resources.LoadAll($"{FILELOC__RESOURCES__SO__CARD__MINION}", typeof(Card)).Cast<Card>().ToArray();
     #endregion
 }

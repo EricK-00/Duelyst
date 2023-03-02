@@ -21,15 +21,15 @@ public class SelectingArrow : MonoBehaviour
 
     private void OnEnable()
     {
-        SetTransform();
+        SetArrowTransform();
     }
 
     void Update()
     {
-        SetTransform();
+        SetArrowTransform();
     }
 
-    private void SetTransform()
+    private void SetArrowTransform()
     {
         Vector3 mousePos = Input.mousePosition / uiCanvas.scaleFactor;
         mousePos = new Vector3(
@@ -40,7 +40,7 @@ public class SelectingArrow : MonoBehaviour
         Vector2 pointPos = new Vector2((mousePos.x + transform.localPosition.x) / 2,
             100 + (mousePos.y + transform.localPosition.y) / 2);
 
-        debug_MiddlePoint.transform.localPosition = pointPos;// - (Vector2)transform.localPosition;
+        debug_MiddlePoint.transform.localPosition = pointPos;
 
         int arrowCount = MIN_ARROW_COUNT + Mathf.Max((int)Mathf.Abs(mousePos.x - transform.localPosition.x) / 50, (int)Mathf.Abs(mousePos.y - transform.localPosition.y) / 50);
 
@@ -54,7 +54,7 @@ public class SelectingArrow : MonoBehaviour
             {
                 GameObject arrow = transform.GetChild(i).gameObject;
 
-                float lerpValue = 1f / (arrowCount - 1) * i;//arrowCount가 2이상
+                float lerpValue = 1f / (arrowCount - 1) * i;//arrowCount가 2 이상(1일 때 zero division)
 
                 Vector2 lerpPointA = Vector2.Lerp(transform.localPosition, pointPos, lerpValue);
                 Vector2 lerpPointB = Vector2.Lerp(pointPos, mousePos, lerpValue);

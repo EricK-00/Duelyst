@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DrawTest : MonoBehaviour, IPointerUpHandler
+public class TestButton : MonoBehaviour, IPointerUpHandler
 {
+
     public void OnPointerUp(PointerEventData ped)
     {
         Functions.LoadScene("01.MainMenuScene");

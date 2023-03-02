@@ -55,6 +55,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 215779023b2afd244b631cbbca022fec, type: 3}
   - {fileID: 21300000, guid: d9c1cef2e9b9c584c8a6e85ae99041e1, type: 3}
   - {fileID: 21300000, guid: 3a72db333dbbf0e4c998420a6579fc9a, type: 3}
+  - {fileID: 21300000, guid: a0867543564360c41919191706ecfe31, type: 3}
   - {fileID: 21300000, guid: a11da993bddb872418506e5880ab9ac3, type: 3}
   - {fileID: 21300000, guid: 6caad0148ce582644b18a47b159c9087, type: 3}
   - {fileID: 21300000, guid: c3872e845d28e4e4984c7d760a3f034b, type: 3}
@@ -98,6 +99,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: ec82bf0dcf137ef43b56baffa4cea631, type: 3}
   - {fileID: 21300000, guid: cba16c5d9bd535142b92cae347c1ce0f, type: 3}
   - {fileID: 21300000, guid: 5162107d7eda7034cbc8b042c2518771, type: 3}
+  - {fileID: 21300000, guid: a5915b7da7bab3a469031586f27fa125, type: 3}
   - {fileID: 21300000, guid: cbd279cd513e83243bf1a1c06de3ec5e, type: 3}
   - {fileID: 21300000, guid: 480c8d1ee979025428e10b1582dd6b85, type: 3}
   - {fileID: 21300000, guid: b7faac3e5f9ac8444a238cd0c18af6ea, type: 3}
@@ -125,6 +127,7 @@ SpriteAtlas:
   - glow
   - neutral_unit
   - general_f5
+  - replace_inner_glow@2x
   - midground
   - battlemap3_foreground
   - battlemap3_middleground
@@ -168,6 +171,7 @@ SpriteAtlas:
   - icon_mana@2x
   - replace_background@2x
   - button_end_turn_finished@2x
+  - replace_inner_ring@2x
   - replace_outer_ring_smoke@2x
   - foreground
   - obsidian_woods_cliff

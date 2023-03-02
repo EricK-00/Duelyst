@@ -21,7 +21,6 @@ public class PlayingCardPoolingManager : MonoBehaviour
 
     private static int INIT_CARD_POOL_COUNT = 15;
 
-    [SerializeField]
     private Queue<PlayingCard> playingCardPool = new Queue<PlayingCard>();
     private GameObject playingCardPrefab;
 

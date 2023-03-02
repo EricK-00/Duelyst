@@ -112,7 +112,6 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             return;
         }
 
-
         //현재 레이캐스트 결과 가져오기
         GameObject raycastTarget = ped.pointerCurrentRaycast.gameObject;
         if (raycastTarget == null)
@@ -122,6 +121,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         }
 
         Tile targetTile;
+        ReplaceUI replaceUI;
         if (raycastTarget.TryGetComponent(out targetTile) && targetTile.IsPlaceable)
         {
             //코스트 지불
@@ -133,7 +133,10 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
             //필드에 카드 생성
             PlacePlayingCard(targetTile);
-            SetDefault();
+        }
+        else if (raycastTarget.TryGetComponent(out replaceUI))
+        {
+            ReplaceCard();
         }
 
         Field.HidePlaceableTiles();
@@ -144,6 +147,17 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         PlayingCardPoolingManager.Instance.ActiveNewCard(tile, cardData, PlayerType.ME);
         UIManager.Instance.PlayPlacingAnim(tile);
         tile.OnPlaceEffect();
+
+        SetDefault();
+    }
+
+    private void ReplaceCard()
+    {
+        if (GameManager.Instance.ReplaceCard(cardData, out cardData, PlayerType.ME))
+        {
+            SetDefault();
+            UIManager.Instance.AddCard(cardData);
+        }
     }
 
     private void SetDefault()
@@ -157,7 +171,6 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     public void SetNewCard(Card card)
     {
         NoCard = false;
-
         cardData = card;
         cardAnim.runtimeAnimatorController = cardData.Anim;
         costText.SetTMPText(cardData.Cost);

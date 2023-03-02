@@ -2,21 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EnumTypes;
-using System.Collections.ObjectModel;
-using Unity.VisualScripting;
 
 public class AI : MonoBehaviour
 {
-    //[SerializeField]
-    //private ManaTile[] manaTiles = new ManaTile[3];
+    [SerializeField]
+    private GameObject debug_weightMap;
 
     [SerializeField]
     private List<Tile> movableTiles = new List<Tile>();
     private (int, int)[] oneDistanceTilesDelta = new (int, int)[4]
     {
-        (-1, 0),
-        (0, -1), (0, 1),
-        (1, 0)
+        //(row, col)
+                (-1, 0),
+        (0, -1),        (0, 1),
+                (1, 0)
     };
 
     [SerializeField]
@@ -27,35 +26,30 @@ public class AI : MonoBehaviour
     {
         //(row, col)
         (-1, -1), (-1, 0), (-1, 1),
-        (0, -1), (0, 1),
+        (0, -1),            (0, 1),
         (1, -1), (1, 0), (1, 1)
     };
 
-    private bool[,] boardVisitedCheck = new bool[5, 9];
+    private bool[,] boardVisitedCheck;// = new bool[5, 9];
 
-    [SerializeField]
-    private List<Card> aiHands = new List<Card>();
+    private int[,] weightMap;
 
-    [SerializeField]
-    private List<Tile> refreshedTileList = new List<Tile>();
-
-    [SerializeField]
+    private List<Card> opponentHands = new List<Card>();
+    private List<Tile> refreshedList = new List<Tile>();
     private Tile foeGeneral;
-
-    [SerializeField]
     private Tile targetFoe;
 
     private ManaComparerDesc handsSorter = new ManaComparerDesc();
-    private HealthComparerDesc refreshedCardSorter = new HealthComparerDesc();
+    private HealthComparerDesc refreshedListSorter = new HealthComparerDesc();
 
     public int GetHandsCount()
     {
-        return aiHands.Count;
+        return opponentHands.Count;
     }
 
     public void AddCard(Card card)
     {
-        aiHands.Add(card);
+        opponentHands.Add(card);
     }
 
     //AI루프: 공격 및 이동 -> 플레이싱 -> 턴 종료
@@ -67,53 +61,60 @@ public class AI : MonoBehaviour
     //
     public IEnumerator AILoop()
     {
+        Initialize();
+#if DEBUG_MODE
+        ShowWeightMap();
+#endif
+
         while (true)
         {
             yield return new WaitWhile(() => GameManager.Instance.CurrentTurnPlayer != PlayerType.OPPONENT);
 
-            Debug.Log("AI Turn Start");
-            Initialize();
+            //StartTurn
+            StartTurn();
             yield return new WaitForSeconds(1f);
 
-            for (int i = 0; i < refreshedTileList.Count; i++)
+            for (int i = 0; i < refreshedList.Count; i++)
             {
                 targetFoe = null;
-                ClearWeight();
-                SetMovebaleList(refreshedTileList[i]);
+                ClearWeightMap();
+                SetMovebaleList(refreshedList[i]);
                 SetCloseEnemyList();
 
                 if (movableTiles.Count <= 0)
                     continue;
 
+                //MoveAndAttack
                 if (closeFoeTiles.Count > 0)
                 {
                     //가중치 설정
                     SetManaTileWeight(movableTiles);
                     AddFoeGeneralWeight(movableTiles);
-                    AddMoveAndAttackWeight(refreshedTileList[i]);
+                    AddMoveAndAttackWeight(refreshedList[i]);
 
                     yield return new WaitForSeconds(1f);
 
                     //이동할 위치 선택
                     Tile selectedTile = GetSelectedTileInList(movableTiles);
-                    if (refreshedTileList[i] != selectedTile)
+                    if (refreshedList[i] != selectedTile)
                     {
                         //카드 등록 장소 변경
-                        PlayingCard card = refreshedTileList[i].Card.GetComponent<PlayingCard>();
-                        refreshedTileList[i].ChangeTile(card, selectedTile);
+                        PlayingCard card = refreshedList[i].Card.GetComponent<PlayingCard>();
+                        refreshedList[i].ChangeTile(card, selectedTile);
 
                         //이동
-                        yield return StartCoroutine(card.Move(refreshedTileList[i], selectedTile));
+                        yield return StartCoroutine(card.Move(refreshedList[i], selectedTile));
                         //타일 참조 변경
-                        refreshedTileList[i] = selectedTile;
+                        refreshedList[i] = selectedTile;
                     }
 
                     if (targetFoe != null &&
-                        1 == GetAroundDistanceWithTarget(refreshedTileList[i].Row, refreshedTileList[i].Column, targetFoe.Row, targetFoe.Column))
+                        1 == GetAroundDistanceWithTarget(refreshedList[i].Row, refreshedList[i].Column, targetFoe.Row, targetFoe.Column))
                     {
-                        yield return StartCoroutine(refreshedTileList[i].Card.Battle(targetFoe.Card, refreshedTileList[i].Column, targetFoe.Column));
+                        yield return StartCoroutine(refreshedList[i].Card.Battle(targetFoe.Card, refreshedList[i].Column, targetFoe.Column));
                     }
                 }
+                //Move
                 else
                 {
                     //가중치 설정
@@ -123,28 +124,28 @@ public class AI : MonoBehaviour
                     //이동할 위치 선택
                     Tile selectedTile = GetSelectedTileInList(movableTiles);
 
-                    if (refreshedTileList[i] != selectedTile)
+                    if (refreshedList[i] != selectedTile)
                     {
                         //카드 등록 장소 변경
-                        PlayingCard card = refreshedTileList[i].Card.GetComponent<PlayingCard>();
-                        refreshedTileList[i].ChangeTile(card, selectedTile);
+                        PlayingCard card = refreshedList[i].Card.GetComponent<PlayingCard>();
+                        refreshedList[i].ChangeTile(card, selectedTile);
                         //이동
-                        yield return StartCoroutine(card.Move(refreshedTileList[i], selectedTile));
+                        yield return StartCoroutine(card.Move(refreshedList[i], selectedTile));
                         //타일 참조 변경
-                        refreshedTileList[i] = selectedTile;
+                        refreshedList[i] = selectedTile;
                     }
                 }
 
                 yield return new WaitForSeconds(1f);
             }
 
-            Debug.Log("Placing");
+            //Place
             int handsStartIndex = 0;
             while (true)
             {
-                ClearWeight();
+                ClearWeightMap();
 
-                if (aiHands.Count < 0 || handsStartIndex >= aiHands.Count)
+                if (opponentHands.Count < 0 || handsStartIndex >= opponentHands.Count)
                     break;
 
                 Card selectedCard = GetSelectedHand(ref handsStartIndex);
@@ -163,7 +164,7 @@ public class AI : MonoBehaviour
                 Tile selectedTile = GetSelectedTileInList(placeableTiles);
 
                 //카드 놓기
-                aiHands.Remove(selectedCard);
+                opponentHands.Remove(selectedCard);
                 UIManager.Instance.UpdateOpponentHandsText();
                 PlayerType owner = PlayerType.OPPONENT;
                 PlayingCardPoolingManager.Instance.ActiveNewCard(selectedTile, selectedCard, owner);
@@ -171,19 +172,25 @@ public class AI : MonoBehaviour
                 selectedTile.OnPlaceEffect();
                 yield return new WaitForSeconds(1.5f);
             }
-            
-            //덱에서 가져오기
-            //
+
+            //Draw
             GameManager.Instance.DrawOpponentCard();
             GameManager.Instance.DrawOpponentCard();
 
+            //EndTurn
             yield return StartCoroutine(GameManager.Instance.EndTurn());
         }
     }
 
     private void Initialize()
     {
-        refreshedTileList.Clear();
+        boardVisitedCheck = new bool[Board.MAX_ROW, Board.MaxColumn];
+        weightMap = new int[Board.MAX_ROW, Board.MaxColumn];
+    }
+
+    private void StartTurn()
+    {
+        refreshedList.Clear();
 
         foreach (var foeTile in Field.MyFieldList)
         {
@@ -198,15 +205,15 @@ public class AI : MonoBehaviour
         {
             if (tile.Card.MoveChance > 0 && tile.Card.AttackChance > 0)
             {
-                refreshedTileList.Add(tile);
+                refreshedList.Add(tile);
             }
         }
 
         //health 내림차순 정렬
-        refreshedTileList.Sort(refreshedCardSorter);
+        refreshedList.Sort(refreshedListSorter);
 
         //cost 내림차순 정렬
-        aiHands.Sort(handsSorter);
+        opponentHands.Sort(handsSorter);
     }
 
     //hands 정렬에 사용하는 비교기(cost를 내림차순으로 정렬)
@@ -262,7 +269,7 @@ public class AI : MonoBehaviour
     private Tile GetSelectedTileInList(List<Tile> tileList)
     {
         List<Tile> selectedTiles = new List<Tile>();
-        foreach(var tile in tileList)
+        foreach (var tile in tileList)
         {
             if (selectedTiles.Count <= 0)
             {
@@ -270,12 +277,12 @@ public class AI : MonoBehaviour
                 continue;
             }
 
-            if (tile.debug_Weight > selectedTiles[0].debug_Weight)
+            if (weightMap[tile.Row, tile.Column] > weightMap[selectedTiles[0].Row, selectedTiles[0].Column])
             {
                 selectedTiles.Clear();
                 selectedTiles.Add(tile);
             }
-            else if (tile.debug_Weight == selectedTiles[0].debug_Weight)
+            else if (weightMap[tile.Row, tile.Column] == weightMap[selectedTiles[0].Row, selectedTiles[0].Column])
             {
                 selectedTiles.Add(tile);
             }
@@ -288,14 +295,14 @@ public class AI : MonoBehaviour
 
     private Card GetSelectedHand(ref int index)
     {
-        if (aiHands.Count <= 0 || index >= aiHands.Count)
+        if (opponentHands.Count <= 0 || index >= opponentHands.Count)
             return null;
 
-        for (; index < aiHands.Count; index++)
+        for (; index < opponentHands.Count; index++)
         {
-            if (GameManager.Instance.TryCostMana(aiHands[index].Cost, PlayerType.OPPONENT))
+            if (GameManager.Instance.TryCostMana(opponentHands[index].Cost, PlayerType.OPPONENT))
             {
-                return aiHands[index];
+                return opponentHands[index];
             }
         }
 
@@ -433,6 +440,7 @@ public class AI : MonoBehaviour
             return;
 
         Tile tile;
+
         for (int i = 0; i < oneDistanceTilesDelta.Length; i++)
         {
             int row = standardRow + oneDistanceTilesDelta[i].Item1;
@@ -497,32 +505,28 @@ public class AI : MonoBehaviour
         }
     }
 
-    private void ClearWeight()
+    private void ClearWeightMap()
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < weightMap.GetLength(0); i++)
         {
-            for (int j = 0; j < 9; j++)
+            for (int j = 0; j < weightMap.GetLength(1); j++)
             {
-                Tile tile;
-                if (!Board.TryGetTile(i, j, out tile))
-                    continue;
-
-                tile.debug_Weight = 0;
+                weightMap[i, j] = 0;
             }
         }
     }
 
-    private void SetWeight(Tile tile, int weight)
+    private void SetManaTileWeight(Tile tile, int weight)
     {
-        if (tile.debug_Weight < weight)
+        if (weightMap[tile.Row, tile.Column] < weight)
         {
-            tile.debug_Weight = weight;
+            weightMap[tile.Row, tile.Column] = weight;
         }
     }
 
     private void AddWeight(Tile tile, int weight)
     {
-        tile.debug_Weight += weight;
+        weightMap[tile.Row, tile.Column] += weight;
     }
 
     private void AddFoeGeneralWeight(List<Tile> tileList)
@@ -561,13 +565,13 @@ public class AI : MonoBehaviour
                 switch (GetAroundDistanceWithTarget(tile.Row, tile.Column, pos.Item1, pos.Item2))
                 {
                     case 0:
-                        SetWeight(tile, 3000);
+                        SetManaTileWeight(tile, 3000);
                         break;
                     case 1:
-                        SetWeight(tile, 2000);
+                        SetManaTileWeight(tile, 2000);
                         break;
                     case 2:
-                        SetWeight(tile, 1000);
+                        SetManaTileWeight(tile, 1000);
                         break;
                 }
             }
@@ -579,4 +583,18 @@ public class AI : MonoBehaviour
         //대각선 포함 주변 거리 가져오기
         return Mathf.Max(Mathf.Abs(targetRow - row), Mathf.Abs(targetCol - col));
     }
+
+#if DEBUG_MODE
+    private void ShowWeightMap()
+    {
+        debug_weightMap.SetActive(true);
+        for (int i = 0; i < weightMap.GetLength(0); i++)
+        {
+            for (int j = 0; j < weightMap.GetLength(1); j++)
+            {
+                debug_weightMap.transform.GetChild(i * weightMap.GetLength(1) + j).GetComponent<TestWeightMap>().Init(i, j, ref weightMap);
+            }
+        }
+    }
+#endif
 }

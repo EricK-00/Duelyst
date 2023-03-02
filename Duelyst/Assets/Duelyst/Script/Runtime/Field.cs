@@ -7,10 +7,6 @@ using EnumTypes;
 
 public class Field : MonoBehaviour
 {
-    //
-    public Card cardData;
-    public Card cardData_general;
-
     public static bool IsPlaceableShowing { get; private set; }
 
     private static List<Tile> _myFieldList;
@@ -22,46 +18,6 @@ public class Field : MonoBehaviour
     {
         _myFieldList = new List<Tile>();
         _opponentFieldList = new List<Tile>();
-    }
-
-    private void Start()
-    {
-        //
-        Tile myStartTile, opponentStartTile;
-
-        //
-        Tile aiTestOppoentTile1;
-        Tile aiTestOppoentTile2;
-        Tile aiTestOppoentTile3;
-
-        if (GameManager.Instance.FirstPlayer == PlayerType.ME)
-        {
-            Board.TryGetTile(2, 0, out myStartTile);
-            Board.TryGetTile(2, Board.MaxColumn - 1, out opponentStartTile);
-
-            //
-            Board.TryGetTile(3, Board.MaxColumn - 1, out aiTestOppoentTile1);
-            Board.TryGetTile(1, Board.MaxColumn - 1, out aiTestOppoentTile2);
-            Board.TryGetTile(4, Board.MaxColumn - 3, out aiTestOppoentTile3);
-        }
-        else
-        {
-            Board.TryGetTile(2, Board.MaxColumn - 1, out myStartTile);
-            Board.TryGetTile(2, 0, out opponentStartTile);
-
-            //
-            Board.TryGetTile(3, 1, out aiTestOppoentTile1);
-            Board.TryGetTile(1, 1, out aiTestOppoentTile2);
-            Board.TryGetTile(4, 2, out aiTestOppoentTile3);
-        }
-
-        PlayingCardPoolingManager.Instance.ActiveNewCard(myStartTile, cardData_general, PlayerType.ME);
-        PlayingCardPoolingManager.Instance.ActiveNewCard(opponentStartTile, cardData_general, PlayerType.OPPONENT);
-
-        //
-        PlayingCardPoolingManager.Instance.ActiveNewCard(aiTestOppoentTile1, cardData, PlayerType.ME);
-        PlayingCardPoolingManager.Instance.ActiveNewCard(aiTestOppoentTile2, cardData, PlayerType.ME);
-        PlayingCardPoolingManager.Instance.ActiveNewCard(aiTestOppoentTile3, cardData, PlayerType.ME);
     }
 
     public static void AddPlayerTile(Tile tile, PlayerType player)

@@ -6,7 +6,6 @@ public static partial class Functions
     {
         Texture2D texture = new Texture2D((int)sprite.rect.width, (int)sprite.rect.height, TextureFormat.RGBA32, false);
         texture.filterMode = fileterMode;
-        texture.alphaIsTransparency = true;
         Color[] spriteColors = sprite.texture.GetPixels(
             (int)sprite.textureRect.x, (int)sprite.textureRect.y,
             (int)sprite.textureRect.width, (int)sprite.textureRect.height);
@@ -21,7 +20,6 @@ public static partial class Functions
     {
         Texture2D texture = new Texture2D((int)sprite.rect.width, (int)sprite.rect.height, TextureFormat.RGBA32, false);
         texture.filterMode = fileterMode;
-        texture.alphaIsTransparency = true;
         Color[] spriteColors = sprite.texture.GetPixels(
             (int)sprite.textureRect.x, (int)sprite.textureRect.y,
             (int)sprite.textureRect.width, (int)sprite.textureRect.height);
