@@ -125,30 +125,46 @@ public class PlayingCard : MonoBehaviour
         ChangeDirection(sourceCol, destCol);
 
         cardAnimator.SetTrigger("onAttack");
-        yield return new WaitForEndOfFrame();
+        yield return new WaitUntil(() => cardAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
+
+        Debug.Log("내 공격");
+        Debug.Log(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
+
         yield return new WaitForSeconds(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
 
         //기본방향으로 전환
         ChangeDirection(0, 0);
 
         target.cardAnimator.SetTrigger("isDamaged");
-        yield return new WaitForEndOfFrame();
+        yield return new WaitUntil(() => target.cardAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
         target.Health -= Power;
+
+        Debug.Log("적 피해");
+        Debug.Log(target.cardAnimator.GetCurrentAnimatorStateInfo(0).length);
+
         yield return new WaitForSeconds(target.cardAnimator.GetCurrentAnimatorStateInfo(0).length);
 
         //방향전환
         target.ChangeDirection(destCol, sourceCol);
 
         target.cardAnimator.SetTrigger("onAttack");
-        yield return new WaitForEndOfFrame();
+        yield return new WaitUntil(() => target.cardAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
+
+        Debug.Log("적 공격");
+        Debug.Log(target.cardAnimator.GetCurrentAnimatorStateInfo(0).length);
+
         yield return new WaitForSeconds(target.cardAnimator.GetCurrentAnimatorStateInfo(0).length);
 
         //기본방향으로 전환
         target.ChangeDirection(0, 0);
 
         cardAnimator.SetTrigger("isDamaged");
-        yield return new WaitForEndOfFrame();
+        yield return new WaitUntil(() => cardAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f);
         Health -= target.Power;
+
+        Debug.Log("내 피해");
+        Debug.Log(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
+
         yield return new WaitForSeconds(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
 
         //die check
